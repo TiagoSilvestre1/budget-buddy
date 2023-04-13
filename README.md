@@ -17,8 +17,6 @@ sudo docker compose up
 
 The application will start in watch mode, allowing you to make changes to the code and see the updates in real time. 
 
-The frontend can be accessed at `http://172.16.238.10:8080`, and the backend at `http://172.16.238.11:3000`.
-
 ### Production mode
 
 Build and run the project in production mode:
@@ -27,3 +25,6 @@ sudo docker compose -f docker-compose.yml -f docker-compose-prod.yml build
 sudo docker compose -f docker-compose.yml -f docker-compose-prod.yml up
 ```
 In production mode, the application will not be in watch mode and any changes to the code will require rebuilding and redeploying the containers.
+
+## IP addresses 
+The frontend can be accessed at `http://172.16.238.10:8080`, and the backend at `http://172.16.238.11:3000` in both environments.
