@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  front:
+
+    environment:
+      - NODE_ENV=${NODE_ENV:-prod}
+    command: sh -c "npm run build && http-server dist -- --host"
+
+  back:
+
+    environment:
+      - NODE_ENV=${NODE_ENV:-prod}
+
+    command: sh -c "npm run build && npm run start:prod"
+
