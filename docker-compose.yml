@@ -10,7 +10,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./front:/front
+      - ./front/src:/front/src
     command: npm run dev --watch -- --host 0.0.0.0 --port 8080
     networks:
     
@@ -27,7 +27,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./back:/back
+      - ./back/src:/back/src
     command: npm run start:dev --watch
     networks:
       my-network:
