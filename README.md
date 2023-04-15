@@ -1,6 +1,13 @@
 # Budget Buddy
 Budget Buddy is a concept application developed for personal project management.
 
+## Technologies used
+1. vuejs (https://vuejs.org/)
+2. vuetify (https://vuetifyjs.com/en/)
+3. nestjs (https://nestjs.com/)
+4. typeorm (https://orkhan.gitbook.io/typeorm)
+5. mongodb (https://www.mongodb.com/)
+
 ## Prerequisites
 Before getting started, you'll need to have Docker and Docker Compose installed on your machine. If you don't have these tools installed, please follow the installation instructions below:
 
@@ -27,4 +34,9 @@ sudo docker compose -f docker-compose.yml -f docker-compose-prod.yml up
 In production mode, the application will not be in watch mode and any changes to the code will require rebuilding and redeploying the containers.
 
 ## IP addresses 
-The frontend can be accessed at `http://172.16.238.10:8080`, and the backend at `http://172.16.238.11:3000` in both environments.
+
+```
+front: http://172.16.238.10:8080
+back: http://172.16.238.11:3000
+mongo: 172.16.238.12:27017
+```
