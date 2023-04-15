@@ -28,10 +28,42 @@ services:
       - "3000:3000"
     volumes:
       - ./back/src:/back/src
+    depends_on:
+      - mongodb
     command: npm run start:dev --watch
     networks:
       my-network:
         ipv4_address: 172.16.238.11
+
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - ~/apps/mongo:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    networks:
+      my-network:
+        ipv4_address: 172.16.238.12
+
+
+  # Optional - GUI to visualize mongodb
+  #mongoclient:
+  #  image: mongoclient/mongoclient:latest
+  #  container_name: mongoclient
+  #  hostname: mongoclient
+  #  depends_on:
+  #    - mongodb
+  #  networks:
+  #    my-network:
+  #      ipv4_address: 172.16.238.13
+  #  ports:
+  #    - 3300:3000
+
+
 
 networks:
   my-network:
