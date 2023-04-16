@@ -1,8 +1,5 @@
-
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-<h1>hello register</h1>
+  <h1>hello register</h1>
 </template>
