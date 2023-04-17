@@ -7,6 +7,9 @@
         <v-list density="compact" nav>
           <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"></v-list-item>
           <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>
+          <v-list-item prepend-icon="mdi-theme-light-dark" title="toggle theme" @click="toggleTheme">
+      
+          </v-list-item>
         </v-list>
       </v-navigation-drawer>
 
@@ -22,7 +25,17 @@
 </template>
 
 <script lang="ts">
+import { useTheme } from 'vuetify/lib/framework.mjs';
 export default {
+
+  setup() {
+    const theme = useTheme();
+    return {
+      theme,
+      toggleTheme: () => theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+    }
+  },
+
   data: () => {
     return {
       drawer: false

@@ -20,6 +20,8 @@ const app = createApp(App)
 
 app.use(router)
 
+//let ctheme: string = theme.global.current.value.dark ? 'dark' : 'light'
+
 const vuetify = createVuetify({
   icons: {
     defaultSet: 'mdi',
