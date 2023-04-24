@@ -19,7 +19,7 @@ const router = createRouter({
       },{
         path: 'calendar', component: Calendar
       },{
-        path: '' , component: Home
+        path: '/' , component: Home
       }]
 
     },
@@ -37,4 +37,4 @@ const router = createRouter({
   ]
 })
 
-export default router
+export default router;

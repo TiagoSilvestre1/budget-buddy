@@ -5,7 +5,7 @@
         <v-divider></v-divider>
 
         <v-list nav>
-          <v-list-item prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
+          <v-list-item prepend-icon="mdi-home" title="Home" value="home" router-link to="/"></v-list-item>
 
           <v-list-group value="Projects">
             <template v-slot:activator="{ props }">
