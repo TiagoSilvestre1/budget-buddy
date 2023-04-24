@@ -40,11 +40,11 @@ services:
     image: mongo:latest
     ports:
       - 27017:27017
+    command:
+      --noauth
     volumes:
       - ~/apps/mongo:/data/db
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONGO_INITDB_ROOT_PASSWORD=pass
+
     networks:
       my-network:
         ipv4_address: 172.16.238.12

@@ -16,14 +16,14 @@ export class UserController {
   }): Promise<API>
   {
     try{
-        await this.userService.create(user.name, user.email, user.password);
-        return {success: true}
+        const _id = await this.userService.create(user.name, user.email, user.password);
+        return {success: true, data: _id};
     }
     catch(e)
     {
         return {
             success: false
-        }
+        };
     }
   }
 
