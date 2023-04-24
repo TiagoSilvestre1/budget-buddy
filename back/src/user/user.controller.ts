@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Post, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserDto } from './user.dto';
 import { API } from 'src/api/api';
+import mongoose from 'mongoose';
 
 
 @Controller('api/user')
@@ -31,6 +32,31 @@ export class UserController {
   async login(@Body() user: {email: string, password: string})
   {
     
+  }
+
+  @Delete()
+  async Remove(@Query('user_id') user_id: mongoose.Types.ObjectId)
+  {
+    try {
+      await this.userService.removeUserById(user_id);
+      return {sucess: true}
+    }
+    catch(error)
+    {
+      throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @Get('all')
+  async getAllUsers()
+  {
+    try {
+      return await this.userService.getAll();
+    }
+    catch(error)
+    {
+      throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
 }

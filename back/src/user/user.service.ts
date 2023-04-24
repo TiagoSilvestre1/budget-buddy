@@ -21,9 +21,19 @@ export class UserService {
     return _id;
   }
 
+  async removeUserById(user_id: mongoose.Types.ObjectId)
+  {
+    await this.userModel.findByIdAndRemove(user_id);
+  }
+
   async login(email: string, password: string): Promise<boolean>
   {
     if(await this.userModel.findOne({email: email, password: password})) return true;
     return false;
+  }
+
+  async getAll()
+  {
+    return await this.userModel.find();
   }
 }
