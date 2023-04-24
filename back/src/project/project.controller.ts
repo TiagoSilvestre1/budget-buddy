@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpException, HttpStatus, InternalServerErrorEx
 import { API } from 'src/api/api';
 import { ProjectService } from './project.service';
 import { User } from 'src/schemas/user.schema';
+import mongoose from 'mongoose';
 
 
 @Controller('api/project')
@@ -26,16 +27,36 @@ export class ProjectController {
     }
   }
 
-  @Get('byUser')
-  async getAll(@Query('mail') mail: string): Promise<API>
+  @Get('byUserId')
+  async getAll(@Query('user_id') user_id: mongoose.Types.ObjectId): Promise<API>
   {
     try{
-        return {data: await this.projectService.getByMail(mail), success: true};
+        return {data: {
+          owned: await this.projectService.getProjectsOwnedByUserId(user_id),
+        collaborates: await this.projectService.getProjectsWhereUserCollaborates(user_id)}, success: true};
     }
     catch(error)
     {    
       throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    
+  }
+
+  @Post('addCollaborator')
+  async addCollaborator(@Body() info: {
+    project_id: mongoose.Types.ObjectId,
+    user_id: mongoose.Types.ObjectId
+  })
+  {
+    try{
+      return await this.projectService.addCollaborator(info.project_id, info.user_id);
+    }
+    catch(error)
+    {
+      throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
   }
 
 }

@@ -19,13 +19,15 @@ export class Project {
     @Prop({type: Number})
     budget: number;
 
-    @Prop({type: mongoose.Schema.Types.ObjectId,ref: 'User'})
-    owner: User;
+    @Prop({type: mongoose.Types.ObjectId , ref: 'User'})
+    owner: mongoose.Types.ObjectId;
 
-
-
-  
-
+    @Prop({
+        type: [
+            {type: mongoose.Types.ObjectId, ref: 'User'}
+        ]
+    })
+    collaborators: mongoose.Types.ObjectId[];
 
 }
 
