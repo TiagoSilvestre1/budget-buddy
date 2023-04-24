@@ -27,13 +27,14 @@
             prepend-icon="mdi-calendar-month"
             title="calendar"
             value="calendar"
-            v-bind:href="'calendar'"
+            router-link to="calendar"
+
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-cogs"
             title="Settings"
             value="settings"
-            v-bind:href="'settings'"
+            router-link to="settings"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-theme-light-dark"
@@ -45,9 +46,8 @@
       </v-navigation-drawer>
 
       <v-main style="min-height: 100vh">
-        <div class="">
-          <v-btn icon="mdi-menu" @click.stop="drawer = !drawer"> </v-btn>
-        </div>
+        <v-btn class="left-navbar-button" icon="mdi-menu" @click.stop="drawer = !drawer"> </v-btn>
+          <router-view></router-view>
       </v-main>
     </v-layout>
   </v-card>
@@ -78,3 +78,12 @@ export default {
   }
 }
 </script>
+
+<style>
+  .left-navbar-button
+  {
+    position: absolute;
+    left:5px;
+    top:5px;
+  }
+</style>
