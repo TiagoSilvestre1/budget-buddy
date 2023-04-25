@@ -10,7 +10,7 @@
             title="Home"
             value="home"
             router-link
-            to="../"
+            to="../home"
           ></v-list-item>
 
           <v-list-group value="Projects">
@@ -25,7 +25,8 @@
             <v-list-item
               v-for="project in projects"
               :title="project[0]"
-              v-bind:href="project[1]"
+              router-link
+              :to="project[1]"
             ></v-list-item>
           </v-list-group>
 
@@ -34,14 +35,14 @@
             title="calendar"
             value="calendar"
             router-link
-            to="calendar"
+            to="../calendar"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-cogs"
             title="Settings"
             value="settings"
             router-link
-            to="settings"
+            to="../settings"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-theme-light-dark"
@@ -55,6 +56,7 @@
       <v-main style="min-height: 100vh; margin-bottom: 15.5vh;">
         <v-btn class="left-navbar-button" icon="mdi-menu" @click.stop="drawer = !drawer"> </v-btn>
         <router-view></router-view>
+
         <div class="footer">
           <Footer></Footer>
         </div>
@@ -66,6 +68,7 @@
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
 import Footer from './Footer.vue';
+
 export default {
 
 
@@ -85,10 +88,10 @@ export default {
     return {
       drawer: false,
       projects: [
-        ['Project one', 'Relative url'],
-        ['Project two', 'Relative url'],
-        ['Project three', 'Relative url'],
-        ['Project four', 'Relative url']
+        ['Project one', '../project/products'],
+        ['Project two', '../project/products'],
+        ['Project three', '../project/products'],
+        ['Project four', '../project/products']
       ],
       footerHeight: 0,
     }
@@ -105,6 +108,11 @@ export default {
 
 .main-title {
   text-align: center;
+}
+
+.main-subtitle {
+  text-align: left;
+  margin-left: 5vw;
 }
 
 .centered {

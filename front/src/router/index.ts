@@ -5,6 +5,9 @@ import Main from '../components/Main.vue'
 import Calendar from '../components/Calendar.vue'
 import Settings from '../components/Settings.vue'
 import Home from '../components/Home.vue'
+import Project from '../components/project/Project.vue';
+import Collaborators from '../components/project/Collaborators.vue';
+import Products from '../components/project/Products.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,8 +26,22 @@ const router = createRouter({
           component: Calendar
         },
         {
-          path: '/',
+          path: '/home',
           component: Home
+        },
+        {
+          path: '/project',
+          component: Project,
+          children: [
+            {
+              path: 'products',
+              component: Products,
+            },
+            {
+              path: 'collaborators',
+              component: Collaborators
+            }
+          ]
         }
       ]
     },
