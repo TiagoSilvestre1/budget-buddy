@@ -52,9 +52,12 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-main style="min-height: 100vh">
+      <v-main style="min-height: 100vh; margin-bottom: 15.5vh;">
         <v-btn class="left-navbar-button" icon="mdi-menu" @click.stop="drawer = !drawer"> </v-btn>
         <router-view></router-view>
+        <div class="footer">
+          <Footer></Footer>
+        </div>
       </v-main>
     </v-layout>
   </v-card>
@@ -62,7 +65,13 @@
 
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
+import Footer from './Footer.vue';
 export default {
+
+
+  components: {
+    Footer
+  },
   setup() {
     const theme = useTheme()
     return {
@@ -80,7 +89,8 @@ export default {
         ['Project two', 'Relative url'],
         ['Project three', 'Relative url'],
         ['Project four', 'Relative url']
-      ]
+      ],
+      footerHeight: 0,
     }
   }
 }
@@ -101,5 +111,19 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+
+  max-height: 15.5vh;
+  min-height: 9.5vh;
+  overflow-y: auto;
+  border-top: 1px solid #ddd; /* Add a 1px solid border to the top of the footer */
+  box-shadow: 0px -3px 10px rgba(161, 161, 161, 0.5); /* Add a box shadow to the bottom of the footer */
 }
 </style>
