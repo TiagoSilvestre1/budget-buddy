@@ -127,12 +127,14 @@ export default {
 
 				if (response.success === true) {
 					this.loading = true;
+					this.errorMsg = false;
 					setTimeout(() => {
 					this.loading = false;
 					this.successMsg = true;
 					}, 1500);
 				} else {
 					this.loading = true;
+					this.successMsg = false;
 					setTimeout(() => {
 					this.loading = false;
 					this.errorMsg = true;
