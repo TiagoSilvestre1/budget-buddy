@@ -105,6 +105,11 @@ export default {
       this.items.splice(index, 1);
     }
   },
+  scrollRight() {
+        const container = this.$refs.swiperContainer;
+      
+        container.scrollLeft += 100;
+  },
   editItem(item) {
     this.showEditPopup = true;
     this.editingItem = item;
@@ -164,6 +169,7 @@ export default {
         <p>{{ item.description }}</p>
       </div>
     </div>
+    <div class="scroll-indicator" v-if="items.length > 3"  @click="scrollRight"></div>
   </div>
 
 
@@ -178,6 +184,7 @@ export default {
         <p>{{ item.description }}</p>
       </div>
     </div>
+    <div class="scroll-indicator" v-if="items.length > 3"  @click="scrollRight"></div>
   </div>
 
     </div>
@@ -222,13 +229,14 @@ export default {
 }
 
 .add-project-button {
+  z-index: 9999;
   position: absolute;
   top: 0;
   right: 0;
   margin: 20px auto 0;
   width: 50px;
   height: 50px;
-  background-color: #fff;
+  background-color: rgba(0, 0, 0, 0.4);
   border-radius: 50%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   display: flex;
@@ -238,8 +246,8 @@ export default {
 
 .add-project-button button {
   font-size: 1.8em;
-  color: rgba(255, 204, 0, 0.5);
-  background-color: white;
+  color:white;
+  background-color:transparent;
   border: none;
   outline: none;
 }
@@ -307,21 +315,47 @@ export default {
 }
 
 .container {
+  position: relative;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   display: flex;
-  width: 1400px;
   align-items: center;
   overflow-x: scroll;
   white-space: nowrap;
   padding: 50px 0;
 }
 
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-indicator {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 10px solid black;
+  cursor: pointer;
+}
+
+
 .containerDetails {
+  position: relative;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   display: flex;
-  width: 1400px;
   align-items: center;
+  overflow-x: scroll;
   white-space: nowrap;
   padding: 50px 0;
-  overflow-x: scroll;
+}
+
+.containerDetails::-webkit-scrollbar {
+  display: none;
 }
 
 .itemDetail {
@@ -358,7 +392,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
