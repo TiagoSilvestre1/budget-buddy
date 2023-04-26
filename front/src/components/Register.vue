@@ -23,9 +23,9 @@
           <v-form @submit.prevent="submitHandler" ref="form">
             <v-card-text>
 				<v-text-field
-                v-model="email"
-                :rules="emailRules"
-                type="email"
+				:rules="nameRules"
+                v-model="name"
+                type="text"
                 label="Name"
                 placeholder="Name"
                 prepend-inner-icon="mdi-account"
@@ -83,8 +83,14 @@
         </v-card>
       </v-col>
     </v-main>
-    <v-snackbar top color="green" v-model="snackbar">
-      Login success
+    <v-snackbar top color="green" v-model="successMsg">
+      Success creating account
+    </v-snackbar>
+	<v-snackbar top color="red" v-model="errorMsg">
+      Error creating account
+    </v-snackbar>
+	<v-snackbar top color="red" v-model="passwordNotEqual">
+      Password and repeat Password don't match
     </v-snackbar>
   </v-app>
 </template>
@@ -103,20 +109,28 @@ export default {
 	},
 	data: () => ({
 		loading:false,
-		snackbar:false,
+		successMsg:false,
+		errorMsg:false,
+		passwordNotEqual:false,
 		passwordShow:false,
 		passwordRepeatShow:false,
+		name: '',
+		nameRules: [
+			( v: any) => !!v || 'Name is required',
+			( v: string) => v != "" || 'Name must not be empty',
+		],
 		email: '',
 		emailRules: [
 			( v: any) => !!v || 'E-mail is required',
 			( v: string) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
 		],
 		password: '',
-		repeatPassword: '',
 		passwordRules: [
 			( v: any) => !!v || 'Password is required',
 			( v: string | any[]) => (v && v.length >= 6) || 'Password must be 6  characters or more!',
 		],
+		repeatPassword: '',
+
 	}),
 	methods:{
 		clear(): void {
@@ -127,20 +141,48 @@ export default {
 		submitHandler(){
 			// this.$refs.form functions only for pure Js, not Ts
 			const refForm: any = this.$refs.form;
-			if (refForm.validate()){
-				this.loading = true
-				setTimeout(()=> {
-					this.loading = false
-					this.snackbar = true
-				},3000)
-			}
+			
+			// Bind the promise to an action 
+			refForm.validate().then((result: any) => { 
+				const isValid = result.valid;
+
+				// Check that the values are in correct form
+				if(!isValid) return
+				if(this.password !== this.repeatPassword){
+					this.loading = true;
+					setTimeout(() => {
+					this.loading = false;
+					this.passwordNotEqual = true;
+					}, 100);
+				}
+
+
+				// Access database and check credentials
+				
+				if (true) {
+					this.loading = true;
+					setTimeout(() => {
+					this.loading = false;
+					this.successMsg = true;
+					}, 1500);
+				} else {
+					this.loading = true;
+					setTimeout(() => {
+					this.loading = false;
+					this.errorMsg = true;
+					}, 1500);
+				}
+			});
 		},
 		goToLogin(){
 			this.$router.push({ path: 'login'})
 		},
 		goHome(){
 			this.$router.push({ path: '/'})
-		}
+		},
+		getPasswordValue() {
+			return this.password;
+		},
 	}
 };
 </script>

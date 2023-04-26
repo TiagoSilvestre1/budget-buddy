@@ -63,8 +63,11 @@
         </v-card>
       </v-col>
     </v-main>
-    <v-snackbar top color="green" v-model="snackbar">
+    <v-snackbar top color="green" v-model="successMsg">
       Login success
+    </v-snackbar>
+	<v-snackbar top color="red" v-model="errorMsg">
+      Error with Login credentials
     </v-snackbar>
   </v-app>
 </template>
@@ -83,7 +86,8 @@ export default {
 	},
 	data: () => ({
 		loading:false,
-		snackbar:false,
+		successMsg:false,
+		errorMsg:false,
 		passwordShow:false,
 		email: '',
 		emailRules: [
@@ -105,13 +109,30 @@ export default {
 		submitHandler(){
 			// this.$refs.form functions only for pure Js, not Ts
 			const refForm: any = this.$refs.form;
-			if (refForm.validate()){
-				this.loading = true
-				setTimeout(()=> {
-					this.loading = false
-					this.snackbar = true
-				},3000)
-			}
+			
+			// Bind the promise to an action 
+			refForm.validate().then((result: any) => { 
+				const isValid = result.valid;
+
+				// Check that the values are in correct form
+				if(!isValid) return
+
+				// Access database and check credentials
+				
+				if (true) {
+					this.loading = true;
+					setTimeout(() => {
+					this.loading = false;
+					this.successMsg = true;
+					}, 1500);
+				} else {
+					this.loading = true;
+					setTimeout(() => {
+					this.loading = false;
+					this.errorMsg = true;
+					}, 1500);
+				}
+			});
 		},
 		goToRegister(){
 			this.$router.push({ path: 'register'})

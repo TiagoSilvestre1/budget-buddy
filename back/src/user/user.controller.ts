@@ -31,7 +31,14 @@ export class UserController {
   @Post('login')
   async login(@Body() user: {email: string, password: string})
   {
-    
+    try{
+      const success = await this.userService.login(user.email, user.password);
+      return {success: success};
+    }
+    catch(e)
+    {
+        return {success: false};
+    }
   }
 
   @Delete()

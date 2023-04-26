@@ -1,0 +1,61 @@
+version: '3'
+
+services:
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=${NODE_ENV:-dev}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./front/src:/front/src
+    command: npm run dev --watch -- --host 0.0.0.0 --port 8080
+        
+
+  back:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=${NODE_ENV:-dev}
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./back/src:/back/src
+    depends_on:
+      - mongodb
+    command: npm run start:dev --watch
+
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    command:
+      --noauth
+    volumes:
+      - ~/apps/mongo:/data/db
+
+
+
+  # Optional - GUI to visualize mongodb
+  #mongoclient:
+  #  image: mongoclient/mongoclient:latest
+  #  container_name: mongoclient
+  #  hostname: mongoclient
+  #  depends_on:
+  #    - mongodb
+  #  networks:
+  #    my-network:
+  #      ipv4_address: 172.16.238.13
+  #  ports:
+  #    - 3300:3000
+
+
+
+networks:
+  my-network:
+    ipam:
+      driver: default
