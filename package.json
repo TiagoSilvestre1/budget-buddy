@@ -2,5 +2,8 @@
   "devDependencies": {
     "@types/swiper": "^6.0.0",
     "swiper": "^9.2.4"
+  },
+  "dependencies": {
+    "vuejs-datepicker": "^1.6.2"
   }
 }

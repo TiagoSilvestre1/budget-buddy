@@ -5,9 +5,26 @@ import item2 from '@/assets/robotlele.png';
 import item3 from '@/assets/save.png';
 import item4 from '@/assets/1.png';
 
+
+
 export default {
-    data(): {items: {id: number; image: string; description: string}[], details: {id: number; image: string; description: string}[], swiper: Swiper | null, hoverItem: number | null, showAddProjectPopup: boolean | null, newProjectName: string | null, newProjectImage: string|null} {
-  return {
+    data(): {
+      items: {id: number; image: string; description: string}[], 
+      details: {id: number; image: string; description: string}[], 
+      tags: {id: number; title: string; color: string}[],
+      swiper: Swiper | null,
+      hoverItem: number | null, 
+      showAddProjectPopup: boolean | null,
+      newProjectName: string | null, 
+      newProjectImage: string|null, 
+      newProjectBudget: number | null, 
+      newProjectStartDay: number|null, 
+      newProjectStartMonth: string|null, 
+      newProjectStartYear: number|null, 
+      newProjectEndDay: number|null,
+      newProjectEndMonth: string|null,
+      newProjectEndYear: number|null} {
+ return {
     items: [
       {
         id: 1,
@@ -52,11 +69,40 @@ export default {
         description: 'Default'
       },
     ],
+    tags: [
+      {
+        id: 1,
+        title: 'Home',
+        color: '#4caf50'
+      },
+      {
+        id: 2,
+        title: 'School',
+        color: '#3f51b5'
+      },
+      {
+        id: 3,
+        title: 'Hobby',
+        color: '#f44336'
+      },
+      {
+        id: 4,
+        title: 'Save',
+        color: '#9c27b0'
+      },
+    ],
     swiper: null,
     hoverItem: null,
     showAddProjectPopup: false,
     newProjectName: '',
-    newProjectImage: null
+    newProjectImage: null,
+    newProjectBudget: null, 
+    newProjectStartDay: null, 
+    newProjectStartMonth: null, 
+    newProjectStartYear: null, 
+    newProjectEndDay: null,
+    newProjectEndMonth: null,
+    newProjectEndYear: null,
   };
 },
   mounted() {
@@ -107,12 +153,7 @@ export default {
   },
   scrollRight() {
         const container = this.$refs.swiperContainer;
-      
         container.scrollLeft += 100;
-  },
-  editItem(item) {
-    this.showEditPopup = true;
-    this.editingItem = item;
   }
 
   }
@@ -151,6 +192,80 @@ export default {
           <label for="project-image">Project Image:</label>
           <input id="project-image" type="file" accept="image/*" @change="onFileChange">
         </div>
+        <label for="project-tag">Tags:</label>
+        <div class="tags-container">
+            <span class="tag" v-for="(tag, index) in tags" :key="index" :style="{ backgroundColor: tag.color }" :class="{ active: tag.color }" @click="selectTag(tag)">
+              {{ tag.title }}
+              <div class="tag-card">
+                <h3>{{ tag.title }}</h3>
+                <!-- <p>{{ tag.description }}</p> -->  
+              </div>
+            </span>
+          </div>
+       
+
+        <div class="input-container">
+          <label for="project-budget">Budget (€):</label>
+          <input id="project-budget" type="number" min="0" step="0.01" v-model="newProjectBudget">
+        </div>
+        <div class="input-container">
+        <label for="project-start">Start Date:</label>
+        <div class="date-picker">
+          <select id="project-start-day" v-model="newProjectStartDay">
+            <option value="">Day</option>
+            <option v-for="day in 31" :value="day">{{ day }}</option>
+          </select>
+          <select id="project-start-month" v-model="newProjectStartMonth">
+            <option value="">Month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+          <select id="project-start-year" v-model="newProjectStartYear">
+            <option value="">Year</option>
+            <option v-for="year in 10" :value="new Date().getFullYear() + year">{{ new Date().getFullYear() + year }}</option>
+          </select>
+        </div>
+      </div>
+
+        <div class="input-container">
+          <label for="project-end">End Date:</label>
+          <div class="date-picker">
+            <select id="project-end-day" v-model="newProjectEndDay">
+              <option value="">Day</option>
+              <option v-for="day in 31" :value="day">{{ day }}</option>
+            </select>
+            <select id="project-end-month" v-model="newProjectEndMonth">
+              <option value="">Month</option>
+              <option value="1">January</option>
+              <option value="2">February</option>
+              <option value="3">March</option>
+              <option value="4">April</option>
+              <option value="5">May</option>
+              <option value="6">June</option>
+              <option value="7">July</option>
+              <option value="8">August</option>
+              <option value="9">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+            <select id="project-end-year" v-model="newProjectEndYear">
+              <option value="">Year</option>
+              <option v-for="year in 10" :value="new Date().getFullYear() + year">{{ new Date().getFullYear() + year }}</option>
+            </select>
+          </div>
+        </div>
+
         <button class="add-button" @click="confirmAddProject">Add Project</button>
       </div>
     </div>
@@ -163,7 +278,7 @@ export default {
           <i class="fas fa-trash-alt" v-if="hoverItem === item.id" @click="deleteItem(item)"  style="position: absolute; top: 5px; right: 5px;"></i>
 
           <!-- Edit icon -->
-          <i class="fas fa-edit" v-if="hoverItem === item.id" @click="editItem(item)" style="position: absolute; top: 5px; right: 25px;"></i>
+          <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i>
 
         <img :src="item.image" alt="item image">
         <p>{{ item.description }}</p>
@@ -423,13 +538,20 @@ export default {
 }
 
 .input-container {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 .input-container label {
-  display: block;
-  margin-bottom: 10px;
+  margin-right: 10px;
 }
+
+.input-container input {
+  border: 1px solid grey;
+  padding: 5px;
+}
+
 
 .input-container input[type="text"], 
 .input-container input[type="file"] {
@@ -456,5 +578,35 @@ export default {
 .add-button:hover {
   background-color:rgba(255, 204, 0, 0.714);
 }
+
+.tag {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 15px;
+  margin-right: 10px;
+  margin-left: 40px;
+  margin-top: 5px;
+  margin-bottom: 25px;
+  cursor: pointer;
+}
+
+.active {
+  color: white;
+}
+
+.tag-card {
+  display: none;
+  position: absolute;
+  top: 25px;
+  left: 0;
+  padding: 10px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.tag-card h3 {
+  margin-top: 0;
+}
+
 
 </style>
