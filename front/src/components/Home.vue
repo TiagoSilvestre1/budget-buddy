@@ -6,7 +6,7 @@ import item3 from '@/assets/save.png';
 import item4 from '@/assets/1.png';
 
 export default {
-    data(): {items: {id: number; image: string; description: string}[], details: {id: number; image: string; description: string}[], swiper: Swiper | null, hoverItem: number | null, showAddProjectPopup: boolean | null, newProjectName: string | null} {
+    data(): {items: {id: number; image: string; description: string}[], details: {id: number; image: string; description: string}[], swiper: Swiper | null, hoverItem: number | null, showAddProjectPopup: boolean | null, newProjectName: string | null, newProjectImage: string|null} {
   return {
     items: [
       {
@@ -55,7 +55,8 @@ export default {
     swiper: null,
     hoverItem: null,
     showAddProjectPopup: false,
-    newProjectName: ''
+    newProjectName: '',
+    newProjectImage: null
   };
 },
   mounted() {
@@ -84,16 +85,20 @@ export default {
     addProject() {
       this.showAddProjectPopup = true;
     },
-    confirmAddProject() {
-      const project = {
-        id:0,
-        image: item4,
-        description: this.newProjectName
-      };
-      this.items.push(project);
-      this.showAddProjectPopup = false;
-      this.newProjectName = '';
+    onFileChange(event) {
+    this.newProjectImage = URL.createObjectURL(event.target.files[0]);
     },
+    confirmAddProject() {
+    const project = {
+      id: 0,
+      image: this.newProjectImage || item4,
+      description: this.newProjectName
+    };
+    this.items.unshift(project);
+    this.showAddProjectPopup = false;
+    this.newProjectName = '';
+    this.newProjectImage = null;
+  },
     deleteItem(item) {
     const index = this.items.indexOf(item);
     if (index > -1) {
@@ -130,12 +135,18 @@ export default {
       </div>
 
       <div class="add-project-popup" v-if="showAddProjectPopup">
-      <div class="popup-content">
+        <div class="popup-content">
         <button class="close-button" @click="showAddProjectPopup = false">X</button>
-        <label for="project-name">Project Name:</label>
-        <input id="project-name" type="text" v-model="newProjectName">
-
-        <button @click="confirmAddProject">Add Project</button>
+        <h2>Add Project</h2>
+        <div class="input-container">
+          <label for="project-name">Project Name:</label>
+          <input id="project-name" type="text" v-model="newProjectName">
+        </div>
+        <div class="input-container">
+          <label for="project-image">Project Image:</label>
+          <input id="project-image" type="file" accept="image/*" @change="onFileChange">
+        </div>
+        <button class="add-button" @click="confirmAddProject">Add Project</button>
       </div>
     </div>
 
@@ -356,19 +367,60 @@ export default {
 
 .popup-content {
   background-color: white;
-  padding: 20px;
-  border-radius: 50px;
+  padding: 40px;
+  border-radius: 20px;
   position: relative;
+  width: 60%;
+  max-width: 600px;
+}
+
+.popup-content h2 {
+  margin-bottom: 20px;
 }
 
 .close-button {
   position: absolute;
   top: 10px;
   right: 10px;
-  font-size: 10px;
+  font-size: 16px;
   background-color: transparent;
   border: none;
   cursor: pointer;
+}
+
+.input-container {
+  margin-bottom: 20px;
+}
+
+.input-container label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.input-container input[type="text"], 
+.input-container input[type="file"] {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 8px 10px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.add-button {
+  background-color:rgba(255, 204, 0, 0.5);
+  color: black;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background-color:rgba(255, 204, 0, 0.714);
 }
 
 </style>
