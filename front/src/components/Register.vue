@@ -2,86 +2,86 @@
   <v-app>
     <div class="background"></div>
     <v-main class="d-flex justify-center align-center">
-      <v-col cols="7" lg="4" class="mx-auto">
-        <v-card class="pa-4 card-container" variant="outlined">
-          <v-card-title>
-            <v-row align="center">
-				<v-col cols="6">
-				<h2 class="indigo--text">Register</h2>
-				</v-col>
-				<v-col cols="6" class="text-right">
-				<v-btn
-					color="indigo" 
-					variant="tonal"
-					prepend-icon="mdi-theme-light-dark"
-					title="toggle theme"
-					@click="toggleTheme"
-				></v-btn>
-				</v-col>
-			</v-row>
-          </v-card-title>
-          <v-form @submit.prevent="submitHandler" ref="form">
-            <v-card-text>
-				<v-text-field
-				:rules="nameRules"
-                v-model="name"
-                type="text"
-                label="Name"
-                placeholder="Name"
-                prepend-inner-icon="mdi-account"
-                required
-              />
-              <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                type="email"
-                label="Email"
-                placeholder="Email"
-                prepend-inner-icon="mdi-email"
-                required
-              />
-              <v-text-field
-				v-model="password"
-				:rules="passwordRules"
-				:type="passwordShow?'text':'password'"
-				label="Password"
-				placeholder="Password"
-				prepend-inner-icon="mdi-key"
-				:append-icon="passwordShow ? 'mdi-eye':'mdi-eye-off'"
-				@click:append="passwordShow = !passwordShow"
-				required
-              />
-			  <v-text-field
-				v-model="repeatPassword"
-				:rules="passwordRules"
-				:type="passwordRepeatShow?'text':'password'"
-				label="Repeat Password"
-				placeholder="Repeat Password"
-				prepend-inner-icon="mdi-key"
-				:append-icon="passwordRepeatShow ? 'mdi-eye':'mdi-eye-off'"
-				@click:append="passwordRepeatShow = !passwordRepeatShow"
-				required
-              />
-            </v-card-text>
+		<v-col cols="12" lg="4" class="mx-auto" style="max-width: 900px;">
+			<v-card class="pa-4 card-container" variant="outlined">
+				<v-card-title>
+					<v-row align="center">
+						<v-col cols="6">
+						<h2 class="indigo--text">Register</h2>
+						</v-col>
+						<v-col cols="6" class="text-right">
+						<v-btn
+							color="deep-orange" 
+							variant="tonal"
+							prepend-icon="mdi-theme-light-dark"
+							title="toggle theme"
+							@click="toggleTheme"
+						></v-btn>
+						</v-col>
+					</v-row>
+				</v-card-title>
+				<v-form @submit.prevent="submitHandler" ref="form">
+					<v-card-text>
+						<v-text-field
+						:rules="nameRules"
+						v-model="name"
+						type="text"
+						label="Name"
+						placeholder="Name"
+						prepend-inner-icon="mdi-account"
+						required
+					/>
+					<v-text-field
+						v-model="email"
+						:rules="emailRules"
+						type="email"
+						label="Email"
+						placeholder="Email"
+						prepend-inner-icon="mdi-email"
+						required
+					/>
+					<v-text-field
+						v-model="password"
+						:rules="passwordRules"
+						:type="passwordShow?'text':'password'"
+						label="Password"
+						placeholder="Password"
+						prepend-inner-icon="mdi-key"
+						:append-icon="passwordShow ? 'mdi-eye':'mdi-eye-off'"
+						@click:append="passwordShow = !passwordShow"
+						required
+					/>
+					<v-text-field
+						v-model="repeatPassword"
+						:rules="passwordRules"
+						:type="passwordRepeatShow?'text':'password'"
+						label="Repeat Password"
+						placeholder="Repeat Password"
+						prepend-inner-icon="mdi-key"
+						:append-icon="passwordRepeatShow ? 'mdi-eye':'mdi-eye-off'"
+						@click:append="passwordRepeatShow = !passwordRepeatShow"
+						required
+					/>
+					</v-card-text>
 
-			<v-card-item>
-				<div class="alternative-option mt-4">
-					Already have an account? <span class="underline-on-hover" @click="goToLogin">Login</span>
-				</div>
-			</v-card-item>
+					<v-card-item>
+						<div class="alternative-option mt-4">
+							Already have an account? <span class="underline-on-hover" @click="goToLogin">Login</span>
+						</div>
+					</v-card-item>
 
-            <v-card-actions class="justify-center">
-              <v-btn @click="goHome" type="submit" color="indigo" variant="tonal">
-                <span class="dark--text px-8">Back</span>
-              </v-btn>
-              <v-btn :loading="loading" type="submit" color="indigo" variant="flat">
-                <span class="dark--text px-8">Register</span>
-              </v-btn>
-              
-            </v-card-actions>
-          </v-form>
-        </v-card>
-      </v-col>
+					<v-card-actions class="justify-center">
+					<v-btn @click="goHome" type="submit" color="deep-orange" variant="tonal">
+						<span class="dark--text px-8">Back</span>
+					</v-btn>
+					<v-btn :loading="loading" type="submit" color="deep-orange" variant="flat">
+						<span class="dark--text px-8">Register</span>
+					</v-btn>
+					
+					</v-card-actions>
+				</v-form>
+			</v-card>
+     	</v-col>
     </v-main>
     <v-snackbar top color="green" v-model="successMsg">
       Success creating account
@@ -89,14 +89,16 @@
 	<v-snackbar top color="red" v-model="errorMsg">
       Error creating account
     </v-snackbar>
-	<v-snackbar top color="red" v-model="passwordNotEqual">
-      Password and repeat Password don't match
+	<v-snackbar top color="orange" v-model="passwordNotEqual">
+      Password doesn't match repeat Password
     </v-snackbar>
   </v-app>
 </template>
 
 <script lang="ts">
-import { useTheme } from 'vuetify/lib/framework.mjs'
+import { useTheme } from 'vuetify/lib/framework.mjs';
+import * as API from '../services/api-service';
+import { getTransitionRawChildren } from 'vue';
 
 export default {
 	setup() {
@@ -138,12 +140,12 @@ export default {
 			const refForm: any = this.$refs.form;
 			refForm.reset();
 		},
-		submitHandler(){
+		async submitHandler(){
 			// this.$refs.form functions only for pure Js, not Ts
 			const refForm: any = this.$refs.form;
 			
 			// Bind the promise to an action 
-			refForm.validate().then((result: any) => { 
+			refForm.validate().then(async(result: any) => { 
 				const isValid = result.valid;
 
 				// Check that the values are in correct form
@@ -156,20 +158,26 @@ export default {
 					}, 100);
 				}
 
-
 				// Access database and check credentials
+				const res = await API.backendService.post('api/user/create' , {
+					email: this.email,
+					password: this.password,
+					name: this.name
+				});
 				
-				if (true) {
+				if (res.success) {
 					this.loading = true;
+					this.errorMsg = false;
 					setTimeout(() => {
-					this.loading = false;
-					this.successMsg = true;
+						this.loading = false;
+						this.successMsg = true;
 					}, 1500);
 				} else {
 					this.loading = true;
+					this.successMsg = false;
 					setTimeout(() => {
-					this.loading = false;
-					this.errorMsg = true;
+						this.loading = false;
+						this.errorMsg = true;
 					}, 1500);
 				}
 			});
@@ -208,10 +216,11 @@ export default {
 
 	.underline-on-hover:hover {
 		text-decoration: underline;
+		
 	}
 
 	.alternative-option > span {
-		color: #0d6efd;
+		color: #ff5722;
 		cursor: pointer;
 	}
 </style>

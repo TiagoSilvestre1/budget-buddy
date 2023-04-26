@@ -2,7 +2,7 @@
   <v-app>
     <div class="background"></div>
     <v-main class="d-flex justify-center align-center">
-      <v-col cols="7" lg="4" class="mx-auto">
+      <v-col cols="12" lg="4" class="mx-auto adapt-card" style="max-width: 800px;">
         <v-card class="pa-4 card-container" variant="outlined">
           <v-card-title>
             <v-row align="center">
@@ -11,7 +11,7 @@
 				</v-col>
 				<v-col cols="6" class="text-right">
 				<v-btn
-					color="indigo" 
+					color="deep-orange" 
 					variant="tonal"
 					prepend-icon="mdi-theme-light-dark"
 					title="toggle theme"
@@ -51,10 +51,10 @@
 			</v-card-item>
 
             <v-card-actions class="justify-center">
-              <v-btn @click="goHome" type="submit" color="indigo" variant="tonal">
+              <v-btn @click="goHome" type="submit" color="deep-orange" variant="tonal">
                 <span class="dark--text px-8">Back</span>
               </v-btn>
-              <v-btn :loading="loading" type="submit" color="indigo" variant="flat">
+              <v-btn :loading="loading" type="submit" color="deep-orange" variant="flat">
                 <span class="dark--text px-8">Login</span>
               </v-btn>
               
@@ -74,6 +74,8 @@
 
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
+import * as API from '../services/api-service';
+
 
 export default {
 	setup() {
@@ -106,30 +108,35 @@ export default {
 			const refForm: any = this.$refs.form;
 			refForm.reset();
 		},
-		submitHandler(){
+		async submitHandler(){
 			// this.$refs.form functions only for pure Js, not Ts
 			const refForm: any = this.$refs.form;
 			
 			// Bind the promise to an action 
-			refForm.validate().then((result: any) => { 
+			await refForm.validate().then(async (result: any) => { 
 				const isValid = result.valid;
 
 				// Check that the values are in correct form
 				if(!isValid) return
 
 				// Access database and check credentials
-				
-				if (true) {
+				const response: API.API = await API.backendService.post('/api/user/login', 
+					{email: this.email, password: this.password}
+				);
+
+				if (response.success === true) {
 					this.loading = true;
+					this.errorMsg = false;
 					setTimeout(() => {
-					this.loading = false;
-					this.successMsg = true;
+						this.loading = false;
+						this.successMsg = true;
 					}, 1500);
 				} else {
 					this.loading = true;
+					this.successMsg = false;
 					setTimeout(() => {
-					this.loading = false;
-					this.errorMsg = true;
+						this.loading = false;
+						this.errorMsg = true;
 					}, 1500);
 				}
 			});
@@ -156,6 +163,10 @@ export default {
 		z-index: -1;
 	}
 
+	.adapt-card{
+		
+	}
+
 	.card-container {
 		background-color: rgba(255, 255, 255, 0.9);
 		padding: 32px;
@@ -168,7 +179,7 @@ export default {
 	}
 
 	.alternative-option > span {
-		color: #0d6efd;
+		color: #ff5722;
 		cursor: pointer;
 	}
 </style>
