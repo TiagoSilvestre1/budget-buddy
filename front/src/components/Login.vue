@@ -2,7 +2,7 @@
   <v-app>
     <div class="background"></div>
     <v-main class="d-flex justify-center align-center">
-      <v-col cols="10" lg="4" class="mx-auto">
+      <v-col cols="12" lg="4" class="mx-auto adapt-card" style="max-width: 800px;">
         <v-card class="pa-4 card-container" variant="outlined">
           <v-card-title>
             <v-row align="center">
@@ -11,7 +11,7 @@
 				</v-col>
 				<v-col cols="6" class="text-right">
 				<v-btn
-					color="indigo" 
+					color="deep-orange" 
 					variant="tonal"
 					prepend-icon="mdi-theme-light-dark"
 					title="toggle theme"
@@ -51,10 +51,10 @@
 			</v-card-item>
 
             <v-card-actions class="justify-center">
-              <v-btn @click="goHome" type="submit" color="indigo" variant="tonal">
+              <v-btn @click="goHome" type="submit" color="deep-orange" variant="tonal">
                 <span class="dark--text px-8">Back</span>
               </v-btn>
-              <v-btn :loading="loading" type="submit" color="indigo" variant="flat">
+              <v-btn :loading="loading" type="submit" color="deep-orange" variant="flat">
                 <span class="dark--text px-8">Login</span>
               </v-btn>
               
@@ -162,6 +162,10 @@ export default {
 		z-index: -1;
 	}
 
+	.adapt-card{
+		
+	}
+
 	.card-container {
 		background-color: rgba(255, 255, 255, 0.9);
 		padding: 32px;
@@ -174,7 +178,7 @@ export default {
 	}
 
 	.alternative-option > span {
-		color: #0d6efd;
+		color: #ff5722;
 		cursor: pointer;
 	}
 </style>
