@@ -96,7 +96,9 @@
 </template>
 
 <script lang="ts">
-import { useTheme } from 'vuetify/lib/framework.mjs'
+import { useTheme } from 'vuetify/lib/framework.mjs';
+import * as API from '../services/api-service';
+import { getTransitionRawChildren } from 'vue';
 
 export default {
 	setup() {
@@ -138,12 +140,12 @@ export default {
 			const refForm: any = this.$refs.form;
 			refForm.reset();
 		},
-		submitHandler(){
+		async submitHandler(){
 			// this.$refs.form functions only for pure Js, not Ts
 			const refForm: any = this.$refs.form;
 			
 			// Bind the promise to an action 
-			refForm.validate().then((result: any) => { 
+			refForm.validate().then(async(result: any) => { 
 				const isValid = result.valid;
 
 				// Check that the values are in correct form
@@ -156,10 +158,14 @@ export default {
 					}, 100);
 				}
 
-
 				// Access database and check credentials
+				const res = await API.backendService.post('api/user/create' , {
+					email: this.email,
+					password: this.password,
+					name: this.name
+				});
 				
-				if (true) {
+				if (res.success) {
 					this.loading = true;
 					setTimeout(() => {
 					this.loading = false;

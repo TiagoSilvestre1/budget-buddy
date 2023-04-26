@@ -2,7 +2,7 @@
   <v-app>
     <div class="background"></div>
     <v-main class="d-flex justify-center align-center">
-      <v-col cols="7" lg="4" class="mx-auto">
+      <v-col cols="10" lg="4" class="mx-auto">
         <v-card class="pa-4 card-container" variant="outlined">
           <v-card-title>
             <v-row align="center">
@@ -74,6 +74,8 @@
 
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
+import * as API from '../services/api-service';
+
 
 export default {
 	setup() {
@@ -106,12 +108,12 @@ export default {
 			const refForm: any = this.$refs.form;
 			refForm.reset();
 		},
-		submitHandler(){
+		async submitHandler(){
 			// this.$refs.form functions only for pure Js, not Ts
 			const refForm: any = this.$refs.form;
 			
 			// Bind the promise to an action 
-			refForm.validate().then((result: any) => { 
+			await refForm.validate().then(async (result: any) => { 
 				const isValid = result.valid;
 
 				// Check that the values are in correct form
@@ -119,7 +121,11 @@ export default {
 
 				// Access database and check credentials
 				
-				if (true) {
+				const response: API.API = await API.backendService.post('/api/user/login', 
+					{email: this.email, password: this.password}
+				);
+
+				if (response.success === true) {
 					this.loading = true;
 					setTimeout(() => {
 					this.loading = false;
