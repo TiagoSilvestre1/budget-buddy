@@ -109,12 +109,14 @@ export default {
     </div>
   </div>
 
+
     <div class="titles">
       <div class="projects-title">
         <h1><b>Project Highlights</b></h1>
       </div>
-    <div class="container" ref="swiperContainer2">
-      <div class="item" v-for="item in details" :key="item.id">
+    <div class="containerDetails" ref="swiperContainer2">
+      <div class="itemDetail" v-for="item in details" :key="item.id" @mouseenter="hoverItem = item.id" @mouseleave="hoverItem = null"
+  :class="{ 'hover': hoverItem === item.id }">
         <img :src="item.image" alt="item image">
         <p>{{ item.description }}</p>
       </div>
@@ -146,7 +148,7 @@ export default {
     display: flex;
     margin-top: 50px;
     margin-left: 100px;
-    margin-right: 50px;
+    margin-right: 200px;
   }
 
   .item {
@@ -219,12 +221,47 @@ export default {
   max-width: 50%;
   height: 50%;
 }
+
 .container {
   display: flex;
   align-items: center;
   overflow-x: scroll;
   white-space: nowrap;
+  width: 1150px;
   padding: 50px 0;
+}
+
+.containerDetails {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 50px 0;
+  width: 1150px;
+  overflow-x: scroll;
+}
+
+.itemDetail {
+  width: 900px;
+  margin-right: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  flex: 1;
+}
+
+.itemDetail img {
+  width: 200px;
+  height: auto;
+  margin-right: 20px;
+}
+.itemDetail:hover {
+  transform: scale(1.1);
 }
 
 .item:hover {
