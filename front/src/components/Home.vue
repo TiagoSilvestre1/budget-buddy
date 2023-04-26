@@ -93,7 +93,17 @@ export default {
       this.items.push(project);
       this.showAddProjectPopup = false;
       this.newProjectName = '';
+    },
+    deleteItem(item) {
+    const index = this.items.indexOf(item);
+    if (index > -1) {
+      this.items.splice(index, 1);
     }
+  },
+  editItem(item) {
+    this.showEditPopup = true;
+    this.editingItem = item;
+  }
 
   }
 };
@@ -133,6 +143,12 @@ export default {
     <div class="container" ref="swiperContainer">
       <div class="item" v-for="item in items" :key="item.id" @mouseenter="hoverItem = item.id" @mouseleave="hoverItem = null"
   :class="{ 'hover': hoverItem === item.id }">
+          <!-- Trash icon -->
+          <i class="fas fa-trash-alt" v-if="hoverItem === item.id" @click="deleteItem(item)"  style="position: absolute; top: 5px; right: 5px;"></i>
+
+          <!-- Edit icon -->
+          <i class="fas fa-edit" v-if="hoverItem === item.id" @click="editItem(item)" style="position: absolute; top: 5px; right: 25px;"></i>
+
         <img :src="item.image" alt="item image">
         <p>{{ item.description }}</p>
       </div>
