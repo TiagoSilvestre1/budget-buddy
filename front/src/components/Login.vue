@@ -120,7 +120,6 @@ export default {
 				if(!isValid) return
 
 				// Access database and check credentials
-				
 				const response: API.API = await API.backendService.post('/api/user/login', 
 					{email: this.email, password: this.password}
 				);
@@ -129,15 +128,15 @@ export default {
 					this.loading = true;
 					this.errorMsg = false;
 					setTimeout(() => {
-					this.loading = false;
-					this.successMsg = true;
+						this.loading = false;
+						this.successMsg = true;
 					}, 1500);
 				} else {
 					this.loading = true;
 					this.successMsg = false;
 					setTimeout(() => {
-					this.loading = false;
-					this.errorMsg = true;
+						this.loading = false;
+						this.errorMsg = true;
 					}, 1500);
 				}
 			});
