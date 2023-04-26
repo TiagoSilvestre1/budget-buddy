@@ -278,10 +278,10 @@ export default {
           <i class="fas fa-trash-alt" v-if="hoverItem === item.id" @click="deleteItem(item)"  style="position: absolute; top: 5px; right: 5px;"></i>
 
           <!-- Edit icon -->
-          <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i>
+          <!-- <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i> -->
 
         <img :src="item.image" alt="item image">
-        <p>{{ item.description }}</p>
+        <p><b>{{ item.description }}</b></p>
       </div>
     </div>
     <div class="scroll-indicator" v-if="items.length > 3"  @click="scrollRight"></div>
@@ -414,6 +414,7 @@ export default {
 }
 
 .item {
+  font-size: 24px;
   margin-right: 20px;
   flex-shrink: 0;
   width: 450px;
