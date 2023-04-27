@@ -1,18 +1,46 @@
 <script lang="ts">
 
+
     export enum FooterViews
     {
         GLOBAL = 'GLOBAL',
         PROJECT = 'PROJECT'
     };
 
+    enum Redirects {
+        HOME = 'HOME',
+        CALENDAR = 'CALENDAR',
+        SETTINGS = 'SETTINGS',
+        COLLABORATORS = 'COLLABORATORS'
+    }
+
     export default {
-        props: ['view'],
         data: () => {
             return {
-                
+                Redirects : Redirects,
+                view: FooterViews.GLOBAL
             }
-        }
+        },
+        watch:{
+    $route (to, from){
+        this.view = to.meta.view === "GLOBAL" ? FooterViews.GLOBAL : FooterViews.PROJECT;
+    }
+        } ,
+        methods: 
+            {
+                goto(location: Redirects): void
+                {
+                    switch (location)
+                    {
+                        case 'HOME': this.$router.push('../home'); break;
+                        case 'CALENDAR': this.$router.push('../calendar'); break;
+                        case 'SETTINGS': this.$router.push('../settings'); break;
+                        case 'COLLABORATORS': this.$router.push('collaborators'); break;
+                            
+                    }
+                }
+            }
+        
     }
 
 </script>
@@ -23,13 +51,13 @@
         <div class="block-list" v-if="view === 'GLOBAL'">
 
                 <div class="block">
-                    <v-btn class="left-navbar-button" icon="mdi-home"> </v-btn>
+                    <v-btn class="left-navbar-button" icon="mdi-home" @click="goto(Redirects.HOME)"> </v-btn>
                 </div>
                 <div class="block">
-                    <v-btn class="left-navbar-button" icon="mdi-calendar-month"> </v-btn>
+                    <v-btn class="left-navbar-button" icon="mdi-calendar-month" @click="goto(Redirects.CALENDAR)"> </v-btn>
                 </div>
                 <div class="block">
-                    <v-btn class="left-navbar-button" icon="mdi-cogs"> </v-btn>
+                    <v-btn class="left-navbar-button" icon="mdi-cogs" @click="goto(Redirects.SETTINGS)"> </v-btn>
                 </div>
         </div>
 
@@ -38,7 +66,7 @@
                 <v-btn class="left-navbar-button" icon=""> </v-btn>
             </div>
             <div class="block">
-                <v-btn class="left-navbar-button" icon="mdi-account-group-outline"> </v-btn>
+                <v-btn class="left-navbar-button" icon="mdi-account-group-outline" @click="goto(Redirects.COLLABORATORS)"> </v-btn>
             </div>
             <div class="block">
                 <v-btn class="left-navbar-button" icon="mdi-calendar-month"> </v-btn>
@@ -47,7 +75,7 @@
                 <v-btn class="left-navbar-button" icon="mdi-currency-eur"> </v-btn>
             </div>
             <div class="block">
-                <v-btn class="left-navbar-button" icon="mdi-cogs"> </v-btn>
+                <v-btn class="left-navbar-button" icon="mdi-cogs" @click="goto(Redirects.SETTINGS)"> </v-btn>
             </div>
         </div>
 

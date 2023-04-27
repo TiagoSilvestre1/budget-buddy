@@ -8,6 +8,7 @@ import Home from '../components/Home.vue'
 import Project from '../components/project/Project.vue';
 import Collaborators from '../components/project/Collaborators.vue';
 import Products from '../components/project/Products.vue';
+import { FooterViews } from '@/components/Footer.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,27 +20,45 @@ const router = createRouter({
       children: [
         {
           path: 'settings',
-          component: Settings
+          component: Settings,
+          meta: {
+            view: FooterViews.GLOBAL
+          }
         },
         {
           path: 'calendar',
-          component: Calendar
+          component: Calendar,
+          meta: {
+            view: FooterViews.GLOBAL
+          }
         },
         {
           path: '/home',
-          component: Home
+          component: Home,
+          meta: {
+            view: FooterViews.GLOBAL
+          }
         },
         {
           path: '/project',
           component: Project,
+          meta: {
+            view: FooterViews.PROJECT
+          },
           children: [
             {
               path: 'products',
               component: Products,
+              meta: {
+                view: FooterViews.PROJECT
+              }
             },
             {
               path: 'collaborators',
-              component: Collaborators
+              component: Collaborators,
+              meta: {
+                view: FooterViews.PROJECT
+              }
             }
           ]
         }

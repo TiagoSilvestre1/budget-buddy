@@ -11,7 +11,6 @@
             value="home"
             router-link
             to="../home"
-            @click="setGeneralView()"
           ></v-list-item>
 
           <v-list-group value="Projects">
@@ -28,7 +27,6 @@
               :title="project[0]"
               router-link
               :to="project[1]"
-              @click="setProjectView()"
             ></v-list-item>
           </v-list-group>
 
@@ -38,7 +36,6 @@
             value="calendar"
             router-link
             to="../calendar"
-            @click="setGeneralView()"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-cogs"
@@ -46,7 +43,6 @@
             value="settings"
             router-link
             to="../settings"
-            @click="setGeneralView()"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-theme-light-dark"
@@ -72,7 +68,7 @@
 
         <div class="footer">
           <v-card>
-            <Footer :view="view"></Footer>
+            <Footer></Footer>
           </v-card>
         </div>
       </v-main>
@@ -86,8 +82,6 @@ import Footer, { FooterViews } from './Footer.vue';
 import { useStore } from 'vuex';
 
 export default {
-
-
 	components: {
     Footer,
 },
@@ -118,14 +112,6 @@ export default {
 			//await this.store.dispatch("LogOut");
       		this.$router.push("/login");
 		},
-    setProjectView()
-    {
-      this.view = FooterViews.PROJECT
-    },
-    setGeneralView()
-    {
-      this.view = FooterViews.GLOBAL;
-    }
 	},
 }
 </script>

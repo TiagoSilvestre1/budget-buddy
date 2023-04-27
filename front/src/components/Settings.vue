@@ -44,7 +44,7 @@ import item4 from '@/assets/1.png';
     <div class="container">
       <div class="card yellow">
         <form class="profile-form" @submit.prevent="saveProfile">
-          <H1><b>Personal Info</b></H1>
+          <h1><b>Personal Info</b></h1>
           <div class="form-group">
             <label for="name"><b>Name:</b></label>
             <input type="text" id="name" v-model="name">
