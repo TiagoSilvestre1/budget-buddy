@@ -1,15 +1,16 @@
 <script lang="ts">
 
-    enum FooterViews
+    export enum FooterViews
     {
         GLOBAL = 'GLOBAL',
         PROJECT = 'PROJECT'
     };
 
     export default {
+        props: ['view'],
         data: () => {
             return {
-                view: FooterViews.PROJECT
+                
             }
         }
     }

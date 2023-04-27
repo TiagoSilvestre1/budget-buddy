@@ -11,6 +11,7 @@
             value="home"
             router-link
             to="../home"
+            @click="setGeneralView()"
           ></v-list-item>
 
           <v-list-group value="Projects">
@@ -27,6 +28,7 @@
               :title="project[0]"
               router-link
               :to="project[1]"
+              @click="setProjectView()"
             ></v-list-item>
           </v-list-group>
 
@@ -36,6 +38,7 @@
             value="calendar"
             router-link
             to="../calendar"
+            @click="setGeneralView()"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-cogs"
@@ -43,6 +46,7 @@
             value="settings"
             router-link
             to="../settings"
+            @click="setGeneralView()"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-theme-light-dark"
@@ -68,7 +72,7 @@
 
         <div class="footer">
           <v-card>
-            <Footer></Footer>
+            <Footer :view="view"></Footer>
           </v-card>
         </div>
       </v-main>
@@ -78,10 +82,11 @@
 
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
-import Footer from './Footer.vue';
+import Footer, { FooterViews } from './Footer.vue';
 import { useStore } from 'vuex';
 
 export default {
+
 
 	components: {
     Footer,
@@ -105,14 +110,22 @@ export default {
 				['Project three', '../project/products'],
 				['Project four', '../project/products']
 			],
-			footerHeight: 0,
+      view: FooterViews.GLOBAL
 		}
 	},
 	methods: {
 		async logout() {
 			//await this.store.dispatch("LogOut");
       		this.$router.push("/login");
-		}
+		},
+    setProjectView()
+    {
+      this.view = FooterViews.PROJECT
+    },
+    setGeneralView()
+    {
+      this.view = FooterViews.GLOBAL;
+    }
 	},
 }
 </script>
