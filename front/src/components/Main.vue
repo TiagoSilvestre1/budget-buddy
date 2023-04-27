@@ -59,11 +59,17 @@
       </v-navigation-drawer>
 
       <v-main style="min-height: 100vh; margin-bottom: 15.5vh;">
-        <v-btn class="left-navbar-button" icon="mdi-menu" @click.stop="drawer = !drawer"> </v-btn>
+
+          <v-btn class="left-navbar-button" icon="mdi-menu" @click.stop="drawer = !drawer"> </v-btn>
+          
+        <div style="height:3vh"></div>
+
         <router-view></router-view>
 
         <div class="footer">
-          <Footer></Footer>
+          <v-card>
+            <Footer></Footer>
+          </v-card>
         </div>
       </v-main>
     </v-layout>
@@ -78,8 +84,8 @@ import { useStore } from 'vuex';
 export default {
 
 	components: {
-		Footer
-	},
+    Footer,
+},
 	setup() {
 		const theme = useTheme()
 		const store = useStore(); // Use the `useStore` function to access the store object
@@ -139,7 +145,6 @@ export default {
   bottom: 0;
   width: 100%;
   text-align: center;
-
   max-height: 15.5vh;
   min-height: 9.5vh;
   overflow-y: auto;
