@@ -65,14 +65,14 @@ import item4 from '@/assets/1.png';
         <button @click="showAddProjectPopup = true"><i class="fas fa-edit"></i></button>
         <div class="add-project-popup" v-if="showAddProjectPopup">
         <div class="popup-content">
-        <button class="close-button" @click="showAddProjectPopup = false">X</button>
+        <button class="close-button" @click="showAddProjectPopup = false">x</button>
         <h2>Update Your Profile Picture</h2>
         
         <div class="input-container">
           <label for="project-image">Profile Image:</label>
           <input id="project-image" type="file" accept="image/*" @change="onFileChange">
         </div>
-        <button class="add-button" @click="confirmAddProject">Update</button>
+        <button class="add-button-Up" @click="confirmAddProject">Update</button>
      </div>
         </div>
         </div>
@@ -86,21 +86,35 @@ import item4 from '@/assets/1.png';
   </template>
   
   <style>
+
+    @media screen and (max-width: 767px) {
+      .container {
+        flex-direction: column-reverse;
+      }
+      .card, .card-noShade {
+        flex-basis: column;
+      }
+      .profile-form {
+        margin-left: 0;
+      }
+    }
+
     .container {
       display: flex;
       flex-direction: row;
+      justify-content: center;
       width: 100%;
       height: 100%;
     }
 
     .profile-form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100%;
-        margin-left: 300px;
-        }
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
 
   
     .card {
@@ -122,7 +136,8 @@ import item4 from '@/assets/1.png';
   
     .yellow {
       background-color: rgba(255, 204, 0, 0.5);
-      flex-basis: 50%;
+      flex-basis: 20%;
+      justify-content: center;
     }
   
     .white {
@@ -137,7 +152,6 @@ import item4 from '@/assets/1.png';
     .profile-img {
       width: 80%;
       height: 80%;
-      border-radius: 50%;
       overflow: hidden;
       position: relative;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -149,10 +163,6 @@ import item4 from '@/assets/1.png';
       object-fit: cover;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
-
-    .profile-img:hover {
-    transform: scale(1.1);
-    }
   
     .profile-img i {
       position: absolute;
@@ -160,7 +170,6 @@ import item4 from '@/assets/1.png';
       right: 0;
       transform: translate(50%, 50%);
       background-color: transparent;
-      border-radius: 50%;
       padding: 0.25rem;
       cursor: pointer;
     }
@@ -209,8 +218,9 @@ import item4 from '@/assets/1.png';
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    overflow: auto;
+    width: 100% !important;
+    height: 100% !important;
     color: black;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
@@ -220,6 +230,7 @@ import item4 from '@/assets/1.png';
     }
 
 .popup-content {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2) !important;
   background-color: white;
   color: black;
   padding: 40px;
@@ -231,13 +242,29 @@ import item4 from '@/assets/1.png';
   overflow-y: auto;
 }
 
+.add-project-popup .popup-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  height: 80%;
+  max-width: 600px;
+  max-height: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .popup-content h2 {
   margin-bottom: 20px;
 }
 
 .close-button {
   position: absolute;
-  color: black;
+  color: black !important;
   top: 10px;
   right: 10px;
   font-size: 16px;
@@ -265,9 +292,9 @@ import item4 from '@/assets/1.png';
 }
 
 
-.add-button {
-  background-color: rgb(255, 204, 0);
-  color: black;
+.add-button-Up {
+  background-color: rgb(255, 204, 0) !important;
+  color: black !important;
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
