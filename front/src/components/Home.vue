@@ -6,7 +6,6 @@ import item3 from '@/assets/save.png';
 import item4 from '@/assets/1.png';
 
 
-
 export default {
     data(): {
       items: {id: number; image: string; description: string}[], 
@@ -23,7 +22,7 @@ export default {
       newProjectStartYear: number|null, 
       newProjectEndDay: number|null,
       newProjectEndMonth: string|null,
-      newProjectEndYear: number|null} {
+      newProjectEndYear: number|null,} {
  return {
     items: [
       {
@@ -127,7 +126,9 @@ export default {
         }
     }
     },
-
+    goToSettings() {
+      this.$router.push('/settings');
+    },
     addProject() {
       this.showAddProjectPopup = true;
     },
@@ -165,10 +166,12 @@ export default {
     <div>
     <div class="welcome-card">
       <img src="../assets/user.png" alt="Profile image">
+      <i class="fas fa-edit" style="position: absolute; top: 5px; right: 25px; cursor: pointer;" @click="goToSettings"></i> 
       <div class="welcome-text">
         <h1><b> Welcome to Budget-Buddy, Anne!</b></h1>
         <p>Start counting more</p>
       </div>
+    </div>
     </div>
 
 
@@ -301,8 +304,6 @@ export default {
     </div>
     <div class="scroll-indicator" v-if="items.length > 3"  @click="scrollRight"></div>
   </div>
-
-    </div>
   </template>
 
 <style>
