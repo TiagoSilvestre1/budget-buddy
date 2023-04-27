@@ -50,6 +50,11 @@
             @click="toggleTheme"
           >
           </v-list-item>
+          <v-list-item
+            prepend-icon="mdi-logout-variant"
+            title="logout"
+            @click="logout"
+          />
         </v-list>
       </v-navigation-drawer>
 
@@ -68,34 +73,41 @@
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
 import Footer from './Footer.vue';
+import { useStore } from 'vuex';
 
 export default {
 
+	components: {
+		Footer
+	},
+	setup() {
+		const theme = useTheme()
+		const store = useStore(); // Use the `useStore` function to access the store object
+		return {
+			theme,
+			toggleTheme: () =>
+				(theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark')
+		};
+	},
 
-  components: {
-    Footer
-  },
-  setup() {
-    const theme = useTheme()
-    return {
-      theme,
-      toggleTheme: () =>
-        (theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark')
-    }
-  },
-
-  data: () => {
-    return {
-      drawer: false,
-      projects: [
-        ['Project one', '../project/products'],
-        ['Project two', '../project/products'],
-        ['Project three', '../project/products'],
-        ['Project four', '../project/products']
-      ],
-      footerHeight: 0,
-    }
-  }
+	data: () => {
+		return {
+			drawer: false,
+			projects: [
+				['Project one', '../project/products'],
+				['Project two', '../project/products'],
+				['Project three', '../project/products'],
+				['Project four', '../project/products']
+			],
+			footerHeight: 0,
+		}
+	},
+	methods: {
+		async logout() {
+			//await this.store.dispatch("LogOut");
+      		this.$router.push("/login");
+		}
+	},
 }
 </script>
 

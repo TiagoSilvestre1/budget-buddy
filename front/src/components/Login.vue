@@ -75,6 +75,7 @@
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
 import * as API from '../services/api-service';
+import { mapActions } from "vuex";
 
 
 export default {
@@ -108,6 +109,7 @@ export default {
 			const refForm: any = this.$refs.form;
 			refForm.reset();
 		},
+		...mapActions(["LogIn"]),
 		async submitHandler(){
 			// this.$refs.form functions only for pure Js, not Ts
 			const refForm: any = this.$refs.form;
@@ -125,12 +127,19 @@ export default {
 				);
 
 				if (response.success === true) {
+					// Change store value
+					
+					await this.LogIn(response.data);
+					
 					this.loading = true;
 					this.errorMsg = false;
 					setTimeout(() => {
 						this.loading = false;
 						this.successMsg = true;
 					}, 1500);
+					setTimeout(() => {
+						this.$router.push({ path: 'home'})
+					}, 2000);
 				} else {
 					this.loading = true;
 					this.successMsg = false;
