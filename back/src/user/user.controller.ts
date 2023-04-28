@@ -32,8 +32,18 @@ export class UserController {
   async login(@Body() user: {email: string, password: string})
   {
     try{
-      const success = await this.userService.login(user.email, user.password);
-      return {success: success};
+      const _user = await this.userService.login(user.email, user.password);
+      if(_user)
+      {
+        return {success: true, data: {
+          mail: _user.email,
+          name: _user.name,
+          id: _user._id
+        }}
+      }
+      else{
+        return {success: false};
+      }
     }
     catch(e)
     {

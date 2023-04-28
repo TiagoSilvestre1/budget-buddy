@@ -18,6 +18,11 @@ export class ProjectService {
         
         await obj.save();
     }
+
+    async getAll()
+    {
+        return await this.projectModel.find();
+    }
     
     
     async addCollaborator(project_id: mongoose.Types.ObjectId, user_id: mongoose.Types.ObjectId) {
@@ -33,9 +38,7 @@ export class ProjectService {
     {
         return await this.projectModel.find(
             {
-                owner: {
-                    _id: user_id
-                }
+                owner: user_id
             }
         );
     }

@@ -129,7 +129,7 @@ export default {
 				if (response.success === true) {
 
 					// Change store value
-					const data = 'BaTaTaS' 
+					const data = response.data;
 					await this.store.dispatch('auth/LogIn', data) // Use response.data instead
 					
 					this.loading = true;

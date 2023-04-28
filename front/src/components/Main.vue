@@ -24,9 +24,10 @@
 
             <v-list-item
               v-for="project in projects"
-              :title="project[0]"
+              :title="project.title"
               router-link
-              :to="project[1]"
+              to="../project/products"
+              @click="selectProject(project.id)"
             ></v-list-item>
           </v-list-group>
 
@@ -57,8 +58,14 @@
           />
           <v-list-item
             prepend-icon=""
-            title="See user"
+            title="See user (dev, console print)"
             @click="seeUser"
+          />
+
+          <v-list-item
+            prepend-icon=""
+            title="See project (dev, console print)"
+            @click="seeProject"
           />
         </v-list>
       </v-navigation-drawer>
@@ -84,6 +91,7 @@
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
 import Footer, { FooterViews } from './Footer.vue';
+import { backendService, type API } from '@/services/api-service';
 import { mapGetters, useStore } from 'vuex';
 
 export default {
@@ -91,7 +99,7 @@ export default {
     Footer,
 },
 	setup() {
-		const theme = useTheme()
+		const theme = useTheme();
 		return {
 			theme,
 			toggleTheme: () =>
@@ -99,30 +107,46 @@ export default {
 		};
 	},
 
+  created() {
+    this.getUser.id
+    backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
+      if('success' in response && response.success === true)
+      {
+        this.projects = response.data.owned.concat(response.data.collaborates);
+      }
+    })
+  },
+
 	data: () => {
 		return {
 			drawer: false,
       store: useStore(),
 			projects: [
-				['Project one', '../project/products'],
-				['Project two', '../project/products'],
-				['Project three', '../project/products'],
-				['Project four', '../project/products']
-			],
+      ] as Array<any>,
       view: FooterViews.GLOBAL
 		}
 	},
   computed: {
-    ...mapGetters('auth', ['getUser'])
+    ...mapGetters('auth', ['getUser']),
+    ...mapGetters('project',['getProject'])
   },
 	methods: {
 		async logout() {
 			  await this.store.dispatch("auth/LogOut");
       	this.$router.push("/login");
 		},
-    ...mapGetters('auth', ['getUser']),
+    
     seeUser() {
-      alert('User: ' + this.getUser)
+      console.log(this.getUser);
+    },
+    seeProject() {
+      console.log(this.getProject);
+    },
+
+    async selectProject(id: string)
+    {
+      const obj = this.projects.find((val) => val.id === id);
+      await this.store.dispatch("project/SelectProject", obj);
     }
 	},
 }

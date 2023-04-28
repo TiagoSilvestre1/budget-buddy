@@ -26,10 +26,10 @@ export class UserService {
     await this.userModel.findByIdAndRemove(user_id);
   }
 
-  async login(email: string, password: string): Promise<boolean>
+  async login(email: string, password: string)
   {
-    if(await this.userModel.findOne({email: email, password: password})) return true;
-    return false;
+    console.log(await this.userModel.findOne({email: email, password: password}))
+    return await this.userModel.findOne({email: email, password: password});
   }
 
   async exist(email: string): Promise<boolean>

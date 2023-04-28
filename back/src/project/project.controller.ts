@@ -28,7 +28,7 @@ export class ProjectController {
   }
 
   @Get('byUserId')
-  async getAll(@Query('user_id') user_id: mongoose.Types.ObjectId): Promise<API>
+  async findProjectsByUser(@Query('user_id') user_id: mongoose.Types.ObjectId): Promise<API>
   {
     try{
         return {data: {
@@ -41,6 +41,14 @@ export class ProjectController {
     }
 
     
+  }
+
+  @Get('all')
+  async getAll()
+  {
+    return {
+      data: await this.projectService.getAll()
+    }
   }
 
   @Post('addCollaborator')
