@@ -75,7 +75,7 @@
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
 import * as API from '../services/api-service';
-import { mapActions } from "vuex";
+import { useStore } from 'vuex'
 
 
 export default {
@@ -88,6 +88,7 @@ export default {
 		}
 	},
 	data: () => ({
+		store: useStore(),
 		loading:false,
 		successMsg:false,
 		errorMsg:false,
@@ -109,7 +110,6 @@ export default {
 			const refForm: any = this.$refs.form;
 			refForm.reset();
 		},
-		...mapActions(["LogIn"]),
 		async submitHandler(){
 			// this.$refs.form functions only for pure Js, not Ts
 			const refForm: any = this.$refs.form;
@@ -127,9 +127,10 @@ export default {
 				);
 
 				if (response.success === true) {
+
 					// Change store value
-					
-					await this.LogIn(response.data);
+					const data = 'BaTaTaS' 
+					await this.store.dispatch('auth/LogIn', data) // Use response.data instead
 					
 					this.loading = true;
 					this.errorMsg = false;
@@ -170,10 +171,6 @@ export default {
 		top: 0;
 		background-size: cover;
 		z-index: -1;
-	}
-
-	.adapt-card{
-		
 	}
 
 	.card-container {

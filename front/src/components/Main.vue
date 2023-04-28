@@ -55,6 +55,11 @@
             title="logout"
             @click="logout"
           />
+          <v-list-item
+            prepend-icon=""
+            title="See user"
+            @click="seeUser"
+          />
         </v-list>
       </v-navigation-drawer>
 
@@ -79,7 +84,7 @@
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
 import Footer, { FooterViews } from './Footer.vue';
-import { useStore } from 'vuex';
+import { mapGetters, useStore } from 'vuex';
 
 export default {
 	components: {
@@ -87,7 +92,6 @@ export default {
 },
 	setup() {
 		const theme = useTheme()
-		const store = useStore(); // Use the `useStore` function to access the store object
 		return {
 			theme,
 			toggleTheme: () =>
@@ -98,6 +102,7 @@ export default {
 	data: () => {
 		return {
 			drawer: false,
+      store: useStore(),
 			projects: [
 				['Project one', '../project/products'],
 				['Project two', '../project/products'],
@@ -107,11 +112,18 @@ export default {
       view: FooterViews.GLOBAL
 		}
 	},
+  computed: {
+    ...mapGetters('auth', ['getUser'])
+  },
 	methods: {
 		async logout() {
-			//await this.store.dispatch("LogOut");
-      		this.$router.push("/login");
+			  await this.store.dispatch("auth/LogOut");
+      	this.$router.push("/login");
 		},
+    ...mapGetters('auth', ['getUser']),
+    seeUser() {
+      alert('User: ' + this.getUser)
+    }
 	},
 }
 </script>

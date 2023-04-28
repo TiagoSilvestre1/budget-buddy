@@ -99,6 +99,7 @@
 import { useTheme } from 'vuetify/lib/framework.mjs';
 import * as API from '../services/api-service';
 import { getTransitionRawChildren } from 'vue';
+import { useStore } from 'vuex'
 
 export default {
 	setup() {
@@ -110,6 +111,7 @@ export default {
 		}
 	},
 	data: () => ({
+		store: useStore(),
 		loading:false,
 		successMsg:false,
 		errorMsg:false,
@@ -166,12 +168,19 @@ export default {
 				});
 				
 				if (res.success) {
+					// Change store value
+					const data = 'BaTaTaS' 
+					await this.store.dispatch('auth/LogIn', data) // Use res.data instead
+
 					this.loading = true;
 					this.errorMsg = false;
 					setTimeout(() => {
 						this.loading = false;
 						this.successMsg = true;
 					}, 1500);
+					setTimeout(() => {
+						this.$router.push({ path: 'home'})
+					}, 2000);
 				} else {
 					this.loading = true;
 					this.successMsg = false;

@@ -1,6 +1,6 @@
 export default {
     async LogIn({commit}: any, user: any) {
-        await commit("setUser", user.get("username"));
+        await commit("setUser", user);
     },
 
     async LogOut({ commit }: any) {
