@@ -9,7 +9,7 @@ export interface API {
 export class BackendService {
   private readonly client: Axios
 
-  constructor(api_url: string = 'http://172.16.238.11:3000') {
+  constructor(api_url: string = 'http://127.0.0.1:3000') {
     this.client = axios.create({
       baseURL: api_url,
       headers: {
