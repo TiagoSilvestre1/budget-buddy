@@ -108,13 +108,12 @@ export default {
 	},
 
   created() {
-    this.getUser.id
     backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
       if('success' in response && response.success === true)
       {
         this.projects = response.data.owned.concat(response.data.collaborates);
       }
-    })
+    });
   },
 
 	data: () => {
