@@ -32,6 +32,12 @@ export class UserService {
     return false;
   }
 
+  async exist(email: string): Promise<boolean>
+  {
+    if(await this.userModel.findOne({email: email})) return true;
+    return false;
+  }
+
   async getAll()
   {
     return await this.userModel.find();

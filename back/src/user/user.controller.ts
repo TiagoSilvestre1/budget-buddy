@@ -41,6 +41,19 @@ export class UserController {
     }
   }
 
+  @Post('exist')
+  async exist(@Body() user: {email: string})
+  {
+    try{
+      const success = await this.userService.exist(user.email);
+      return {success: success};
+    }
+    catch(e)
+    {
+        return {success: false};
+    }
+  }
+
   @Delete()
   async Remove(@Query('user_id') user_id: mongoose.Types.ObjectId)
   {

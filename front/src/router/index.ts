@@ -9,6 +9,8 @@ import Project from '../components/project/Project.vue';
 import Collaborators from '../components/project/Collaborators.vue';
 import Products from '../components/project/Products.vue';
 import { FooterViews } from '@/components/Footer.vue'
+import store from "..//store/store";
+import { mapGetters } from 'vuex'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -76,6 +78,18 @@ const router = createRouter({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = store.getters['auth/isAuthenticated'];
+
+  if (!isAuthenticated && (to.path !== '/login' && to.path !== '/register')) {
+    next('/login');
+  } else {
+    next();
+  }
+
+});
+
 
 
 

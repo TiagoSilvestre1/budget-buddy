@@ -125,7 +125,7 @@ export default {
 				const response: API.API = await API.backendService.post('/api/user/login', 
 					{email: this.email, password: this.password}
 				);
-
+				
 				if (response.success === true) {
 
 					// Change store value

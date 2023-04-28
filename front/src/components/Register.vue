@@ -89,6 +89,9 @@
 	<v-snackbar top color="red" v-model="errorMsg">
       Error creating account
     </v-snackbar>
+	<v-snackbar top color="red" v-model="accountExists">
+      Account is already registered
+    </v-snackbar>
 	<v-snackbar top color="orange" v-model="passwordNotEqual">
       Password doesn't match repeat Password
     </v-snackbar>
@@ -113,6 +116,7 @@ export default {
 	data: () => ({
 		store: useStore(),
 		loading:false,
+		accountExists: false,
 		successMsg:false,
 		errorMsg:false,
 		passwordNotEqual:false,
@@ -160,7 +164,23 @@ export default {
 					}, 100);
 				}
 
-				// Access database and check credentials
+				// Access database and check is account already exists
+				const loginResponse: API.API = await API.backendService.post('/api/user/exist', 
+					{email: this.email}
+				);
+
+				if(loginResponse.success){
+					this.loading = true;
+					this.successMsg = false;
+					this.errorMsg = false;
+					setTimeout(() => {
+						this.loading = false;
+						this.accountExists = true;
+					}, 1500);
+					return;
+				}
+
+				// Access database and create account
 				const res = await API.backendService.post('api/user/create' , {
 					email: this.email,
 					password: this.password,
@@ -174,6 +194,7 @@ export default {
 
 					this.loading = true;
 					this.errorMsg = false;
+					this.accountExists = false;
 					setTimeout(() => {
 						this.loading = false;
 						this.successMsg = true;
@@ -184,6 +205,7 @@ export default {
 				} else {
 					this.loading = true;
 					this.successMsg = false;
+					this.accountExists = false;
 					setTimeout(() => {
 						this.loading = false;
 						this.errorMsg = true;
