@@ -87,16 +87,40 @@ import item4 from '@/assets/1.png';
   
   <style>
 
-    @media screen and (max-width: 767px) {
+    @media screen and (max-width: 375px) {
       .container {
-        flex-direction: column-reverse;
+      margin-top: 0px;
+      margin-bottom: 0px;
+      width: 100%;
+      height: 100%;
+      flex-direction: column-reverse !important;
+      justify-content: center;
+      align-items: center;
+      align-content: center !important;
+    }
+
+      .card{
+        margin-top: 0px;
+        margin-bottom: 0px;
       }
-      .card, .card-noShade {
-        flex-basis: column;
+      .card-noShade {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        width: 360px !important;
+        height: 360px !important;
+        flex-basis: auto !important;
+        align-self: center;
+        display: flex;
+        align-self: center;
       }
-      .profile-form {
-        margin-left: 0;
-      }
+
+      .profile-img img {
+        width: 150%;
+        height: 150%;
+        object-fit: cover;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+        }
     }
 
     .container {
@@ -130,7 +154,6 @@ import item4 from '@/assets/1.png';
       padding: 1rem;
       margin: 1rem;
       height: 100%;
-      display: flex;
       align-items: center;
     }
   
@@ -144,7 +167,6 @@ import item4 from '@/assets/1.png';
       background-color: transparent;
       flex-basis: 30%;
       overflow: hidden;
-      display: flex;
       justify-content: center;
       align-items: center;
     }
@@ -152,8 +174,6 @@ import item4 from '@/assets/1.png';
     .profile-img {
       width: 80%;
       height: 80%;
-      overflow: hidden;
-      position: relative;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
   
