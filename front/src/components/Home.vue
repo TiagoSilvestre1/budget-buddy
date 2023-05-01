@@ -168,7 +168,7 @@ export default {
       <img src="../assets/user.png" alt="Profile image">
       <i class="fas fa-edit" style="position: absolute; top: 5px; right: 25px; cursor: pointer;" @click="goToSettings"></i> 
       <div class="welcome-text">
-        <h1><b> Welcome to Budget-Buddy, Anne!</b></h1>
+        <h1><b> Welcome to Budget-Buddy!</b></h1>
         <p>Start counting more</p>
       </div>
     </div>
@@ -186,6 +186,7 @@ export default {
       <div class="add-project-popup" v-if="showAddProjectPopup">
         <div class="popup-content">
         <button class="close-button" @click="showAddProjectPopup = false">X</button>
+        
         <h2>Add Project</h2>
         <div class="input-container">
           <label for="project-name">Project Name:</label>
@@ -295,10 +296,10 @@ export default {
       <div class="projects-title">
         <h1><b>Project Highlights</b></h1>
       </div>
-    <div class="containerDetails" ref="swiperContainer2">
+    <div class="container" ref="swiperContainer2">
       <div class="itemDetail" v-for="item in details" :key="item.id" @mouseenter="hoverItem = item.id" @mouseleave="hoverItem = null"
   :class="{ 'hover': hoverItem === item.id }">
-        <img :src="item.image" alt="item image">
+        <img :src="item.image" alt="itemDetail image">
         <p>{{ item.description }}</p>
       </div>
     </div>
@@ -309,39 +310,122 @@ export default {
 <style>
 
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 375px) {
+  .welcome-card {
+    width: 375px;
+    height: 200px;
+    margin-right: 5px;
+  }
+
   .welcome-card img {
-    width: 150px;
-    margin-right: 10px;
+    width: 100px !important;
+    margin-right: 5px !important;
   }
 
   .welcome-text h1 {
-    font-size: 2em;
-    margin-bottom: 10px;
+    font-size: 2em !important;
+    margin-bottom: 2px;
   }
 
   .welcome-text p {
-    font-size: 1em;
+    font-size: 1em !important;
+  }
+
+  .projects-title {
+    margin-bottom: 50px;
+    width: 80px !important;
+    margin-left: 10px !important;
+    margin-right: 25px;
   }
 
   .titles {
+    font-size: 0.5em !important;
+    margin-left: 10px !important;
     display: flex;
-    margin-top: 50px;
-    margin-left: 100px;
-    margin-right: 200px;
+    margin-top: 25px;
+    margin-right: 25px !important;
   }
 
   .item {
+    width: 170px !important;
+    height: 150px !important;
     background-color: rgba(0, 0, 0, 0.5);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 5%;
     color: #fff;
-    padding: 60px;
-    text-align: center;
+    align-content: center;
   }
 
   .item p {
-    font-size: 0.8em;
+    font-size: 0.4em !important;
   }
+
+  .item img {
+  max-width: 75% !important;
+  height: 75% !important;
+  margin-top: 0px !important;
+  }
+
+  .itemDetail{
+    transform: scale(1.6);
+    margin-right: 60px !important;
+    padding: 5% 0;
+  }
+
+  .add-project-button {
+  z-index: 9999;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px auto 0;
+  width: 25px;
+  height: 25px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 25%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  position: relative;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  display: flex;
+  align-items: center;
+  overflow-x: scroll;
+  padding: 10% 0;
+}
+
+.containerDetails {
+  position: relative;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  display: flex;
+  align-items: center;
+  overflow-x: scroll;
+}
+
+.itemDetail img {
+  max-width: 75% !important;
+  height: 75% !important;
+  margin-top: 0px !important;
+}
+
+.add-project-popup {
+  transform: scale(0.9);
+}
+
+.popup-content {
+  background-color: white;
+  padding: 40px;
+  border-radius: 20px;
+  position: relative;
+  width: 60%;
+  max-width: 300px;
+}
+
 }
 
 .add-project-button {
