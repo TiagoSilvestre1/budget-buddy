@@ -23,6 +23,8 @@ export class ProjectService {
       const project = await this.projectModel.findById(info.project_id).exec();
 
       project.products.push(obj.id);
+
+      await project.save();
     }
 
     constructor(@InjectModel(Project.name) private projectModel: Model<Project>, @InjectModel(Product.name) private productModel: Model<Product>) {}
