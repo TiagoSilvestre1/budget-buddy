@@ -12,7 +12,7 @@ export class Project {
   
     @Prop({type: Date})
     start_date: Date;
-  
+
     @Prop({type: Date})
     finish_date: Date;
   
@@ -28,6 +28,13 @@ export class Project {
         ]
     })
     collaborators: mongoose.Types.ObjectId[];
+
+    @Prop({
+        type: [
+            {type: mongoose.Types.ObjectId, ref: 'Product'}
+        ]
+    })
+    products: mongoose.Types.ObjectId[];
 
 }
 

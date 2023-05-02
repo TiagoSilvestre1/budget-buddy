@@ -2,10 +2,30 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Project } from "src/schemas/project.schema";
+import { Product } from "src/schemas/product.schema";
 import * as mongoose from 'mongoose';
 @Injectable()
 export class ProjectService {
-    constructor(@InjectModel(Project.name) private projectModel: Model<Project>) {}
+
+    async addProduct(info: {
+        name: string
+        project_id: mongoose.Types.ObjectId
+      }) {
+
+        const obj = new this.productModel({
+            name: info.name,
+            completed: false,
+            quotes: []
+            });
+
+      await obj.save();
+
+      const project = await this.projectModel.findById(info.project_id).exec();
+
+      project.products.push(obj.id);
+    }
+
+    constructor(@InjectModel(Project.name) private projectModel: Model<Project>, @InjectModel(Product.name) private productModel: Model<Product>) {}
     
     async create(title: string, owner_id: string, total_budget: number, start_date: any, end_date: any) {
         const obj = new this.projectModel({

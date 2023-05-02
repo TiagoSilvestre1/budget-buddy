@@ -67,4 +67,20 @@ export class ProjectController {
 
   }
 
+  @Post('addProduct')
+  async addProduct(@Body() info: {
+    name: string
+    project_id: mongoose.Types.ObjectId
+  })
+  {
+    try{
+      await this.projectService.addProduct(info);
+      return {success: true};
+    }
+    catch(error)
+    {
+      throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
 }
