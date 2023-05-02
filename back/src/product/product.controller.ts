@@ -1,0 +1,97 @@
+import { Body, Controller, Get, HttpException, HttpStatus, InternalServerErrorException, Post, Query } from '@nestjs/common';
+import { API } from 'src/api/api';
+import { ProductService } from './product.service';
+import { User } from 'src/schemas/user.schema';
+import mongoose, { Mongoose, mongo } from 'mongoose';
+
+
+@Controller('api/product')
+export class ProductController {
+  constructor(private readonly productService: ProductService) {}
+
+  @Get()
+  async get()
+  {
+    return 'api/product endpoint is active'
+  }
+
+    @Post('setQuoteCompletedStatus')
+    async setQuoteCompletedStatus(@Body() info: {
+        id: mongoose.Types.ObjectId,
+        completed: boolean
+    })
+    {
+        try{
+            await this.productService.setCompleted(info.id,info.completed);
+            return HttpStatus.OK;
+        }
+        catch(error)
+        {
+            throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+  @Get('all')
+  async getAll()
+  {
+    return {
+      data: await this.productService.getAll()
+    }
+  }
+
+  @Post('addQuote')
+  async addQuote(@Body() info: {
+    product_id: mongoose.Types.ObjectId
+    quote: {
+    description: string | null
+    url: string | null,
+    price: number | null,
+    available: Date | null,
+    }
+  })
+  {
+    try{
+        await this.productService.addQuote(info.product_id, info.quote.url,info.quote.description, info.quote.price, info.quote.available);
+        return HttpStatus.OK;
+      }
+      catch(error)
+      {
+        throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+  }
+
+  @Post('modifyQuote')
+  async modifyQuote(@Body() info: {
+    description: string | null
+    url: string | null,
+    price: number | null,
+    available: Date | null,
+    _id: mongoose.Types.ObjectId
+    
+    })
+    {
+        try{
+            await this.productService.modifyQuote(info._id, info.url,info.description, info.price, info.available);
+            return HttpStatus.OK;
+        }
+        catch(error)
+        {
+            throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Post('removeQuote')
+    async removeQuote(@Body() info: {id: mongoose.Types.ObjectId})
+    {
+        try{
+            await this.productService.destroyQuote(info.id);
+            return HttpStatus.OK;
+        }
+        catch(error)
+        {
+            throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+}
