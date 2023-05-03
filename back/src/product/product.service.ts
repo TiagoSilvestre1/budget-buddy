@@ -23,6 +23,10 @@ export class ProductService {
       return await this.productModel.findById(product_id);
     }
 
+    async getQuoteById(quote_id: mongoose.Types.ObjectId) {
+      return await this.quoteModel.findById(quote_id);
+    }
+
     async addQuote(product_id: mongoose.Types.ObjectId , url: string | null, description: string | null, price: number | null, available: Date | null)
     {
         const obj = await this.productModel.findById(product_id);

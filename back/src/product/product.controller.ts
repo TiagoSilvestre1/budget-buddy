@@ -35,8 +35,7 @@ export class ProductController {
   async getProductById(@Query('id') product_id: mongoose.Types.ObjectId)
   {
     try{
-      await this.productService.getProductById(product_id);
-      return HttpStatus.OK;
+      return await this.productService.getProductById(product_id);
     }
     catch(error)
     {
@@ -49,6 +48,18 @@ export class ProductController {
   {
     return {
       data: await this.productService.getAll()
+    }
+  }
+
+@Get('quoteById')
+  async getQuoteById(@Query('id') quote_id: mongoose.Types.ObjectId)
+  {
+    try{
+      return await this.productService.getQuoteById(quote_id);
+    }
+    catch(error)
+    {
+      throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
