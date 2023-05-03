@@ -31,6 +31,18 @@ export class ProductController {
         }
     }
 
+  @Get('productById')
+  async getProductById(@Query('id') product_id: mongoose.Types.ObjectId)
+  {
+    try{
+      await this.productService.getProductById(product_id);
+      return HttpStatus.OK;
+    }
+    catch(error)
+    {
+      throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 
   @Get('all')
   async getAll()

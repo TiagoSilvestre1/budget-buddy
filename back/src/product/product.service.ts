@@ -7,8 +7,8 @@ import * as mongoose from 'mongoose';
 
 @Injectable()
 export class ProductService {
-
-
+    
+    
     constructor(@InjectModel(Product.name) private productModel: Model<Product>, 
     @InjectModel(Quote.name) private quoteModel: Model<Quote>) {}
     
@@ -18,7 +18,10 @@ export class ProductService {
         obj.completed = new_state;
         await obj.save();
     }
-
+    
+    async getProductById(product_id: mongoose.Types.ObjectId) {
+      return await this.productModel.findById(product_id);
+    }
 
     async addQuote(product_id: mongoose.Types.ObjectId , url: string | null, description: string | null, price: number | null, available: Date | null)
     {
@@ -32,7 +35,7 @@ export class ProductService {
         quote.available = available;
 
         await quote.save();
-
+        
         obj.quotes.push(quote.id);
 
         await obj.save();
