@@ -115,11 +115,7 @@ export default {
             collaborators: [],
             __v: Number,
         },
-        product_list: [
-            { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-            { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-            { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        ],
+        product_list: [ ] as Array<any>,
         services_list: [
             { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
             { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
@@ -128,13 +124,7 @@ export default {
     }),
     created() {
         this.project = this.getProject;
-
-        /*backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
-        if('success' in response && response.success === true)
-        {
-            this.projects = response.data.owned.concat(response.data.collaborates);
-        }
-        });*/
+        this.listProducts();
     },
     computed: {
         ...mapGetters('auth', ['getUser']),
@@ -145,6 +135,21 @@ export default {
         removeProduct() { },
         seeProject() {
             console.log(this.getProject);
+        },
+        /*async getProduct(id: number): Promise<any> {
+            const response = await backendService.get('api/product/productById?id=' + id, false);
+            if(response == null)
+                return
+
+        },*/
+        listProducts() {
+            const index: number = 0;
+            this.project["products"].forEach((prod_id: any, index: number) => {
+                backendService.get('api/product/productById?id=' + prod_id, false).then((response: API) => {
+                    const entry = {title: response['name'], src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6}
+                    this.product_list[index++] = entry;
+                })
+            });
         }
     /*
     seeUser() {
