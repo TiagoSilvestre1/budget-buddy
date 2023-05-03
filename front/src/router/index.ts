@@ -49,7 +49,7 @@ const router = createRouter({
           },
           children: [
             {
-              path: 'products',
+              path: '/',
               component: Products,
               meta: {
                 view: FooterViews.PROJECT
