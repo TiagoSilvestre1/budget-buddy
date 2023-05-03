@@ -20,11 +20,21 @@ export class ProductService {
     }
     
     async getProductById(product_id: mongoose.Types.ObjectId) {
-      return await this.productModel.findById(product_id);
+        const obj = await this.productModel.findById(product_id);
+
+        if(!obj)
+            throw Error('invalid product id');
+
+        return obj;
     }
 
     async getQuoteById(quote_id: mongoose.Types.ObjectId) {
-      return await this.quoteModel.findById(quote_id);
+      const obj =  await this.quoteModel.findById(quote_id);
+
+      if(!obj)
+        throw Error('invalid quote id')
+
+    return obj;
     }
 
     async addQuote(product_id: mongoose.Types.ObjectId , url: string | null, description: string | null, price: number | null, available: Date | null)
