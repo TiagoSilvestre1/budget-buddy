@@ -1,13 +1,18 @@
 <script lang="ts">
+
 import Swiper from 'swiper';
 import item1 from '@/assets/flatKitchen.png';
 import item2 from '@/assets/robotlele.png';
 import item3 from '@/assets/save.png';
 import item4 from '@/assets/1.png';
+import { backendService, type API } from '@/services/api-service';
+import { mapGetters } from 'vuex';
 
 
 export default {
+  
     data(): {
+      
       items: {id: number; image: string; description: string}[], 
       details: {id: number; image: string; description: string}[], 
       tags: {id: number; title: string; color: string}[],
@@ -103,12 +108,35 @@ export default {
     newProjectEndMonth: null,
     newProjectEndYear: null,
   };
+
 },
-  mounted() {
+
+mounted() {
     this.initializeSwiper();
   },
   updated() {
     this.initializeSwiper();
+  },
+  computed: {
+    ...mapGetters('auth', ['getUser']),
+    ...mapGetters('project',['getProject'])
+  },
+  created() {
+    backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
+
+      if('success' in response && response.success === true)
+      {
+        let id = 0;
+        this.items = response.data.owned.concat(response.data.collaborates).map((v: any) => {
+          id++;
+          return {
+            id: id,
+            image: item4,
+            description: v.title
+          }
+        })
+      }
+    });
   },
   methods: {
     initializeSwiper() {
@@ -214,6 +242,7 @@ export default {
         </div>
         <div class="input-container">
         <label for="project-start">Start Date:</label>
+        <!--
         <div class="date-picker">
           <select id="project-start-day" v-model="newProjectStartDay">
             <option value="">Day</option>
@@ -239,6 +268,130 @@ export default {
             <option v-for="year in 10" :value="new Date().getFullYear() + year">{{ new Date().getFullYear() + year }}</option>
           </select>
         </div>
+        -->
+        <v-row>
+    <v-col
+      cols="12"
+      sm="6"
+      md="4"
+    >
+      <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        :return-value.sync="date"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="date"
+            label="Picker in menu"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="date"
+          no-title
+          scrollable
+        >
+          <v-spacer></v-spacer>
+          <v-btn
+            text
+            color="primary"
+            @click="menu = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            text
+            color="primary"
+            @click="$refs.menu.save(date)"
+          >
+            OK
+          </v-btn>
+        </v-date-picker>
+      </v-menu>
+    </v-col>
+    <v-spacer></v-spacer>
+    <v-col
+      cols="12"
+      sm="6"
+      md="4"
+    >
+      <v-dialog
+        ref="dialog"
+        v-model="modal"
+        :return-value.sync="date"
+        persistent
+        width="290px"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="date"
+            label="Picker in dialog"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="date"
+          scrollable
+        >
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            @click="modal = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            color="primary"
+
+          >
+            OK
+          </v-btn>
+        </v-date-picker>
+      </v-dialog>
+    </v-col>
+    <v-col
+      cols="12"
+      sm="6"
+      md="4"
+    >
+      <v-menu
+        v-model="menu2"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="date"
+            label="Picker without buttons"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="date"
+          @input="menu2 = false"
+        ></v-date-picker>
+      </v-menu>
+    </v-col>
+    <v-spacer></v-spacer>
+  </v-row>
+
       </div>
 
         <div class="input-container">
@@ -275,7 +428,7 @@ export default {
     </div>
 
 
-    <div class="container" ref="swiperContainer">
+    <div class="home-container" ref="swiperContainer">
       <div class="item" v-for="item in items" :key="item.id" @mouseenter="hoverItem = item.id" @mouseleave="hoverItem = null"
   :class="{ 'hover': hoverItem === item.id }">
           <!-- Trash icon -->
@@ -296,7 +449,7 @@ export default {
       <div class="projects-title">
         <h1><b>Project Highlights</b></h1>
       </div>
-    <div class="container" ref="swiperContainer2">
+    <div class="home-container" ref="swiperContainer2">
       <div class="itemDetail" v-for="item in details" :key="item.id" @mouseenter="hoverItem = item.id" @mouseleave="hoverItem = null"
   :class="{ 'hover': hoverItem === item.id }">
         <img :src="item.image" alt="itemDetail image">
@@ -310,7 +463,7 @@ export default {
 <style>
 
 
-@media only screen and (max-width: 375px) {
+@media only screen and (max-width: 500px) {
   .welcome-card {
     width: 375px;
     height: 200px;
@@ -388,7 +541,7 @@ export default {
   align-items: center;
 }
 
-.container {
+.home-container {
   position: relative;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -515,7 +668,7 @@ export default {
   height: 50%;
 }
 
-.container {
+.home-container {
   position: relative;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -526,7 +679,7 @@ export default {
   padding: 50px 0;
 }
 
-.container::-webkit-scrollbar {
+.home-container::-webkit-scrollbar {
   display: none;
 }
 

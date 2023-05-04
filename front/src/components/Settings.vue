@@ -41,7 +41,7 @@ import item4 from '@/assets/1.png';
         }
 </script>
 <template>
-    <div class="container">
+    <div class="settings-container">
       <div class="card yellow">
         <form class="profile-form" @submit.prevent="saveProfile">
           <h1><b>Personal Info</b></h1>
@@ -88,7 +88,7 @@ import item4 from '@/assets/1.png';
   <style>
 
     @media screen and (max-width: 375px) {
-      .container {
+      .settings-container {
       margin-top: 0px;
       margin-bottom: 0px;
       width: 100%;
@@ -123,7 +123,7 @@ import item4 from '@/assets/1.png';
         }
     }
 
-    .container {
+    .settings-container {
       display: flex;
       flex-direction: row;
       justify-content: center;
