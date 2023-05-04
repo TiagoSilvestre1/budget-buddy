@@ -19,20 +19,20 @@
 			</v-card-title>
 			<v-card-text>
 				<v-container>
-				<v-row>
-					<v-col
-						cols="12"
-						sm="12"
-						md="4"
-					>
-						<v-text-field
-							v-model="productName"
-							label="Product Name*"
-							required
-						></v-text-field>
-					</v-col>
-					
-				</v-row>
+					<v-row>
+						<v-col
+							cols="12"
+							sm="12"
+							md="4"
+						>
+							<v-text-field
+								v-model="productName"
+								label="Product Name*"
+								required
+							></v-text-field>
+						</v-col>
+						
+					</v-row>
 				</v-container>
 				<small>Required field marked with (*)</small>
 			</v-card-text>
@@ -61,7 +61,6 @@
 <script lang="ts">
 	import { backendService, type API } from '@/services/api-service';
 	import { mapGetters, useStore } from 'vuex';
-	import AddRemoveProduct from './addRemoveProduct.vue';
 
 	export default {
 		data: () => ({

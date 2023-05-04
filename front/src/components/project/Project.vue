@@ -9,7 +9,7 @@
             <h2 class="font-weight-light d-flex justify-content-between">
                 <v-icon size="big" icon="mdi-shopping"></v-icon> 
                 Product List
-                <AddRemoveProduct v-model="dialogVisible" />
+                <AddProduct v-model="dialogVisible" />
             </h2>
         </v-card-title> 
 
@@ -37,7 +37,7 @@
                     
                     <v-btn size="small" variant="text" icon="mdi-cog" @click="seeProject"></v-btn>
 
-                    <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete"></v-btn>
+                    <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeProduct(products.id)"></v-btn>
 
                     </v-card-actions>
                 </v-card>
@@ -97,7 +97,7 @@
 <script lang="ts">
 import { backendService, type API } from '@/services/api-service';
 import { mapGetters, useStore } from 'vuex';
-import AddRemoveProduct from './addRemoveProduct.vue';
+import AddProduct from './addProduct.vue';
 
 
 export default {
@@ -124,7 +124,7 @@ export default {
         ],
     }),
     components: {
-        AddRemoveProduct
+        AddProduct
     },
     created() {
         this.project = this.getProject;
@@ -135,7 +135,9 @@ export default {
         ...mapGetters('project',['getProject'])
     },
 	methods: {
-        removeProduct() { },
+        removeProduct(product_id: number) {
+            console.log(product_id)
+         },
         seeProject() {
             console.log(this.getProject);
         },
@@ -149,7 +151,10 @@ export default {
             const index: number = 0;
             this.project["products"].forEach((prod_id: any, index: number) => {
                 backendService.get('api/product/productById?id=' + prod_id, false).then((response: API) => {
-                    const entry = {title: response['name'], src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6}
+                    const entry = {title: response['name'], 
+                                    id: response['_id'],
+                                    src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', 
+                                    flex: 6}
                     this.product_list[index++] = entry;
                 })
             });
