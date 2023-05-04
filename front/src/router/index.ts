@@ -42,7 +42,7 @@ const router = createRouter({
           }
         },
         {
-          path: '/project',
+          path: '/project/:projectId',
           component: Project,
           meta: {
             view: FooterViews.PROJECT

@@ -23,12 +23,13 @@
             </template>
 
             <v-list-item
-              v-for="project in projects"
-              :title="project.title"
-              router-link
-              to="../project"
-              @click="selectProject(project.id)"
-            ></v-list-item>
+            v-for="project in projects"
+            :key="project.id"
+            :title="project.title"
+            router-link
+            :to="'/project/' + project._id"
+            @click="selectProject(project._id)"
+          ></v-list-item>
           </v-list-group>
 
           <v-list-item
@@ -144,7 +145,7 @@ export default {
 
     async selectProject(id: string)
     {
-      const obj = this.projects.find((val) => val.id === id);
+      const obj = this.projects.find((val) => val._id === id);
       await this.store.dispatch("project/SelectProject", obj);
     }
 	},
