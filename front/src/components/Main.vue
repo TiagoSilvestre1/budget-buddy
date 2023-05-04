@@ -26,7 +26,7 @@
               v-for="project in projects"
               :title="project.title"
               router-link
-              to="../project/products"
+              to="../project"
               @click="selectProject(project.id)"
             ></v-list-item>
           </v-list-group>

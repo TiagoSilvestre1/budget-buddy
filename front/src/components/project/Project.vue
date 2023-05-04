@@ -1,17 +1,15 @@
 <template>
     <h1 class="main-title">{{ project["title"] }}</h1>
+    
     <v-card
         class="mx-auto"
         max-width="800"
     >
         <v-card-title>
-            <h2 class="font-weight-light">
-                <v-icon
-                size="big"
-                icon="mdi-shopping"
-                ></v-icon> 
+            <h2 class="font-weight-light d-flex justify-content-between">
+                <v-icon size="big" icon="mdi-shopping"></v-icon> 
                 Product List
-                <v-btn size="small" variant="text" class="text-right" icon="ml-10 mdi-plus" @click="addProduct"></v-btn>
+                <AddRemoveProduct v-model="dialogVisible" />
             </h2>
         </v-card-title> 
 
@@ -99,11 +97,14 @@
 <script lang="ts">
 import { backendService, type API } from '@/services/api-service';
 import { mapGetters, useStore } from 'vuex';
+import AddRemoveProduct from './addRemoveProduct.vue';
+
 
 export default {
 
     data: () => ({
         store: useStore(),
+        dialogVisible: false,
         project: {
             products: [],
             _id: String,
@@ -122,6 +123,9 @@ export default {
             { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
         ],
     }),
+    components: {
+        AddRemoveProduct
+    },
     created() {
         this.project = this.getProject;
         this.listProducts();
@@ -131,7 +135,6 @@ export default {
         ...mapGetters('project',['getProject'])
     },
 	methods: {
-		addProduct() { },
         removeProduct() { },
         seeProject() {
             console.log(this.getProject);
@@ -163,5 +166,7 @@ export default {
 </script>
 
 <style>
-
+    .ml-auto {
+    margin-left: auto;
+    }
 </style>

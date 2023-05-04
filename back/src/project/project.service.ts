@@ -73,4 +73,13 @@ export class ProjectService {
             }
         });
     }
+
+    async getProjectById(project_id: mongoose.Types.ObjectId) {
+        const obj = await this.projectModel.findById(project_id);
+
+        if(!obj)
+            throw Error('invalid project id');
+
+        return obj;
+    }
 }
