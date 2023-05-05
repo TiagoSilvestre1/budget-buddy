@@ -88,8 +88,6 @@ export class ProjectService {
         
         // There is not gonna exist more than one project with the same product_id
         const project_obj = await this.projectModel.findOne({ products: { $in: [product_id] } }).exec();
-      
-        console.log("Initial project: ", project_obj);
 
         if(!project_obj)
             throw Error('Product not associated with project or does not exist');
