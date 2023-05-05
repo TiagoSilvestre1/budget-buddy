@@ -1,72 +1,70 @@
 <template>
     <v-row justify="center">
       <v-dialog
-        v-model="dialog"
-        fullscreen
-        :scrim="false"
-        transition="dialog-bottom-transition"
+        v-model="dialogVisible"
+        max-width="512"
       >
         <template v-slot:activator="{ props }">
             <v-btn 
-                size="small" 
-                variant="text" 
-                icon="mdi-cog" 
-                v-bind="props"
-            ></v-btn>
+				size="small" 
+				v-bind="props" 
+				variant="text" 
+                color="surface-variant"
+				icon="mdi-cog"
+			></v-btn>
         </template>
         <v-card>
-          <v-toolbar
-            dark
-            color="warning"
-          >
-            <v-btn
-              icon
-              dark
-              @click="dialog = false"
-            >
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-            <v-toolbar-title>Edit Product</v-toolbar-title>
-            
-            <v-toolbar-items>
-              <v-btn
-                variant="text"
-                @click="dialog = false"
-              >
-                Save
-              </v-btn>
-            </v-toolbar-items>
-          </v-toolbar>
-          <v-list
-            lines="two"
-            subheader
-          >
-            <v-list-subheader>Info</v-list-subheader>
-            <v-list-item title="Content filtering" subtitle="Set the content filtering level to restrict apps that can be downloaded"></v-list-item>
-            <v-list-item title="Password" subtitle="Require password for purchase or use password to restrict purchase"></v-list-item>
-          </v-list>
-          <v-divider></v-divider>
-          <v-list
-            lines="two"
-            subheader
-          >
-            <v-list-subheader>General</v-list-subheader>
-            <v-list-item title="Notifications" subtitle="Notify me about updates to apps or games that I downloaded">
-              <template v-slot:prepend>
-                <v-checkbox v-model="notifications"></v-checkbox>
-              </template>
-            </v-list-item>
-            <v-list-item title="Sound" subtitle="Auto-update apps at any time. Data charges may apply">
-              <template v-slot:prepend>
-                <v-checkbox v-model="sound"></v-checkbox>
-              </template>
-            </v-list-item>
-            <v-list-item title="Auto-add widgets" subtitle="Automatically add home screen widgets">
-              <template v-slot:prepend>
-                <v-checkbox v-model="widgets"></v-checkbox>
-              </template>
-            </v-list-item>
-          </v-list>
+			<v-card-title>
+				<span class="text-h5">Edit Product</span>
+			</v-card-title>
+			<v-card-text>
+				<v-container>
+					<v-row>
+						<v-col
+							cols="12"
+							sm="12"
+							md="12"
+						>
+							<v-text-field
+								v-model="product['name']"
+								label="Product Name*"
+                                color="orange"
+                                disabled
+								required
+							></v-text-field>
+						</v-col>
+                        <v-col
+							cols="12"
+							sm="12"
+							md="12"
+						>
+                            <v-checkbox
+                                v-model="product['completed']"
+                                :label="'Completed*'"
+                                color="orange"
+                            ></v-checkbox>
+						</v-col>
+					</v-row>
+				</v-container>
+				<small>Required fields marked with (*)</small>
+			</v-card-text>
+			<v-card-actions>
+				<v-spacer></v-spacer>
+				<v-btn
+					color="blue-darken-1"
+					variant="text"
+					@click="dialogVisible = false"
+				>
+				Close
+				</v-btn>
+				<v-btn
+					color="blue-darken-1"
+					variant="text"
+					@click="editProduct"
+				>
+				Save
+				</v-btn>
+			</v-card-actions>
         </v-card>
       </v-dialog>
     </v-row>
@@ -82,10 +80,7 @@
 
         data () {
             return {
-                dialog: false,
-                notifications: false,
-                sound: true,
-                widgets: false,
+                dialogVisible: false,
                 store: useStore(),
                 project: {} as Project,
                 product: {} as Product,
@@ -99,23 +94,32 @@
         },
 		created() {
 			this.project = this.getProject;
+            this.getProductInfo();
 		},
 		computed: {
 			...mapGetters('auth', ['getUser']),
 			...mapGetters('project',['getProject'])
 		},
 		methods: {
-            // this.$emit('productAdded');
             getProductInfo() {
+                backendService.get('/api/product/productById?id=' + this.productId, false).then( (response: any) => {
+					this.product = response;
+				});
+            },
+            editProduct() {
+                backendService.post('/api/product/setQuoteCompletedStatus', {id: this.productId, completed: this.product['completed']}, false).then( () => {
+					this.dialogVisible = false;
+					// Update local store to reflect changes
+					backendService.get('/api/project/getProjectById?project_id=' + this.project["_id"]).then((response) => {
+						this.project = response
+						this.store.dispatch("project/SelectProject", this.project).then( () => {
+							this.$emit('productAdded');
+							}
+						);
+					});
+				});
                 
             }
         }
     }
 </script>
-
-<style>
-    .dialog-bottom-transition-enter-active,
-    .dialog-bottom-transition-leave-active {
-        transition: transform .2s ease-in-out;
-    }
-</style>

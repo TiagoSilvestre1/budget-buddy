@@ -32,12 +32,13 @@
                     </v-img>
 
                     <v-card-actions>
+                        <v-spacer></v-spacer>
+
+                        <AddQuote @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
                     
-                    <v-spacer></v-spacer>
-                    <EditProduct @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
+                        <EditProduct @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
 
-                    <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeProduct(products.id)"></v-btn>
-
+                        <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeProduct(products.id)"></v-btn>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -97,8 +98,8 @@
 import { backendService, type API } from '@/services/api-service';
 import { mapGetters, useStore } from 'vuex';
 import AddProduct from './addProduct.vue';
-import editProduct from './editProduct.vue';
 import EditProduct from './editProduct.vue';
+import AddQuote from './addQuote.vue';
 
 
 export default {
@@ -107,6 +108,7 @@ export default {
         store: useStore(),
         addDialogVisible: false,
         editDialogVisible: false,
+        quoteDialogVisible: false,
         project: {
             products: [],
             _id: String,
@@ -127,7 +129,8 @@ export default {
     }),
     components: {
         AddProduct,
-        EditProduct
+        EditProduct,
+        AddQuote
     },
     created() {
         this.project = this.getProject;
