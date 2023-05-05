@@ -9,7 +9,7 @@
             <h2 class="font-weight-light d-flex justify-content-between">
                 <v-icon size="big" icon="mdi-shopping"></v-icon> 
                 Product List
-                <AddProduct @productAdded="listProducts" v-model="dialogVisible" />
+                <AddProduct @productAdded="listProducts" v-model="addDialogVisible" />
             </h2>
         </v-card-title> 
 
@@ -34,8 +34,7 @@
                     <v-card-actions>
                     
                     <v-spacer></v-spacer>
-                    
-                    <v-btn size="small" variant="text" icon="mdi-cog" @click="seeProject"></v-btn>
+                    <EditProduct @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
 
                     <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeProduct(products.id)"></v-btn>
 
@@ -98,13 +97,16 @@
 import { backendService, type API } from '@/services/api-service';
 import { mapGetters, useStore } from 'vuex';
 import AddProduct from './addProduct.vue';
+import editProduct from './editProduct.vue';
+import EditProduct from './editProduct.vue';
 
 
 export default {
     hello: null,
     data: () => ({
         store: useStore(),
-        dialogVisible: false,
+        addDialogVisible: false,
+        editDialogVisible: false,
         project: {
             products: [],
             _id: String,
@@ -124,7 +126,8 @@ export default {
         ],
     }),
     components: {
-        AddProduct
+        AddProduct,
+        EditProduct
     },
     created() {
         this.project = this.getProject;
