@@ -2,7 +2,7 @@
     <v-row justify="center">
       <v-dialog
         v-model="dialogVisible"
-        max-width="512"
+        max-width="1024"
       >
         <template v-slot:activator="{ props }">
             <v-btn 
@@ -22,27 +22,35 @@
               <v-row>
                 <v-col
                   cols="12"
-                  sm="6"
-                  md="4"
+                  sm="12"
+                  md="12"
                 >
 					<v-table>
 						<thead>
 							<tr>
 								<th class="text-left">
-								Name
+								Url
 								</th>
 								<th class="text-left">
-								Calories
+								Description
+								</th>
+								<th class="text-left">
+								Price
+								</th>
+								<th class="text-left">
+								Arrival
 								</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr
-								v-for="item in desserts"
-								:key="item.name"
+								v-for="quote in quote_list"
+								:key="quote._id"
 							>
-								<td>{{ item.name }}</td>
-								<td>{{ item.calories }}</td>
+								<td>{{ quote.url }}</td>
+								<td>{{ quote.description }}</td>
+								<td>{{ quote.price }}</td>
+								<td>{{ quote.available }}</td>
 							</tr>
 						</tbody>
 					</v-table>
@@ -77,6 +85,8 @@
 	import { mapGetters, useStore } from 'vuex';
     import type { Project } from '../../interfaces/project';
     import type { Product } from '../../interfaces/product';
+	import type { Quote } from '../../interfaces/quote';
+
 
     export default {
 
@@ -86,48 +96,19 @@
                 store: useStore(),
                 project: {} as Project,
                 product: {} as Product,
-				desserts: [
-							{
-								name: 'Frozen Yogurt',
-								calories: 159,
-							},
-							{
-								name: 'Ice cream sandwich',
-								calories: 237,
-							},
-							{
-								name: 'Eclair',
-								calories: 262,
-							},
-							{
-								name: 'Cupcake',
-								calories: 305,
-							},
-							{
-								name: 'Gingerbread',
-								calories: 356,
-							},
-							{
-								name: 'Jelly bean',
-								calories: 375,
-							},
-							{
-								name: 'Lollipop',
-								calories: 392,
-							},
-							{
-								name: 'Honeycomb',
-								calories: 408,
-							},
-							{
-								name: 'Donut',
-								calories: 452,
-							},
-							{
-								name: 'KitKat',
-								calories: 518,
-							},
-						],
+				quote_list: [] as Array<Quote>,
+				headers: [
+					{
+						text: 'Url',
+						align: 'left',
+						sortable: false,
+						value: 'name',
+					},
+					{ text: 'Description', value: 'calories', sortable: false,},
+					{ text: 'Price (€)', value: 'euros' },
+					{ text: 'Arrival Date', value: 'date' },
+				],
+				showId: false
             }
         },
         props: {
@@ -148,11 +129,17 @@
             getProductInfo() {
                 backendService.get('/api/product/productById?id=' + this.productId, false).then( (response: any) => {
 					this.product = response;
+					this.quote_list = []
+					this.product["quotes"].forEach((quote_id: any) => {
+						backendService.get('api/product/quoteById?id=' + quote_id, false).then((response) => {
+							this.quote_list.push(response);
+						})
+					});
 				});
             },
-            addQuote() {  },
+			addQuote() {  },
 			editQuote() {  },
 			removeQuote() {  }
-        }
+		},
     }
 </script>

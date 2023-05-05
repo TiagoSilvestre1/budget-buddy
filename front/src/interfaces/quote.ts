@@ -4,4 +4,5 @@ export interface Quote
     description: string;
     price: number;
     available: Date;
+    _id: number;
 };
