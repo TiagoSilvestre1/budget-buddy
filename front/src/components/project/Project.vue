@@ -9,7 +9,7 @@
             <h2 class="font-weight-light d-flex justify-content-between">
                 <v-icon size="big" icon="mdi-shopping"></v-icon> 
                 Product List
-                <AddProduct v-model="dialogVisible" />
+                <AddProduct @productAdded="listProducts" v-model="dialogVisible" />
             </h2>
         </v-card-title> 
 
@@ -150,6 +150,7 @@ export default {
             console.log(this.getProject);
         },
         listProducts() {
+            this.project = this.getProject;
             this.product_list = []
             this.project["products"].forEach((prod_id: any) => {
                 backendService.get('api/product/productById?id=' + prod_id, false).then((response: API) => {
