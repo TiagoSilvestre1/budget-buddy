@@ -17,8 +17,8 @@ export class UserController {
   }): Promise<API>
   {
     try{
-        const _id = await this.userService.create(user.name, user.email, user.password);
-        return {success: true, data: _id};
+        const obj = await this.userService.create(user.name, user.email, user.password);
+        return {success: true, data: {main: obj.email, name: obj.name, id: obj._id}};
     }
     catch(e)
     {

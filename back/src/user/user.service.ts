@@ -7,7 +7,7 @@ import { User } from 'src/schemas/user.schema';
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async create(name: string, email: string, password: string): Promise<mongoose.Types.ObjectId> {
+  async create(name: string, email: string, password: string) {
 
     const _id = new mongoose.Types.ObjectId();
     let obj = {
@@ -18,7 +18,7 @@ export class UserService {
     };
 
     await this.userModel.create(obj);
-    return _id;
+    return obj;
   }
 
   async removeUserById(user_id: mongoose.Types.ObjectId)
