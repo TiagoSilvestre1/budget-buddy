@@ -82,4 +82,26 @@ export class ProjectService {
 
         return obj;
     }
+
+    async removeProductById(product_id: mongoose.Types.ObjectId) {
+        this.productModel.findByIdAndDelete(product_id).exec();
+        
+        // There is not gonna exist more than one project with the same product_id
+        const project_obj = await this.projectModel.findOne({ products: { $in: [product_id] } }).exec();
+      
+        console.log("Initial project: ", project_obj);
+
+        if(!project_obj)
+            throw Error('Product not associated with project or does not exist');
+        
+        const index = project_obj.products.indexOf(product_id);
+
+        if(index == -1)
+            throw Error('Product is not associated with a project');
+
+        project_obj.products.splice(index, 1);
+
+        // Save the updated `project_obj` document
+        await project_obj.save();
+    }
 }

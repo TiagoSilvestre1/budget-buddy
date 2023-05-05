@@ -90,6 +90,7 @@
 			addProduct() {
 				backendService.post('/api/project/addProduct', {name: this.productName, project_id: this.project["_id"]}, false);
 				this.dialogVisible = false;
+				// Update local store to reflect changes
 				backendService.get('/api/project/getProjectById?project_id=' + this.project["_id"]).then((response: API) => {
 					this.project = response
 					this.store.dispatch("project/SelectProject", this.project);

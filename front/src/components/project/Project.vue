@@ -137,6 +137,13 @@ export default {
 	methods: {
         removeProduct(product_id: number) {
             console.log(product_id)
+            backendService.get('api/project/removeProductById?product_id=' + product_id, false).then((response: API) => {
+                // Update local store to reflect changes
+                backendService.get('/api/project/getProjectById?project_id=' + this.project["_id"]).then((response: API) => {
+					this.project = response
+					this.store.dispatch("project/SelectProject", this.project);
+				});
+            })
          },
         seeProject() {
             console.log(this.getProject);

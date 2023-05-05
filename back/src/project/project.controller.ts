@@ -92,4 +92,16 @@ export class ProjectController {
 			throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	@Get('removeProductById')
+	async removeProductById(@Query('product_id') product_id: mongoose.Types.ObjectId)
+	{
+		try{
+			return await this.projectService.removeProductById(product_id);
+		}
+		catch(error)
+		{    
+			throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
