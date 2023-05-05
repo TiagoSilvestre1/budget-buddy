@@ -101,7 +101,7 @@ import AddProduct from './addProduct.vue';
 
 
 export default {
-
+    hello: null,
     data: () => ({
         store: useStore(),
         dialogVisible: false,
@@ -136,33 +136,28 @@ export default {
     },
 	methods: {
         removeProduct(product_id: number) {
-            console.log(product_id)
             backendService.get('api/project/removeProductById?product_id=' + product_id, false).then((response: API) => {
                 // Update local store to reflect changes
-                backendService.get('/api/project/getProjectById?project_id=' + this.project["_id"]).then((response: API) => {
+                backendService.get('/api/project/getProjectById?project_id=' + this.project["_id"]).then((response) => {
 					this.project = response
-					this.store.dispatch("project/SelectProject", this.project);
+					this.store.dispatch("project/SelectProject", this.project).then(()=>{ 
+                        this.listProducts();
+                    });
 				});
             })
          },
         seeProject() {
             console.log(this.getProject);
         },
-        /*async getProduct(id: number): Promise<any> {
-            const response = await backendService.get('api/product/productById?id=' + id, false);
-            if(response == null)
-                return
-
-        },*/
         listProducts() {
-            const index: number = 0;
-            this.project["products"].forEach((prod_id: any, index: number) => {
+            this.product_list = []
+            this.project["products"].forEach((prod_id: any) => {
                 backendService.get('api/product/productById?id=' + prod_id, false).then((response: API) => {
                     const entry = {title: response['name'], 
                                     id: response['_id'],
                                     src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', 
                                     flex: 6}
-                    this.product_list[index++] = entry;
+                    this.product_list.push(entry)
                 })
             });
         }
