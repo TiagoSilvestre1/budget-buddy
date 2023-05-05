@@ -7,6 +7,9 @@ import Settings from '../components/Settings.vue'
 import Home from '../components/Home.vue'
 import Project from '../components/project/Project.vue';
 import Collaborators from '../components/project/Collaborators.vue';
+import ProjectCalendar from '../components/project/projectCalendar.vue';
+import ProjectSettings from '../components/project/settings.vue';
+import ProjectBudget from '../components/project/budget.vue';
 import Products from '../components/project/Products.vue';
 import { FooterViews } from '@/components/Footer.vue'
 import store from "..//store/store";
@@ -58,6 +61,27 @@ const router = createRouter({
             {
               path: 'collaborators',
               component: Collaborators,
+              meta: {
+                view: FooterViews.PROJECT
+              }
+            },
+            {
+              path: 'calendar',
+              component: ProjectCalendar,
+              meta: {
+                view: FooterViews.PROJECT
+              }
+            },
+            {
+              path: 'settings',
+              component: ProjectSettings,
+              meta: {
+                view: FooterViews.PROJECT
+              }
+            },
+            {
+              path: 'budget',
+              component: ProjectBudget,
               meta: {
                 view: FooterViews.PROJECT
               }
