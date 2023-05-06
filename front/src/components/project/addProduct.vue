@@ -2,7 +2,7 @@
     <v-row justify="center">
 		<v-dialog
 			v-model="dialogVisible"
-			max-width="500"
+			max-width="512"
 		>
         <template v-slot:activator="{ props }">
 			<v-btn 
@@ -23,7 +23,7 @@
 						<v-col
 							cols="12"
 							sm="12"
-							md="4"
+							md="12"
 						>
 							<v-text-field
 								v-model="productName"
@@ -88,7 +88,6 @@
 		},
 		methods: {
 			addProduct() {
-				
 				backendService.post('/api/project/addProduct', {name: this.productName, project_id: this.project["_id"]}, false).then( () => {
 					this.dialogVisible = false;
 					// Update local store to reflect changes
