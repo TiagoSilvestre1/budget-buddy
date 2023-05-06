@@ -4,6 +4,7 @@
     "swiper": "^9.2.4"
   },
   "dependencies": {
+    "@syncfusion/ej2-vue-gantt": "^21.2.3",
     "vuejs-datepicker": "^1.6.2"
   }
 }
