@@ -39,11 +39,17 @@ export class ProjectService {
         });
         
         await obj.save();
+        return obj;
     }
 
     async getAll()
     {
         return await this.projectModel.find();
+    }
+
+    async removeProjectById(id: mongoose.Types.ObjectId)
+    {
+        const obj = await this.projectModel.findByIdAndRemove(id);
     }
     
     
