@@ -176,27 +176,22 @@ export default {
     </div>
   </div>
 
-
-  <div class="titles">
-    <div class="projects-title">
-      <h1><b>Your Projects</b></h1>
-    </div>
-
+  <div class="title-button-container">
+    <h3><b>Your Projects</b></h3>
     <v-dialog
       v-model="dialog"
        :fullscreen="true"
     >
       <template v-slot:activator="{ props }">
-        <div class="add-project-button">
           <v-btn
+          variant="outlined"
           icon="mdi-plus"
             v-bind="props"
           >
-
+  
           </v-btn>
-        </div>
       </template>
-
+  
       <v-card  style="max-width: 100%; overflow-x: hidden">
         <v-card-title>
         <v-btn icon class="dialog-close-button" @click="dialog = false" style="float:right;">
@@ -208,7 +203,7 @@ export default {
           v-model="new_project_name"
         label="Project name"
       ></v-text-field>
-
+  
       <v-file-input
     accept="image/png, image/jpeg, image/bmp"
     prepend-icon="mdi-camera"
@@ -222,11 +217,11 @@ export default {
             {{ tag.title }}
             <div class="tag-card">
               <h3>{{ tag.title }}</h3>
-
+  
             </div>
           </span>
         </div>
-
+  
         <v-text-field
           label="Budget"
           v-model="new_project_budget"
@@ -238,13 +233,20 @@ export default {
         <br>
         <h4>End date</h4>
         <VueDatePicker v-model="new_project_end_date" :enable-time-picker="false" />
-
+  
         </v-card-text>
         <v-card-actions>
           <v-btn @click="confirmAddProject" color="primary" variant="tonal" block>Add Project</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    
+  </div>
+
+  <div class="titles">
+
+
+
 
 
     <div class="home-container" ref="swiperContainer">
@@ -264,11 +266,13 @@ export default {
     <div class="scroll-indicator" v-if="projects.length > 3" @click="scrollRight"></div>
   </div>
 
+  <div style="height:1cm"></div>
+
+  <h3><b>Other Projects</b></h3>
 
   <div class="titles">
-    <div class="projects-title">
-      <h1><b>Other Projects</b></h1>
-    </div>
+
+
     <div class="home-container" ref="swiperContainer2">
       <div class="itemDetail" v-for="project in collaborates" :key="project._id" @mouseenter="hoverItem = project._id"
         @mouseleave="hoverItem = null" :class="{ 'hover': hoverItem === project._id }">
@@ -313,7 +317,7 @@ export default {
     font-size: 0.5em !important;
     margin-left: 10px !important;
     display: flex;
-    margin-top: 25px;
+
     margin-right: 25px !important;
   }
 
@@ -343,17 +347,6 @@ export default {
     padding: 5% 0;
   }
 
-  .add-project-button {
-    z-index: 9999;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 10px auto 0;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
   .home-container {
     position: relative;
@@ -395,29 +388,6 @@ export default {
 
 }
 
-.add-project-button {
-  z-index: 9999;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 20px auto 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.add-project-button button {
-  font-size: 1.8em;
-
-  background-color: transparent;
-  border: none;
-  outline: none;
-}
-
-.add-project-button button:hover {
-  cursor: pointer;
-}
-
 
 .welcome-card {
   background-color: rgba(255, 204, 0, 0.5);
@@ -449,8 +419,8 @@ export default {
 
 .titles {
   display: flex;
-  margin-top: 50px;
-  margin-left: 100px;
+
+  margin-left:10px !important;
   margin-right: 50px;
 }
 
@@ -485,7 +455,7 @@ export default {
   align-items: center;
   overflow-x: scroll;
   white-space: nowrap;
-  padding: 50px 0;
+  padding: 15px 0;
 }
 
 .home-container::-webkit-scrollbar {
@@ -655,5 +625,17 @@ export default {
 
 .tag-card h3 {
   margin-top: 0;
+}
+
+.title-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.right-button
+{
+  display:inline-block;
 }
 </style>
