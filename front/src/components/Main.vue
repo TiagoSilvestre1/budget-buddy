@@ -76,8 +76,12 @@
           <v-btn class="left-navbar-button" icon="mdi-menu" @click.stop="drawer = !drawer"> </v-btn>
           
         <div style="height:3vh"></div>
-
-        <router-view></router-view>
+        
+        <router-view v-if="$route.path !== '/home'" />
+        <Home
+          v-if="$route.path === '/home'"
+          @update="handleChildEvent"
+        />
 
         <div class="footer">
           <v-card>
@@ -94,10 +98,10 @@ import { useTheme } from 'vuetify/lib/framework.mjs'
 import Footer, { FooterViews } from './Footer.vue';
 import { backendService, type API } from '@/services/api-service';
 import { mapGetters, useStore } from 'vuex';
-
+import Home from '@/components/Home.vue';
 export default {
 	components: {
-    Footer,
+    Footer, Home
 },
 	setup() {
 		const theme = useTheme();
@@ -109,12 +113,7 @@ export default {
 	},
 
   created() {
-    backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
-      if('success' in response && response.success === true)
-      {
-        this.projects = response.data.owned.concat(response.data.collaborates);
-      }
-    });
+    this.getProjects();
   },
 
 	data: () => {
@@ -147,6 +146,24 @@ export default {
     {
       const obj = this.projects.find((val) => val._id === id);
       await this.store.dispatch("project/SelectProject", obj);
+    },
+
+    handleChildEvent(value: string)
+    {
+      
+        if(value === 'project')
+        {
+          this.getProjects();
+        }
+    },
+    getProjects()
+    {
+      backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
+      if('success' in response && response.success === true)
+      {
+        this.projects = response.data.owned.concat(response.data.collaborates);
+      }
+    });
     }
 	},
 }

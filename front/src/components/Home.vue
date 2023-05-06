@@ -15,7 +15,9 @@ const date = ref(new Date());
 const popover = ref(true);
 
 export default {
+  emits: ['update'],
   data(): {
+    
     loading: boolean,
     dialog: boolean,
     projects: Project[],
@@ -142,6 +144,7 @@ export default {
         if(response.status === HttpStatusCode.Ok)
         {
           this.populateProjects();
+          this.$emit('update', 'project');
         }
       });
 
@@ -150,6 +153,8 @@ export default {
       backendService.post(`api/project/delete`, {id: pid} ,true).then((response: AxiosResponse) => {
         if(response.status === HttpStatusCode.Created)
           this.populateProjects();
+          this.$emit('update', 'project');
+
       });
       
     },
