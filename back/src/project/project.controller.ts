@@ -104,4 +104,19 @@ export class ProjectController {
 			throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	@Post('removePersonById')
+	async removePersonById(@Body() info: {
+		person_id: mongoose.Types.ObjectId
+		project_id: mongoose.Types.ObjectId
+	})
+	{
+		try{
+			return await this.projectService.removeCollaboratorById(info.person_id, info.project_id);
+		}
+		catch(error)
+		{    
+			throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }
