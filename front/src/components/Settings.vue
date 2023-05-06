@@ -1,8 +1,11 @@
 
 <script lang="ts">
 import item4 from '@/assets/1.png';
+import { mapGetters } from 'vuex';
     export default{
         data(): {
+          edit_name: string | null,
+          edit_email: string | null,
             name: string | null, 
             phone: string | null, 
             email: string | null, 
@@ -10,6 +13,8 @@ import item4 from '@/assets/1.png';
             profileImg: string | '@/assets/1.png',
             showAddProjectPopup: boolean | null,}{
             return {
+              edit_name: '',
+              edit_email : '',
             name: '',
             phone: '',
             email: '',
@@ -37,11 +42,16 @@ import item4 from '@/assets/1.png';
            
         },
 
+        },
+        computed: {
+      ...mapGetters('auth', ['getUser']),
+      ...mapGetters('project', ['getProject'])
         }
         }
 </script>
 <template>
-    <div class="settings-container">
+  <!--
+    <div>
       <div class="card yellow">
         <form class="profile-form" @submit.prevent="saveProfile">
           <h1><b>Personal Info</b></h1>
@@ -61,8 +71,7 @@ import item4 from '@/assets/1.png';
         </form>
       </div>
       <div class="card-noShade white">
-        <div class="add-project-button">
-        <button @click="showAddProjectPopup = true"><i class="fas fa-edit"></i></button>
+        <div >
         <div class="add-project-popup" v-if="showAddProjectPopup">
         <div class="popup-content">
         <button class="close-button" @click="showAddProjectPopup = false">x</button>
@@ -77,15 +86,58 @@ import item4 from '@/assets/1.png';
         </div>
         </div>
         
-        <div class="profile-img">
-        <img :src="profileImg" alt="Profile image">
-        </div>
+        <v-card style="position:relative;" :class="[ `elevation-8`]">
+        <img :src="profileImg" alt="Profile image" style="max-width:100%;">
+        <v-btn @click="showAddProjectPopup = true" icon="mdi-pencil" style="position:absolute;top:5px;right:5px"></v-btn>
+        </v-card>
 
       </div>
     </div>
+
+  -->
+  <div class="s-main-container" style="padding:10px">
+    
+    <h1>Settings</h1>
+    <v-card :class="[ `elevation-8`]" class="image-block" style="margin:20px">
+      <img :src="profileImg"  alt="Profile image">
+      <v-btn @click="showAddProjectPopup = true" icon="mdi-pencil" style="position:absolute;top:5px;right:5px"></v-btn>
+    </v-card>
+  <div class="input-block" style="padding:20px;max-width:15cm">
+    <h3><b>Personal data</b></h3>
+    <v-container>
+    <v-row>
+      <v-col cols="12" md="12">
+        <v-text-field
+          v-model="edit_name"
+          label="Name"
+          append-icon="mdi-content-save"
+          @click:append="name = edit_name"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" md="12">
+        <v-text-field
+          v-model="edit_email"
+          label="Email"
+          append-icon="mdi-content-save"
+          @click:append="email = edit_email"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+
+    <div style="height:200px"></div>
+  </v-container>
+  </div>
+</div>
+  
   </template>
   
   <style>
+  /*
+  .absolute-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
 
     @media screen and (max-width: 375px) {
       .settings-container {
@@ -119,6 +171,7 @@ import item4 from '@/assets/1.png';
         height: 150%;
         object-fit: cover;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        position: relative;
 
         }
     }
@@ -175,6 +228,7 @@ import item4 from '@/assets/1.png';
       width: 80%;
       height: 80%;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      position: relative;
     }
   
     .profile-img img {
@@ -182,6 +236,7 @@ import item4 from '@/assets/1.png';
       height: 100%;
       object-fit: cover;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      position: relative;
     }
   
     .profile-img i {
@@ -192,6 +247,7 @@ import item4 from '@/assets/1.png';
       background-color: transparent;
       padding: 0.25rem;
       cursor: pointer;
+      position: relative;
     }
   
     .form-group {
@@ -349,6 +405,44 @@ import item4 from '@/assets/1.png';
 
 .add-project-button button:hover {
   cursor: pointer;
+}
+*/
+.s-main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.input-block {
+  background-color: rgba(255, 204, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  
+}
+
+.input-block input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.image-block {
+  max-width: 100%;
+  text-align: center;
+}
+
+.image-block img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
   </style>
