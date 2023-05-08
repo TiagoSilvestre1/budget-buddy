@@ -1,8 +1,12 @@
 <script lang="ts">
 import type { Project } from '@/interfaces/project';
+import type {Product} from '@/interfaces/product';
+import type {Quote} from '@/interfaces/quote';
 import { backendService, type API } from '@/services/api-service';
+import project from '@/store/modules/project';
 import { ref } from 'vue';
 import { mapGetters } from 'vuex';
+import { HttpStatusCode, type Axios, type AxiosResponse } from 'axios';
 
 export default {
 
@@ -73,10 +77,7 @@ export default {
             dot = true
             popover.label = 'Project ' + project.title + ' end date';
           }
-          
-
-
-            
+         
             this.original_attribs.push({
               highlight: highlight,
               popover: popover,
@@ -84,8 +85,65 @@ export default {
               content: content,
               dot: dot,
               title: project.title
-            }) 
+            });
+            
+            project.products.forEach((prod_id: string) => {backendService.get('api/product/productById?id=' + prod_id, true).then((res: AxiosResponse) => {
+              if(res.status === HttpStatusCode.Ok)
+              {
+                let product: Product = res.data;
+
+                product.quotes.forEach((el: string) => {
+                  backendService.get('api/product/quoteById?id=' + el, true).then((quote_res: AxiosResponse) => {
+
+                    if(quote_res.status === HttpStatusCode.Ok)
+                    {
+                      let quote: Quote = quote_res.data;
+
+                      if(product.product)
+                      {
+                        this.original_attribs.push({
+                          highlight: highlight,
+                          popover: 
+                          {
+                            label: product.name + " from " + quote.url + " costing " + quote.price + "€ if purchased, arrives",
+                            visibility: 'focus'
+                          },
+                          dot: null,
+                          content: 'red',
+                          title: project.title,
+                          dates: quote.available
+                        })
+                      }
+                      else{
+                        let quote_dates = null;
+                        if(quote.available && quote.available_2)
+                          quote_dates = {start: quote.available, end: quote.available_2};
+                        if(quote.available && !quote.available_2)
+                          quote_dates = quote.available;
+                        if(!quote.available && quote.available_2)
+                          quote_dates = quote.available_2;
+
+                        this.original_attribs.push({
+                          highlight: highlight,
+                          popover: 
+                          {
+                            label: "Service " + product.name + " occurs",
+                            visibility: 'focus'
+                          },
+                          dot: null,
+                          content: 'orange',
+                          title: project.title,
+                          dates: quote_dates
+                        })
+                      }
+                    }
+                  });
+                });
+              }
+            })});
           });
+
+          
       }
     });
     },
