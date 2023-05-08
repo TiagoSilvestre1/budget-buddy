@@ -81,10 +81,9 @@ export default {
 	methods: {
         listCollaborators() {
             this.project = this.getProject;
-            this.collaborator_list = [];
-            const coll = this.project["collaborators"];
+            this.collaborator_list.splice(0,this.collaborator_list.length);
+            const coll = [...this.project["collaborators"]];
             coll.push(this.user["id"]);
-            
             coll.forEach((coll_id: String) => {
                 backendService.get('/api/user/userById?user_id=' + coll_id, false).then((response) => {
                     const entry = {name: response['name'], 
@@ -101,9 +100,9 @@ export default {
                 this.errorMsg = true;
                 return;
             }
+
             backendService.post('/api/project/removePersonById', {person_id: person_id, project_id: this.project["_id"]}, false).then((response) => {
                 // Update local store to reflect changes
-                console.log(response)
                 backendService.get('/api/project/getProjectById?project_id=' + this.project["_id"]).then((response) => {
 					this.project = response
 					this.store.dispatch("project/SelectProject", this.project).then(()=>{ 

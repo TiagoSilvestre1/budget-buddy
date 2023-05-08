@@ -121,7 +121,7 @@ export class ProjectService {
         if(index == -1)
             throw Error('Collaborator is not associated with the project');
 
-        project_obj.products.splice(index, 1);
+        project_obj.collaborators.splice(index, 1);
 
         // Save the updated `project_obj` document
         await project_obj.save();
