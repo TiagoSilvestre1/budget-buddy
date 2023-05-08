@@ -10,7 +10,7 @@
             title="Home"
             value="home"
             router-link
-            to="../home"
+            href="/home"
           ></v-list-item>
 
           <v-list-group value="Projects">
