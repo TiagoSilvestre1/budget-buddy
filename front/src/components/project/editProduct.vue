@@ -1,5 +1,5 @@
 <template>
-    <v-row justify="center" class="edit_button" style="margin: 0px;">
+    <v-row justify="center" style="margin: 0px;">
       <v-dialog
         v-model="dialogVisible"
         max-width="512"
@@ -16,7 +16,8 @@
         </template>
         <v-card>
 			<v-card-title>
-				<span class="text-h5">Edit Product</span>
+				<span class="text-h5" v-if="type">Edit Product</span>
+				<span class="text-h5" v-else>Edit Service</span>
 			</v-card-title>
 			<v-card-text>
 				<v-container>
@@ -31,6 +32,15 @@
 								label="Product Name*"
                                 color="orange"
                                 disabled
+								v-if="type"
+								required
+							></v-text-field>
+							<v-text-field
+								v-model="product['name']"
+								label="Service Name*"
+                                color="orange"
+                                disabled
+								v-else
 								required
 							></v-text-field>
 						</v-col>
@@ -85,6 +95,7 @@
                 store: useStore(),
                 project: {} as Project,
                 product: {} as Product,
+				type: true // true for product, false for service
             }
         },
         props: {
@@ -96,6 +107,7 @@
 		created() {
 			this.project = this.getProject;
             this.getProductInfo();
+			
 		},
 		computed: {
 			...mapGetters('auth', ['getUser']),
@@ -105,6 +117,10 @@
             getProductInfo() {
                 backendService.get('/api/product/productById?id=' + this.productId, false).then( (response: any) => {
 					this.product = response;
+					if(response['product'] === true || response['product'] === null || !response.hasOwnProperty('product'))
+						this.type = true;
+                    else
+						this.type = false;
 				});
             },
             editProduct() {

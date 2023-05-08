@@ -55,12 +55,12 @@
         max-width="800"
     >
         <v-card-title>
-            <h2 class="font-weight-light">
+            <h2 class="font-weight-light d-flex justify-content-between">
                 <v-icon
                 size=" big"
                 icon="mdi-account-hard-hat"
                 ></v-icon> 
-                Services List
+                Service List
                 <AddProduct @productAdded="listProducts" v-model="addDialogVisible" :type="false"/>
             </h2>
         </v-card-title> 
@@ -86,11 +86,18 @@
                     <v-card-actions>
                     
                     <v-spacer></v-spacer>
-                    
-                    <v-btn size="small" variant="text" icon="mdi-cog" @click="seeProject"></v-btn>
-
-                    <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete"></v-btn>
-
+                        <v-row>
+                            <v-col cols="5"></v-col>
+                            <v-col cols="2">
+                                <ViewQuote @productAdded="listProducts" v-model="editDialogVisible" :productId="service.id" />
+                            </v-col>
+                            <v-col cols="2">
+                                <EditProduct @productAdded="listProducts" v-model="editDialogVisible" :productId="service.id" />
+                            </v-col>
+                            <v-col cols="3">
+                                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeProduct(service.id)"></v-btn>
+                            </v-col>
+                        </v-row>
                     </v-card-actions>
                 </v-card>
             </v-col>

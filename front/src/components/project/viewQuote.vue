@@ -20,47 +20,12 @@
           <v-card-text>
             <v-container>
               <v-row>
-                <!--<v-col
-                  cols="12"
-                  sm="12"
-                  md="12"
-                >
-					<v-table>
-						<thead>
-							<tr>
-								<th class="text-left">
-								Url
-								</th>
-								<th class="text-left">
-								Description
-								</th>
-								<th class="text-left">
-								Price
-								</th>
-								<th class="text-left">
-								Arrival
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr
-								v-for="quote in quote_list"
-								:key="quote._id"
-							>
-								<td>{{ quote.url }}</td>
-								<td>{{ quote.description }}</td>
-								<td>{{ quote.price }}</td>
-								<td>{{ quote.available }}</td>
-							</tr>
-						</tbody>
-					</v-table>
-				</v-col>-->
 				<v-col
                   cols="6"
                   sm="6"
                   md="2"
                 >
-					<add-quote @quoteAdded="getProductInfo" v-model="addQuote" :productId="productId" />
+					<add-quote @quoteAdded="getProductInfo" v-model="addQuote" :productId="productId" :type="type" />
 				</v-col>
 				<v-col
 					cols="12"
@@ -98,10 +63,16 @@
 								</v-expansion-panel-title>
 								<v-expansion-panel-text>
 									<v-row>
-										<v-col cols="12">
+										<v-col cols="12" v-if="type">
 										<p><strong>URL:</strong> {{ quote.url }}</p>
 										<p><strong>Price:</strong> {{ quote.price }}</p>
 										<p><strong>Arrival Date:</strong> {{ formatDate(quote.available) }}</p>
+										</v-col>
+										<v-col cols="12" v-else>
+										<p><strong>URL:</strong> {{ quote.url }}</p>
+										<p><strong>Price:</strong> {{ quote.price }}</p>
+										<p><strong>Start Date:</strong> {{ formatDate(quote.available) }}</p>
+										<p><strong>Finish Date:</strong> {{ formatDate(quote.available_2) }}</p>
 										</v-col>
 									</v-row>
 								</v-expansion-panel-text>
@@ -145,6 +116,7 @@
                 project: {} as Project,
                 product: {} as Product,
 				quote_list: [] as Array<Quote>,
+				type: true // true for product, false for service
             }
         },
         props: {
@@ -168,6 +140,12 @@
             getProductInfo() {
                 backendService.get('/api/product/productById?id=' + this.productId, false).then( (response: any) => {
 					this.product = response;
+
+					if(response['product'] === true || response['product'] === null || !response.hasOwnProperty('product'))
+						this.type = true;
+                    else
+						this.type = false;
+						
 					this.quote_list = []
 					this.product["quotes"].forEach((quote_id: any) => {
 						backendService.get('api/product/quoteById?id=' + quote_id, false).then((response) => {

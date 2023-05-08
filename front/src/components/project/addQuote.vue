@@ -14,7 +14,8 @@
         </template>
         <v-card>
 			<v-card-title>
-				<span class="text-h5">Add Quote</span>
+				<span class="text-h5" v-if="type">Add Quote - Product</span>
+				<span class="text-h5" v-else>Add Quote - Service</span>
 			</v-card-title>
 			<v-card-text>
 				<v-container>
@@ -55,8 +56,24 @@
 							sm="12"
 							md="12"
 						>
+							<h4 class="text-center" v-if="type">Arrival Date</h4>
+							<h4 class="text-center" v-else>Start Date</h4>
                             <VueDatePicker 
                                 v-model="quoteDate" 
+                                :enable-time-picker="true" 
+                                label="Arrival Date*"
+								required
+                            />
+						</v-col>
+						<v-col
+							cols="12"
+							sm="12"
+							md="12"
+							v-if="!type"
+						>
+							<h4 class="text-center">End Date</h4>
+                            <VueDatePicker 
+                                v-model="quoteDate_2" 
                                 :enable-time-picker="true" 
                                 label="Arrival Date*"
 								required
@@ -105,6 +122,7 @@
             quoteDescription: null,
             quotePrice: null,
             quoteDate: new Date(),
+			quoteDate_2: new Date(),
 		}),
 		created() {
 			this.project = this.getProject;
@@ -112,6 +130,11 @@
         props: {
             productId: {
                 type: String,
+                required: true
+            },
+			type: {
+				// true for product, false for service
+                type: Boolean,
                 required: true
             }
         },
@@ -122,6 +145,12 @@
 		methods: {
 			addQuote() {
                 this.project = this.getProject;
+				let endDate;
+				if(this.type)
+					endDate = null;
+				else
+					endDate = this.quoteDate_2.toISOString();
+				
                 const payload = {
                     product_id: this.productId,
                     quote: {
@@ -129,6 +158,7 @@
                         url: this.quoteUrl,
                         price: this.quotePrice,
                         available: this.quoteDate.toISOString(),
+						available_2: endDate
                         }
                     };
                 
