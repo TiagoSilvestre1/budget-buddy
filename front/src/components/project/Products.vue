@@ -33,12 +33,18 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-
-                        <ViewQuote @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
-                    
-                        <EditProduct @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
-
-                        <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeProduct(products.id)"></v-btn>
+                        <v-row>
+                            <v-col cols="6"></v-col>
+                            <v-col cols="2">
+                                <ViewQuote @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
+                            </v-col>
+                            <v-col cols="2">
+                                <EditProduct @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
+                            </v-col>
+                            <v-col cols="2">
+                                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeProduct(products.id)"></v-btn>
+                            </v-col>
+                        </v-row>
                     </v-card-actions>
                 </v-card>
             </v-col>

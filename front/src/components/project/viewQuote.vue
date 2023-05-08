@@ -1,5 +1,5 @@
 <template>
-    <v-row justify="center">
+    <v-row justify="center" style="margin: 0px;">
       <v-dialog
         v-model="dialogVisible"
         max-width="1024"
@@ -15,12 +15,12 @@
         </template>
         <v-card>
           <v-card-title>
-            <span class="text-h5">{{ product['name'] }} Quotes</span>
+            <span class="text-h5">Quotes: {{ product['name'] }}</span>
           </v-card-title>
           <v-card-text>
             <v-container>
               <v-row>
-                <v-col
+                <!--<v-col
                   cols="12"
                   sm="12"
                   md="12"
@@ -54,17 +54,61 @@
 							</tr>
 						</tbody>
 					</v-table>
-					<v-spacer></v-spacer>
-
-					<v-expansion-panels>
-						<v-expansion-panel
-							v-for="i in 3"
-							:key="i"
-							title="Item"
-							text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-						></v-expansion-panel>
-					</v-expansion-panels>
-                </v-col>
+				</v-col>-->
+				<v-col
+                  cols="6"
+                  sm="6"
+                  md="2"
+                >
+					<add-quote @quoteAdded="getProductInfo" v-model="addQuote" :productId="productId" />
+				</v-col>
+				<v-col
+					cols="12"
+					sm="12"
+					md="12"
+				>
+					<div>
+						<v-expansion-panels expand-icon="mdi-chevron-down" hide-actions>
+							<v-expansion-panel 
+								v-for="(quote, index) in quote_list" 
+								:key="index"
+							>
+								<v-expansion-panel-title expand-icon="mdi-menu-down">
+										<v-row no-gutters>
+											<v-col 
+												cols="10" 
+												class="d-flex justify-start">
+												{{ quote.description }}
+											</v-col>
+											<v-col
+												cols="2"
+												class="text--secondary"
+											>
+												<v-fade-transition leave-absolute>
+													<v-btn 
+														@click.stop="removeQuote(quote._id)" 
+														size="small" 
+														color="surface-variant" 
+														variant="text" 
+														icon="mdi-delete"
+													></v-btn>
+												</v-fade-transition>
+											</v-col>
+										</v-row>
+								</v-expansion-panel-title>
+								<v-expansion-panel-text>
+									<v-row>
+										<v-col cols="12">
+										<p><strong>URL:</strong> {{ quote.url }}</p>
+										<p><strong>Price:</strong> {{ quote.price }}</p>
+										<p><strong>Arrival Date:</strong> {{ formatDate(quote.available) }}</p>
+										</v-col>
+									</v-row>
+								</v-expansion-panel-text>
+							</v-expansion-panel>
+						</v-expansion-panels>
+					</div>
+				</v-col>
               </v-row>
             </v-container>
           </v-card-text>
@@ -76,13 +120,6 @@
 				@click="dialogVisible = false"
             >
               Close
-            </v-btn>
-            <v-btn
-				color="deep-orange" 
-				variant="tonal"
-              	@click="dialogVisible = false"
-            >
-              Save
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -96,6 +133,7 @@
     import type { Project } from '../../interfaces/project';
     import type { Product } from '../../interfaces/product';
 	import type { Quote } from '../../interfaces/quote';
+	import AddQuote from './addQuote.vue';
 
 
     export default {
@@ -107,18 +145,6 @@
                 project: {} as Project,
                 product: {} as Product,
 				quote_list: [] as Array<Quote>,
-				headers: [
-					{
-						text: 'Url',
-						align: 'left',
-						sortable: false,
-						value: 'name',
-					},
-					{ text: 'Description', value: 'calories', sortable: false,},
-					{ text: 'Price (€)', value: 'euros' },
-					{ text: 'Arrival Date', value: 'date' },
-				],
-				showId: false
             }
         },
         props: {
@@ -127,6 +153,9 @@
                 required: true
             }
         },
+		components: {
+			AddQuote
+		},
 		created() {
 			this.project = this.getProject;
             this.getProductInfo();
@@ -149,7 +178,24 @@
             },
 			addQuote() {  },
 			editQuote() {  },
-			removeQuote() {  }
+			removeQuote(quote_id: number) { 
+				backendService.post('/api/product/removeQuote', {id: quote_id}, false).then( () => {
+					// Update local store to reflect changes
+					backendService.get('/api/project/getProjectById?project_id=' + this.project["_id"]).then((response) => {
+						this.project = response;
+						this.store.dispatch("project/SelectProject", this.project).then( () => {
+							this.getProductInfo();
+							}
+						);
+					});
+				});
+			},
+			formatDate(date: Date): String {
+				// Date should be on the toISOString() format
+				date = new Date(date);
+				// Implement your preferred date formatting method here
+				return date.toUTCString();
+			},
 		},
     }
 </script>

@@ -43,14 +43,14 @@
 					variant="tonal"
 					@click="dialogVisible = false"
 				>
-				Close
+					Close
 				</v-btn>
 				<v-btn
 					color="deep-orange" 
 					variant="tonal"
 					@click="addProduct"
 				>
-				Save
+					Save
 				</v-btn>
 			</v-card-actions>
         </v-card>

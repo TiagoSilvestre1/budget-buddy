@@ -108,8 +108,7 @@ export class ProductController {
     async removeQuote(@Body() info: {id: mongoose.Types.ObjectId})
     {
         try{
-            await this.productService.destroyQuote(info.id);
-            return HttpStatus.OK;
+            return await this.productService.destroyQuote(info.id);
         }
         catch(error)
         {

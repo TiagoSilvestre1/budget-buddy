@@ -67,8 +67,24 @@ export class ProductService {
 
     async destroyQuote(quote_id: mongoose.Types.ObjectId)
     {
-        const obj = await this.quoteModel.findByIdAndDelete(quote_id);
-        await obj.save();
+        this.quoteModel.findByIdAndDelete(quote_id).exec();
+        
+        // There is not gonna exist more than one product with the same quote_id
+        const product_obj = await this.productModel.findOne({ quotes: { $in: [quote_id] } }).exec();
+
+        if(!product_obj)
+            throw Error('Quote not associated with Product or does not exist');
+        
+        const index = product_obj.quotes.indexOf(quote_id);
+
+        if(index == -1)
+            throw Error('Quote is not associated with a Product');
+
+            product_obj.quotes.splice(index, 1);
+
+        // Save the updated `product_obj` document
+        await product_obj.save();
+
     }
 
     async getAll()
