@@ -32,9 +32,15 @@
                     </v-img>
 
                     <v-card-actions>
-                        <v-spacer></v-spacer>
-
-                        <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeCollaborator(collaborator.id)"></v-btn>
+                        <v-row>
+                            <v-col cols="6"></v-col>
+                            <v-col cols="3">
+                                <EditCollaborator @collaboratorAdded="listCollaborators" v-model="editDialogVisible" :collaboratorId="collaborator.id" />
+                            </v-col>
+                            <v-col cols="3">
+                                <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeCollaborator(collaborator.id)"></v-btn>
+                            </v-col>
+                        </v-row>
                     </v-card-actions>
                 </v-card>
             </v-col>
@@ -53,6 +59,7 @@ import { mapGetters, useStore } from 'vuex';
 import type { User } from './../../interfaces/user';
 import type { Project } from './../../interfaces/project';
 import AddCollaborator from './addCollaborator.vue';
+import EditCollaborator from './editCollaborator.vue';
 
 export default {
     hello: null,
@@ -61,13 +68,13 @@ export default {
         errorMsg: false,
         addDialogVisible: false,
         editDialogVisible: false,
-        quoteDialogVisible: false,
         project: { } as Project,
         collaborator_list: [ ] as Array<any>,
         user: {} as User
     }),
     components: {
         AddCollaborator,
+        EditCollaborator
     },
     created() {
         this.project = this.getProject;

@@ -36,11 +36,11 @@
                                 sm="12"
                                 md="12"
                             >
-                            <v-select
-                                v-model="permission"
-                                label="Permissions*"
-                                :items="['Read', 'Write', 'Admin']"
-                                required
+                                <v-select
+                                    v-model="permission"
+                                    label="Permissions*"
+                                    :items="['Read', 'Write', 'Admin']"
+                                    required
                                 ></v-select>
                             </v-col>
                         </v-row>
@@ -87,7 +87,7 @@
             collaboratorEmail: null,
             errorMsg: false,
             sameEmail: false,
-            permission: null,
+            permission: "Read",
             user: { } as User,
 			store: useStore(),
 			project: { } as Project,

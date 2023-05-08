@@ -22,26 +22,25 @@
             >
                 <v-card>
                     <v-img
-                    :src="products.src"
-                    class="align-end"
-                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                    height="200px"
-                    cover
+                        :src="products.src"
+                        class="align-end"
+                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                        height="200px"
+                        cover
                     >
-                    <v-card-title class="text-white" v-text="products.title"></v-card-title>
+                        <v-card-title class="text-white" v-text="products.title"></v-card-title>
                     </v-img>
 
                     <v-card-actions>
-                        <v-spacer></v-spacer>
                         <v-row>
-                            <v-col cols="6"></v-col>
+                            <v-col cols="5"></v-col>
                             <v-col cols="2">
                                 <ViewQuote @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
                             </v-col>
                             <v-col cols="2">
                                 <EditProduct @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
                             </v-col>
-                            <v-col cols="2">
+                            <v-col cols="3">
                                 <v-btn size="small" color="surface-variant" variant="text" icon="mdi-delete" @click="removeProduct(products.id)"></v-btn>
                             </v-col>
                         </v-row>
