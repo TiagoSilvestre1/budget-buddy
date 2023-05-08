@@ -1,5 +1,5 @@
 <template>
-    <v-row justify="center">
+    <v-row justify="center" class="edit_button" style="margin: 0px;">
       <v-dialog
         v-model="dialogVisible"
         max-width="512"
@@ -11,6 +11,7 @@
 				variant="text" 
                 color="surface-variant"
 				icon="mdi-cog"
+				
 			></v-btn>
         </template>
         <v-card>

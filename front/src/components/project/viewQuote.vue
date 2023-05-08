@@ -1,5 +1,5 @@
 <template>
-    <v-row justify="center">
+    <v-row justify="center" style="margin: 0px;">
       <v-dialog
         v-model="dialogVisible"
         max-width="1024"
@@ -58,9 +58,9 @@
 				<v-col
                   cols="6"
                   sm="6"
-                  md="6"
+                  md="2"
                 >
-					<v-btn @click="addQuote" color="green">Add Quote</v-btn>
+					<add-quote @quoteAdded="getProductInfo" v-model="addQuote" :productId="productId" />
 				</v-col>
 				<v-col
 					cols="12"
@@ -133,6 +133,7 @@
     import type { Project } from '../../interfaces/project';
     import type { Product } from '../../interfaces/product';
 	import type { Quote } from '../../interfaces/quote';
+	import AddQuote from './addQuote.vue';
 
 
     export default {
@@ -144,18 +145,6 @@
                 project: {} as Project,
                 product: {} as Product,
 				quote_list: [] as Array<Quote>,
-				headers: [
-					{
-						text: 'Url',
-						align: 'left',
-						sortable: false,
-						value: 'name',
-					},
-					{ text: 'Description', value: 'calories', sortable: false,},
-					{ text: 'Price (€)', value: 'euros' },
-					{ text: 'Arrival Date', value: 'date' },
-				],
-				showId: false
             }
         },
         props: {
@@ -164,6 +153,9 @@
                 required: true
             }
         },
+		components: {
+			AddQuote
+		},
 		created() {
 			this.project = this.getProject;
             this.getProductInfo();
@@ -186,7 +178,18 @@
             },
 			addQuote() {  },
 			editQuote() {  },
-			removeQuote(quote_id: number) { console.log(quote_id) },
+			removeQuote(quote_id: number) { 
+				backendService.post('/api/product/removeQuote', {id: quote_id}, false).then( () => {
+					// Update local store to reflect changes
+					backendService.get('/api/project/getProjectById?project_id=' + this.project["_id"]).then((response) => {
+						this.project = response;
+						this.store.dispatch("project/SelectProject", this.project).then( () => {
+							this.getProductInfo();
+							}
+						);
+					});
+				});
+			},
 			formatDate(date: Date): String {
 				// Date should be on the toISOString() format
 				date = new Date(date);
