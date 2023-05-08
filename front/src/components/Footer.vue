@@ -19,6 +19,16 @@
     }
 
     export default {
+        created()
+        {
+            if('view' in this.$route.meta)
+            {
+                this.view = this.$route.meta.view === 'GLOBAL' ? FooterViews.GLOBAL : FooterViews.PROJECT;
+            }
+            else{
+                this.view = FooterViews.GLOBAL;
+            }
+        },
         data: () => {
             return {
                 Redirects : Redirects,
