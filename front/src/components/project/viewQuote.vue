@@ -54,6 +54,16 @@
 							</tr>
 						</tbody>
 					</v-table>
+					<v-spacer></v-spacer>
+
+					<v-expansion-panels>
+						<v-expansion-panel
+							v-for="i in 3"
+							:key="i"
+							title="Item"
+							text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+						></v-expansion-panel>
+					</v-expansion-panels>
                 </v-col>
               </v-row>
             </v-container>
@@ -61,16 +71,16 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
-              color="blue-darken-1"
-              variant="text"
-              @click="dialogVisible = false"
+				color="deep-orange" 
+				variant="tonal"
+				@click="dialogVisible = false"
             >
               Close
             </v-btn>
             <v-btn
-              color="blue-darken-1"
-              variant="text"
-              @click="dialogVisible = false"
+				color="deep-orange" 
+				variant="tonal"
+              	@click="dialogVisible = false"
             >
               Save
             </v-btn>

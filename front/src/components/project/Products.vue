@@ -34,7 +34,7 @@
                     <v-card-actions>
                         <v-spacer></v-spacer>
 
-                        <AddQuote @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
+                        <ViewQuote @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
                     
                         <EditProduct @productAdded="listProducts" v-model="editDialogVisible" :productId="products.id" />
 
@@ -99,7 +99,7 @@ import { backendService, type API } from '@/services/api-service';
 import { mapGetters, useStore } from 'vuex';
 import AddProduct from './addProduct.vue';
 import EditProduct from './editProduct.vue';
-import AddQuote from './addQuote.vue';
+import ViewQuote from './viewQuote.vue';
 
 
 export default {
@@ -130,7 +130,7 @@ export default {
     components: {
         AddProduct,
         EditProduct,
-        AddQuote
+        ViewQuote
     },
     created() {
         this.project = this.getProject;
