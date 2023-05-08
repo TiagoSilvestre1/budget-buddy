@@ -14,19 +14,16 @@
       </div>
     </div>
 
-    <div class="container-chart">
+    <!-- <div class="container-chart">
       <h1><strong>Budget</strong></h1>
       <div class="card-chart">
         <LineChart />
       </div>
-    </div>
+    </div> -->
 
-    <div class="container-chart">
-      <h1><strong>Line Graph</strong></h1>
-      <div class="card-chart">
+   
         <BadLineChart />
-      </div>
-    </div>
+     
 
   </template>
   
@@ -85,7 +82,7 @@
   .card-chart {
     display: flex;
     width: 50%;
-    height: 50%;
+    height: 80%;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
