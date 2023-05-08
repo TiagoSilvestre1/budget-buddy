@@ -124,6 +124,7 @@
 						this.project = response
 						this.store.dispatch("project/SelectProject", this.project).then( () => {
 							this.$emit('productAdded');
+							this.productName = null;
 							}
 						);
 					});

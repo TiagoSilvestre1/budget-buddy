@@ -27,6 +27,18 @@
                         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
                         height="200px"
                         cover
+                        style="opacity: 0.5; cursor: not-allowed;"
+                        v-if="products.completed"
+                    >
+                        <v-card-title class="text-white" v-text="products.title"></v-card-title>
+                    </v-img>
+                    <v-img
+                        :src="products.src"
+                        class="align-end"
+                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                        height="200px"
+                        cover
+                        v-else
                     >
                         <v-card-title class="text-white" v-text="products.title"></v-card-title>
                     </v-img>
@@ -74,13 +86,25 @@
             >
                 <v-card>
                     <v-img
-                    :src="service.src"
-                    class="align-end"
-                    gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-                    height="200px"
-                    cover
+                        :src="service.src"
+                        class="align-end"
+                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                        height="200px"
+                        cover
+                        style="opacity: 0.5; cursor: not-allowed;"
+                        v-if="service.completed"
                     >
-                    <v-card-title class="text-white" v-text="service.title"></v-card-title>
+                        <v-card-title class="text-white" v-text="service.title"></v-card-title>
+                    </v-img>
+                    <v-img
+                        :src="service.src"
+                        class="align-end"
+                        gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                        height="200px"
+                        cover
+                        v-else
+                    >
+                        <v-card-title class="text-white" v-text="service.title"></v-card-title>
                     </v-img>
 
                     <v-card-actions>
@@ -164,6 +188,7 @@ export default {
                 backendService.get('api/product/productById?id=' + prod_id, false).then((response: Product) => {
                     const entry: any = {title: response['name'], 
                                     id: response['_id'],
+                                    completed: response['completed'],
                                     src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', 
                                     flex: 6}
                     if(response['product'] === true || response['product'] === null || !response.hasOwnProperty('product'))
