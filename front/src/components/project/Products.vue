@@ -9,7 +9,7 @@
             <h2 class="font-weight-light d-flex justify-content-between">
                 <v-icon size="big" icon="mdi-shopping"></v-icon> 
                 Product List
-                <AddProduct @productAdded="listProducts" v-model="addDialogVisible" />
+                <AddProduct @productAdded="listProducts" v-model="addDialogVisible" :type="true"/>
             </h2>
         </v-card-title> 
 
@@ -61,6 +61,7 @@
                 icon="mdi-account-hard-hat"
                 ></v-icon> 
                 Services List
+                <AddProduct @productAdded="listProducts" v-model="addDialogVisible" :type="false"/>
             </h2>
         </v-card-title> 
 
@@ -105,6 +106,8 @@ import { mapGetters, useStore } from 'vuex';
 import AddProduct from './addProduct.vue';
 import EditProduct from './editProduct.vue';
 import ViewQuote from './viewQuote.vue';
+import type { Project } from './../../interfaces/project';
+import type { Product } from './../../interfaces/product';
 
 
 export default {
@@ -114,23 +117,9 @@ export default {
         addDialogVisible: false,
         editDialogVisible: false,
         quoteDialogVisible: false,
-        project: {
-            products: [],
-            _id: String,
-            title: String,
-            start_date: String,
-            finish_date: String,
-            budget: Number,
-            owner: String,
-            collaborators: [],
-            __v: Number,
-        },
+        project: { } as Project,
         product_list: [ ] as Array<any>,
-        services_list: [
-            { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-            { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-            { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        ],
+        services_list: [ ] as Array<any>,
     }),
     components: {
         AddProduct,
@@ -163,23 +152,20 @@ export default {
         listProducts() {
             this.project = this.getProject;
             this.product_list = []
+            this.services_list = []
             this.project["products"].forEach((prod_id: any) => {
-                backendService.get('api/product/productById?id=' + prod_id, false).then((response) => {
-                    const entry = {title: response['name'], 
+                backendService.get('api/product/productById?id=' + prod_id, false).then((response: Product) => {
+                    const entry: any = {title: response['name'], 
                                     id: response['_id'],
                                     src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', 
                                     flex: 6}
-                    this.product_list.push(entry)
+                    if(response['product'] === true || response['product'] === null || !response.hasOwnProperty('product'))
+                        this.product_list.push(entry)
+                    else
+                        this.services_list.push(entry)
                 })
             });
         }
-    /*
-    seeUser() {
-      console.log(this.getUser);
-    },
-    seeProject() {
-      console.log(this.getProject);
-    },*/
 	},
 }
 </script>

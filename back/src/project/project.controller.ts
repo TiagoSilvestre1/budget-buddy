@@ -96,6 +96,22 @@ export class ProjectController {
 		}
 	}
 
+	@Post('addService')
+	async addService(@Body() info: {
+		name: string
+		project_id: mongoose.Types.ObjectId
+	})
+	{
+		try{
+			await this.projectService.addService(info);
+			return {success: true};
+		}
+		catch(error)
+		{
+			throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@Get('removeProductById')
 	async removeProductById(@Query('product_id') product_id: mongoose.Types.ObjectId)
 	{

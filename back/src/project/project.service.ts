@@ -15,6 +15,28 @@ export class ProjectService {
         const obj = new this.productModel({
             name: info.name,
             completed: false,
+            product: true,
+            quotes: []
+            });
+
+      await obj.save();
+
+      const project = await this.projectModel.findById(info.project_id).exec();
+
+      project.products.push(obj.id);
+
+      await project.save();
+    }
+
+    async addService(info: {
+        name: string
+        project_id: mongoose.Types.ObjectId
+      }) {
+
+        const obj = new this.productModel({
+            name: info.name,
+            completed: false,
+            product: false,
             quotes: []
             });
 

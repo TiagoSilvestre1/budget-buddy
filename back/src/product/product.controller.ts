@@ -71,11 +71,12 @@ export class ProductController {
     url: string | null,
     price: number | null,
     available: Date | null,
+    available_2: Date | null,
     }
   })
   {
     try{
-        await this.productService.addQuote(info.product_id, info.quote.url,info.quote.description, info.quote.price, info.quote.available);
+        await this.productService.addQuote(info.product_id, info.quote.url,info.quote.description, info.quote.price, info.quote.available, info.quote.available_2);
         return HttpStatus.OK;
       }
       catch(error)
@@ -90,12 +91,13 @@ export class ProductController {
     url: string | null,
     price: number | null,
     available: Date | null,
+    available_2: Date | null,
     _id: mongoose.Types.ObjectId
     
     })
     {
         try{
-            await this.productService.modifyQuote(info._id, info.url,info.description, info.price, info.available);
+            await this.productService.modifyQuote(info._id, info.url,info.description, info.price, info.available, info.available_2);
             return HttpStatus.OK;
         }
         catch(error)

@@ -37,7 +37,7 @@ export class ProductService {
     return obj;
     }
 
-    async addQuote(product_id: mongoose.Types.ObjectId , url: string | null, description: string | null, price: number | null, available: Date | null)
+    async addQuote(product_id: mongoose.Types.ObjectId , url: string | null, description: string | null, price: number | null, available: Date | null, available_2: Date | null)
     {
         const obj = await this.productModel.findById(product_id);
 
@@ -47,6 +47,7 @@ export class ProductService {
         quote.description = description;
         quote.price = price;
         quote.available = available;
+        quote.available_2 = available_2;
 
         await quote.save();
         
@@ -55,13 +56,14 @@ export class ProductService {
         await obj.save();
     }
 
-    async modifyQuote(quote_id: mongoose.Types.ObjectId,  url: string | null, description: string | null, price: number | null, available: Date | null)
+    async modifyQuote(quote_id: mongoose.Types.ObjectId,  url: string | null, description: string | null, price: number | null, available: Date | null, available_2: Date | null)
     {
         const obj = await this.quoteModel.findById(quote_id);
         obj.url = url;
         obj.description = description;
         obj.price = price;
         obj.available = available
+        obj.available_2 = available_2;
         await obj.save();
     }
 
