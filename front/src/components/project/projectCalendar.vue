@@ -15,23 +15,22 @@ export default {
     ...mapGetters('project',['getProject'])
   },
   data: () => {
-    console.log("data running ...")
     return {
       projects: [] as Array<any>,
       original_attribs: [] as Array<any>,
       attributes: [] as Array<any>,
     }
   },
-  mounted()
+  async mounted()
   {
-    this.generate_original_attribs();
-    this.filter_selection();
+    let arr = await this.generate_original_attribs();
+    this.filter_selection(arr);
   },
   methods: {
-    generate_original_attribs()
+    async generate_original_attribs()
     {
-      this.original_attribs = [];
-      backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
+      let arr: any[] = [];
+      await backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
       if('success' in response && response.success === true)
       {
         this.projects = response.data.owned.concat(response.data.collaborates);
@@ -75,7 +74,7 @@ export default {
             popover.label = 'Project ' + project.title + ' end date';
           }
          
-            this.original_attribs.push({
+            arr.push({
               highlight: highlight,
               popover: popover,
               dates: dates,
@@ -98,7 +97,7 @@ export default {
 
                       if(product.product)
                       {
-                        this.original_attribs.push({
+                        arr.push({
                           highlight: highlight,
                           popover: 
                           {
@@ -120,7 +119,7 @@ export default {
                         if(!quote.available && quote.available_2)
                           quote_dates = quote.available_2;
 
-                        this.original_attribs.push({
+                        arr.push({
                           highlight: highlight,
                           popover: 
                           {
@@ -143,13 +142,14 @@ export default {
           
       }
     });
+    return arr;
     },
-    filter_selection(){
+    filter_selection(arr: any[]){
       this.attributes = [];
       if(this.getProject.title === 'All')
-        this.attributes = this.original_attribs;
+        this.attributes = arr
       else{
-        this.attributes = this.original_attribs.filter((el: any) => {
+        this.attributes = arr.filter((el: any) => {
           return el.title === this.getProject.title
         });
       }
