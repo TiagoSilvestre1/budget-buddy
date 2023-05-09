@@ -37,14 +37,14 @@
             title="calendar"
             value="calendar"
             router-link
-            to="../calendar"
+            href="/calendar"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-cogs"
             title="Settings"
             value="settings"
             router-link
-            to="../settings"
+            href="/settings"
           ></v-list-item>
           <v-list-item
             prepend-icon="mdi-theme-light-dark"

@@ -225,7 +225,7 @@ export default {
       <i class="fas fa-edit" style="position: absolute; top: 5px; right: 25px; cursor: pointer;"
         @click="goToSettings"></i>
       <div class="welcome-text">
-        <h1><b> Welcome to Budget-Buddy!</b></h1>
+        <h1><b> Welcome to Budget-Buddy {{ getUser.name }}!</b></h1>
         <p>Start counting more</p>
       </div>
     </div>
@@ -338,9 +338,10 @@ export default {
 <style>
 @media only screen and (max-width: 500px) {
   .welcome-card {
-    width: 375px;
+    width: 100%;
     height: 200px;
     margin-right: 5px;
+    min-height:fit-content;
   }
 
   .welcome-card img {
@@ -443,10 +444,12 @@ export default {
 .welcome-card {
   background-color: rgba(255, 204, 0, 0.5);
   margin-bottom: 40px;
+  min-height: fit-content;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 50px 0;
+  width: 100%;
 }
 
 .welcome-card img {

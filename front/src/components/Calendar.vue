@@ -10,8 +10,8 @@ import { HttpStatusCode, type Axios, type AxiosResponse } from 'axios';
 
 export default {
 
-  created() {
-    this.generate_original_attribs();
+  async created() {
+    await this.generate_original_attribs();
     this.filter_selection();
   },
     computed: {
@@ -34,9 +34,9 @@ export default {
     
   },
   methods: {
-    generate_original_attribs()
+    async generate_original_attribs()
     {
-      backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
+      await backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
       if('success' in response && response.success === true)
       {
         this.projects = response.data.owned.concat(response.data.collaborates);
@@ -56,7 +56,9 @@ export default {
           if(project.start_date && project.finish_date)
           {
             dates = { start: project.start_date, end: project.finish_date};
-            popover.label = 'Project ' + project.title + " interval";
+            popover.label = 'Project ' + project.title;
+            
+
           }
 
           if(project.start_date && !project.finish_date)
@@ -177,7 +179,7 @@ export default {
           v-model="preSelected"
         ></v-select>
       </div>
-      <VCalendar expanded :attributes='attributes' />
+      <VCalendar expanded :attributes='attributes' borderless />
     </div>
   </div>
 </template>
