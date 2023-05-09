@@ -165,6 +165,12 @@ export default {
         ...mapGetters('auth', ['getUser']),
         ...mapGetters('project',['getProject'])
     },
+    watch: {
+        $route(to, from) {
+            this.project = this.getProject;
+            this.listProducts()
+        }
+    },
 	methods: {
         removeProduct(product_id: number) {
             backendService.get('api/project/removeProductById?product_id=' + product_id, false).then((response: API) => {
