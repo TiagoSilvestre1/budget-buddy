@@ -11,6 +11,7 @@ import { ref } from 'vue';
 import { HttpStatusCode, type AxiosResponse } from 'axios';
 import type { Project } from '@/interfaces/project';
 
+
 const date = ref(new Date());
 const popover = ref(true);
 
@@ -30,6 +31,7 @@ export default {
     new_project_budget: number | null,
     new_project_start_date: Date | null,
     new_project_end_date: Date | null,
+    possibleImages: String[]
   } {
     return {
       loading: false,
@@ -64,8 +66,8 @@ export default {
       newProjectImage: null,
       new_project_start_date: null,
       new_project_end_date: null,
-      new_project_budget: null
-
+      new_project_budget: null,
+      possibleImages: []
     };
 
   },
@@ -82,6 +84,7 @@ export default {
   },
   created() {
     this.populateProjects();
+    //this.listImages();
   },
   methods: {
 
@@ -114,7 +117,7 @@ export default {
       this.$router.push('/settings');
     },
 
-    onFileChange(event) {
+    onFileChange(event: any) {
       this.newProjectImage = URL.createObjectURL(event.target.files[0]);
     },
     /*
@@ -159,9 +162,29 @@ export default {
       
     },
     scrollRight() {
-      const container = this.$refs.swiperContainer;
+      const container: any = this.$refs.swiperContainer;
       container.scrollLeft += 100;
     }
+    /*listImages() {
+      const fs = require('fs');
+
+      // Specify the folder path
+      const folderPath = '/src/assets/icons/';
+
+      // Read the contents of the folder
+      fs.readdir(folderPath, (err, files) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        // Log the names of the files in the folder
+        console.log('Files in folder:');
+        files.forEach(file => {
+          console.log(file);
+        });
+      });
+    }*/
 
   }
 };
