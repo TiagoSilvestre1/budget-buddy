@@ -232,7 +232,7 @@ export default {
             this.possibleImages.push('/src/assets/icons/1732035.png')
         },
         getNewImage(): String {
-            return this.possibleImages[this.possibleImagesIndex++];
+            return this.possibleImages[this.possibleImagesIndex++%this.possibleImages.length];
         }
 	},
 }

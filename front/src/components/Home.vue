@@ -95,6 +95,7 @@ export default {
       backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
 
       if ('success' in response && response.success === true) {
+        this.possibleImagesIndex = 0;
         this.projects = response.data.owned.concat(response.data.collaborates);
         this.projects.forEach((element: any ) => {
           element['image'] = this.getNewImage();
@@ -194,7 +195,7 @@ export default {
       this.possibleImages.push('/src/assets/icons/1732035.png')
     },
     getNewImage(): String {
-      return this.possibleImages[this.possibleImagesIndex++];
+      return this.possibleImages[this.possibleImagesIndex++%this.possibleImages.length];
     }
 
   }

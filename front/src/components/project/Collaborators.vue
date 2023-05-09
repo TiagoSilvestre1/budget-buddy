@@ -70,7 +70,9 @@ export default {
         editDialogVisible: false,
         project: { } as Project,
         collaborator_list: [ ] as Array<any>,
-        user: {} as User
+        user: {} as User,
+        possibleImages: [] as Array<String>,
+        possibleImagesIndex: 0
     }),
     components: {
         AddCollaborator,
@@ -80,6 +82,7 @@ export default {
         this.project = this.getProject;
         this.user = this.getUser
         this.listCollaborators();
+        this.listImages();
     },
     computed: {
         ...mapGetters('auth', ['getUser']),
@@ -96,7 +99,7 @@ export default {
                     const entry = {name: response['name'], 
                                     email: response['email'],
                                     id: response['id'],
-                                    src: '/src/assets/person_photo.png', 
+                                    src: this.getNewImage(), 
                                     flex: 6}
                     this.collaborator_list.push(entry)
                 })
@@ -117,6 +120,15 @@ export default {
                     });
 				});
             })
+        },
+        listImages() {
+            this.possibleImages = [];
+            this.possibleImages.push('/src/assets/collaborators/download_2.jpeg')
+            this.possibleImages.push('/src/assets/collaborators/download.jpeg')
+            this.possibleImages.push('/src/assets/collaborators/person_photo.png')
+        },
+        getNewImage(): String {
+            return this.possibleImages[this.possibleImagesIndex++%this.possibleImages.length];
         }
 
 	},
