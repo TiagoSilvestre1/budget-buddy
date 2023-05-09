@@ -90,6 +90,7 @@ export default {
     },
 	methods: {
         listCollaborators() {
+            this.possibleImagesIndex = 0;
             this.project = this.getProject;
             this.collaborator_list.splice(0,this.collaborator_list.length);
             const coll = [...this.project["collaborators"]];

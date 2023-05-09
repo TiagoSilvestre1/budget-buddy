@@ -191,7 +191,7 @@ export default {
         },
         listProducts() {
             this.project = this.getProject;
-            possibleImagesIndex: 6;
+            this.possibleImagesIndex = 6;
             this.product_list = []
             this.services_list = []
             this.project["products"].forEach((prod_id: any) => {

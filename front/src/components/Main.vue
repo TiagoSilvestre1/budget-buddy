@@ -57,7 +57,7 @@
             title="logout"
             @click="logout"
           />
-          <!--
+          
           <v-list-item
             prepend-icon=""
             title="See user (dev, console print)"
@@ -68,7 +68,7 @@
             prepend-icon=""
             title="See project (dev, console print)"
             @click="seeProject"
-          />-->
+          />
         </v-list>
       </v-navigation-drawer>
 

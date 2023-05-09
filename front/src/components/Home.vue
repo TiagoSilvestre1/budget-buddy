@@ -6,7 +6,7 @@ import item2 from '@/assets/robotlele.png';
 import item3 from '@/assets/save.png';
 import item4 from '@/assets/1.png';
 import { backendService, type API } from '@/services/api-service';
-import { mapGetters } from 'vuex';
+import { mapGetters, useStore } from 'vuex';
 import { ref } from 'vue';
 import { HttpStatusCode, type AxiosResponse } from 'axios';
 import type { Project } from '@/interfaces/project';
@@ -26,13 +26,15 @@ export default {
     tags: { id: number; title: string; color: string }[],
     swiper: Swiper | null,
     hoverItem: string | null,
+    hoverItem2: string | null,
     new_project_name: string | null,
     newProjectImage: string | null,
     new_project_budget: number | null,
     new_project_start_date: Date | null,
     new_project_end_date: Date | null,
     possibleImages: String[],
-    possibleImagesIndex: number
+    possibleImagesIndex: number,
+    store: any
   } {
     return {
       loading: false,
@@ -63,13 +65,15 @@ export default {
       ],
       swiper: null,
       hoverItem: null,
+      hoverItem2: null,
       new_project_name: null,
       newProjectImage: null,
       new_project_start_date: null,
       new_project_end_date: null,
       new_project_budget: null,
       possibleImages: [],
-      possibleImagesIndex: 0
+      possibleImagesIndex: 0,
+      store: useStore(),
     };
 
   },
@@ -96,8 +100,12 @@ export default {
 
       if ('success' in response && response.success === true) {
         this.possibleImagesIndex = 0;
-        this.projects = response.data.owned.concat(response.data.collaborates);
+        this.projects = response.data.owned;
         this.projects.forEach((element: any ) => {
+          element['image'] = this.getNewImage();
+        });
+        this.collaborates = response.data.collaborates;
+        this.collaborates.forEach((element: any ) => {
           element['image'] = this.getNewImage();
         });
       }
@@ -196,7 +204,14 @@ export default {
     },
     getNewImage(): String {
       return this.possibleImages[this.possibleImagesIndex++%this.possibleImages.length];
-    }
+    },
+    async selectProject(id: string)
+    {
+      let obj = this.projects.find((val) => val._id === id);
+      if(obj == null)
+        obj = this.collaborates.find((val) => val._id === id);
+      await this.store.dispatch("project/SelectProject", obj);
+    },
 
   }
 };
@@ -284,38 +299,37 @@ export default {
   </div>
 
   <div class="titles">
-
-
-
-
     <div class="home-container" ref="swiperContainer">
-  <a v-for="project in projects" :key="project._id" :href="'/project/' + project._id">
-    <div class="item" @mouseenter="hoverItem = project._id" @mouseleave="hoverItem = null" :class="{ 'hover': hoverItem === project._id }">
-      <!-- Trash icon -->
-      <i class="fas fa-trash-alt" v-if="hoverItem === project._id" @click="deleteProject(project._id)" style="position: absolute; top: 5px; right: 5px;"></i>
-      <!-- Edit icon -->
-      <!-- <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i> -->
-      <img :src="project.image" alt="item image">
-      <p><b>{{ project.title }}</b></p>
+      <a v-for="project in projects" :key="project._id" :href="'/project/' + project._id" @click="selectProject(project._id)">
+        <div class="item" @mouseenter="hoverItem = project._id" @mouseleave="hoverItem = null" :class="{ 'hover': hoverItem === project._id }">
+          <!-- Trash icon -->
+          <i class="fas fa-trash-alt" v-if="hoverItem === project._id" @click="deleteProject(project._id)" style="position: absolute; top: 5px; right: 5px;"></i>
+          <!-- Edit icon -->
+          <!-- <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i> -->
+          <img :src="project.image" alt="item image">
+          <p><b>{{ project.title }}</b></p>
+        </div>
+      </a>
+      <div class="scroll-indicator" v-if="projects.length > 3" @click="scrollRight"></div>
     </div>
-  </a>
-  <div class="scroll-indicator" v-if="projects.length > 3" @click="scrollRight"></div>
-</div>
-</div>
+  </div>
 
   <div style="height:1cm"></div>
 
   <h3><b>Other Projects</b></h3>
 
   <div class="titles">
-
-
     <div class="home-container" ref="swiperContainer2">
-      <div class="itemDetail" v-for="project in collaborates" :key="project._id" @mouseenter="hoverItem = project._id"
-        @mouseleave="hoverItem = null" :class="{ 'hover': hoverItem === project._id }">
-        <img :src="project.image" alt="itemDetail image">
-        <p>{{ project.title }}</p>
-      </div>
+      <a v-for="project in collaborates" :key="project._id" :href="'/project/' + project._id" @click="selectProject(project._id)">
+        <div class="item" @mouseenter="hoverItem2 = project._id" @mouseleave="hoverItem2 = null" :class="{ 'hover': hoverItem2 === project._id }">
+          <!-- Trash icon -->
+          <i class="fas fa-trash-alt" v-if="hoverItem2 === project._id" @click="deleteProject(project._id)" style="position: absolute; top: 5px; right: 5px;"></i>
+          <!-- Edit icon -->
+          <!-- <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i> -->
+          <img :src="project.image" alt="item image">
+          <p><b>{{ project.title }}</b></p>
+        </div>
+      </a>
     </div>
     <div class="scroll-indicator" v-if="projects.length > 3" @click="scrollRight"></div>
   </div>
