@@ -14,13 +14,6 @@
       </div>
     </div>
 
-    <!-- <div class="container-chart">
-      <h1><strong>Budget</strong></h1>
-      <div class="card-chart">
-        <LineChart />
-      </div>
-    </div> -->
-
    
         <BadLineChart />
      
@@ -28,6 +21,55 @@
   </template>
   
   <style>
+
+    @media only screen and (max-width: 360px) {
+      .banner-card {
+        width: 100% !important;
+        height: 100% !important;
+        margin-bottom: 0px !important;
+      }
+
+      .banner-card img {
+        height: 100px !important;
+        width: auto !important;
+        margin-left: 5;
+      }
+
+      .banner-card h1 {
+        font-size: 22px !important;
+      }
+
+      .container-chart h1 {
+        font-size: 22px !important;
+      }
+
+      .card-chart {
+        width: 100% !important;
+        height: 60% !important;
+        margin-top: 5px !important;
+        padding: 5px !important;
+      }
+
+      #SECOND.card-chart {
+        height: 400px !important;
+      }
+
+      .container-chart {
+        margin: 0px !important;
+      }
+
+      .button {
+        padding: 4px 8px !important;
+        font-size: 8px !important;
+        color: #000000 !important;
+        background-color: #f3c221b3 !important;
+        border: none !important;
+        border-radius: 2px !important;
+        cursor: pointer !important; 
+      }
+
+    }
+
    
    .banner-card {
     display: flex;
@@ -64,6 +106,8 @@
     align-items: center;
     width: 100%;
     min-height: 100vh;
+    margin-bottom: 0px;
+    margin-top: 0px;
   }
   .container-banner {
     display: flex;
@@ -86,7 +130,8 @@
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
-    margin-top: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
   }
   </style>
   

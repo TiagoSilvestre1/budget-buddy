@@ -4,7 +4,7 @@
 
 	<div class="container-chart">
       <h1><strong>Price Track</strong></h1>
-      <div class="card-chart">
+      <div id= "SECOND" class="card-chart">
 		<Line
 		:id="chartId"
 		:data="lineData"
@@ -132,7 +132,7 @@ export default {
 					legend: {
 					labels: {
 						font: {
-						size: 20
+						size: 12
 						}
 					}
 					}
