@@ -37,11 +37,11 @@ export default {
                 <v-text-field v-model="edit_project_name" label="Project Name"></v-text-field>
               </v-col>
             </v-row>
-            <v-row>
+            <!--<v-row>
               <v-col cols="12">
                 <v-file-input  label="Project Image" prepend-icon="mdi-camera"></v-file-input>
               </v-col>
-            </v-row>
+            </v-row>-->
             <v-row>
               <v-col cols="12">
                 <v-text-field

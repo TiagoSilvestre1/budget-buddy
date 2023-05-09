@@ -259,11 +259,11 @@ export default {
         label="Project name"
       ></v-text-field>
   
-      <v-file-input
+      <!--<v-file-input
     accept="image/png, image/jpeg, image/bmp"
     prepend-icon="mdi-camera"
     label="Project image"
-    ></v-file-input>
+    ></v-file-input>-->
     
     <label for="project-tag">Tags</label>
         <div style="display:inline-block">

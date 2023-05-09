@@ -94,7 +94,7 @@ export default {
             this.project = this.getProject;
             this.collaborator_list.splice(0,this.collaborator_list.length);
             const coll = [...this.project["collaborators"]];
-            coll.push(this.user["id"]);
+            coll.push(this.project["owner"]);
             coll.forEach((coll_id: String) => {
                 backendService.get('/api/user/userById?user_id=' + coll_id, false).then((response) => {
                     const entry = {name: response['name'], 
