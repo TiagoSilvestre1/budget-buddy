@@ -253,23 +253,20 @@ export default {
 
 
 
-
     <div class="home-container" ref="swiperContainer">
-      <div class="item" v-for="project in projects" :key="project._id" @mouseenter="hoverItem = project._id"
-        @mouseleave="hoverItem = null" :class="{ 'hover': hoverItem === project._id }">
-        <!-- Trash icon -->
-        <i class="fas fa-trash-alt" v-if="hoverItem === project._id" @click="deleteProject(project._id)"
-          style="position: absolute; top: 5px; right: 5px;"></i>
-
-        <!-- Edit icon -->
-        <!-- <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i> -->
-
-        <img :src="'src/assets/kitchen.png'" alt="item image">
-        <p><b>{{ project.title }}</b></p>
-      </div>
+  <a v-for="project in projects" :key="project._id" :href="'/project/' + project._id">
+    <div class="item" @mouseenter="hoverItem = project._id" @mouseleave="hoverItem = null" :class="{ 'hover': hoverItem === project._id }">
+      <!-- Trash icon -->
+      <i class="fas fa-trash-alt" v-if="hoverItem === project._id" @click="deleteProject(project._id)" style="position: absolute; top: 5px; right: 5px;"></i>
+      <!-- Edit icon -->
+      <!-- <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i> -->
+      <img :src="'src/assets/kitchen.png'" alt="item image">
+      <p><b>{{ project.title }}</b></p>
     </div>
-    <div class="scroll-indicator" v-if="projects.length > 3" @click="scrollRight"></div>
-  </div>
+  </a>
+  <div class="scroll-indicator" v-if="projects.length > 3" @click="scrollRight"></div>
+</div>
+</div>
 
   <div style="height:1cm"></div>
 
