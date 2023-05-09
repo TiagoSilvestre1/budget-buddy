@@ -19,41 +19,35 @@ export class BackendService {
   }
 
   async get(relative_url: string, return_axios: boolean = false): Promise<any> {
-    const response = await this.client.get(relative_url);
+    const response = await this.client.get(relative_url)
 
-    if(!return_axios)
-      return response.data;
+    if (!return_axios) return response.data
 
-    return response;
-    
-    }
-  
-
-  async post(relative_url: string, data: any, return_axios: boolean = false): Promise<any>  {
-    const response = await this.client.post(relative_url, data)
-
-    if(!return_axios)
-      return response.data;
-
-    return response;
+    return response
   }
 
-  async put(relative_url: string, data: any, return_axios: boolean = false): Promise<any>  {
+  async post(relative_url: string, data: any, return_axios: boolean = false): Promise<any> {
+    const response = await this.client.post(relative_url, data)
+
+    if (!return_axios) return response.data
+
+    return response
+  }
+
+  async put(relative_url: string, data: any, return_axios: boolean = false): Promise<any> {
     const response = await this.client.put(relative_url, data)
 
-    if(!return_axios)
-      return response.data;
+    if (!return_axios) return response.data
 
-    return response;
+    return response
   }
 
   async delete(relative_url: string, return_axios: boolean = false): Promise<any> {
     const response = await this.client.delete(relative_url)
 
-    if(!return_axios)
-    return response.data;
+    if (!return_axios) return response.data
 
-    return response;
+    return response
   }
 }
 

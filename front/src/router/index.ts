@@ -5,14 +5,14 @@ import Main from '../components/Main.vue'
 import Calendar from '../components/Calendar.vue'
 import Settings from '../components/Settings.vue'
 import Home from '../components/Home.vue'
-import Project from '../components/project/Project.vue';
-import Collaborators from '../components/project/Collaborators.vue';
-import ProjectCalendar from '../components/project/projectCalendar.vue';
-import ProjectSettings from '../components/project/settings.vue';
-import ProjectBudget from '../components/project/budget.vue';
-import Products from '../components/project/Products.vue';
+import Project from '../components/project/Project.vue'
+import Collaborators from '../components/project/Collaborators.vue'
+import ProjectCalendar from '../components/project/projectCalendar.vue'
+import ProjectSettings from '../components/project/settings.vue'
+import ProjectBudget from '../components/project/budget.vue'
+import Products from '../components/project/Products.vue'
 import { FooterViews } from '@/components/Footer.vue'
-import store from "..//store/store";
+import store from '..//store/store'
 import { mapGetters } from 'vuex'
 
 const router = createRouter({
@@ -104,18 +104,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = store.getters['auth/isAuthenticated'];
+  const isAuthenticated = store.getters['auth/isAuthenticated']
 
-  if (!isAuthenticated && (to.path !== '/login' && to.path !== '/register')) {
-    next('/login');
+  if (!isAuthenticated && to.path !== '/login' && to.path !== '/register') {
+    next('/login')
   } else {
-    next();
+    next()
   }
-
-});
-
-
-
-
+})
 
 export default router

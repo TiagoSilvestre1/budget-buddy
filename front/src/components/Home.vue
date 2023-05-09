@@ -1,39 +1,36 @@
 <script lang="ts">
+import Swiper from 'swiper'
+import item1 from '@/assets/flatKitchen.png'
+import item2 from '@/assets/robotlele.png'
+import item3 from '@/assets/save.png'
+import item4 from '@/assets/1.png'
+import { backendService, type API } from '@/services/api-service'
+import { mapGetters, useStore } from 'vuex'
+import { ref } from 'vue'
+import { HttpStatusCode, type AxiosResponse } from 'axios'
+import type { Project } from '@/interfaces/project'
 
-import Swiper from 'swiper';
-import item1 from '@/assets/flatKitchen.png';
-import item2 from '@/assets/robotlele.png';
-import item3 from '@/assets/save.png';
-import item4 from '@/assets/1.png';
-import { backendService, type API } from '@/services/api-service';
-import { mapGetters, useStore } from 'vuex';
-import { ref } from 'vue';
-import { HttpStatusCode, type AxiosResponse } from 'axios';
-import type { Project } from '@/interfaces/project';
-
-
-const date = ref(new Date());
-const popover = ref(true);
+const date = ref(new Date())
+const popover = ref(true)
 
 export default {
   emits: ['update'],
   data(): {
-    
-    loading: boolean,
-    dialog: boolean,
-    projects: Project[],
-    collaborates: Project[],
-    tags: { id: number; title: string; color: string }[],
-    swiper: Swiper | null,
-    hoverItem: string | null,
-    hoverItem2: string | null,
-    new_project_name: string | null,
-    newProjectImage: string | null,
-    new_project_budget: number | null,
-    new_project_start_date: Date | null,
-    new_project_end_date: Date | null,
-    possibleImages: String[],
-    possibleImagesIndex: number,
+    loading: boolean
+    dialog: boolean
+    projects: Project[]
+    collaborates: Project[]
+    tags: { id: number; title: string; color: string }[]
+    swiper: Swiper | null
+    hoverItem: string | null
+    hoverItem2: string | null
+    new_project_name: string | null
+    newProjectImage: string | null
+    new_project_budget: number | null
+    new_project_start_date: Date | null
+    new_project_end_date: Date | null
+    possibleImages: String[]
+    possibleImagesIndex: number
     store: any
   } {
     return {
@@ -61,7 +58,7 @@ export default {
           id: 4,
           title: 'Save',
           color: '#9c27b0'
-        },
+        }
       ],
       swiper: null,
       hoverItem: null,
@@ -73,47 +70,45 @@ export default {
       new_project_budget: null,
       possibleImages: [],
       possibleImagesIndex: 0,
-      store: useStore(),
-    };
-
+      store: useStore()
+    }
   },
 
   mounted() {
-    this.initializeSwiper();
+    this.initializeSwiper()
   },
   updated() {
-    this.initializeSwiper();
+    this.initializeSwiper()
   },
   computed: {
     ...mapGetters('auth', ['getUser']),
     ...mapGetters('project', ['getProject'])
   },
   created() {
-    this.populateProjects();
-    this.listImages();
+    this.populateProjects()
+    this.listImages()
   },
   methods: {
-
-    populateProjects()
-    {
-      backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
-
-      if ('success' in response && response.success === true) {
-        this.possibleImagesIndex = 0;
-        this.projects = response.data.owned;
-        this.projects.forEach((element: any ) => {
-          element['image'] = this.getNewImage();
-        });
-        this.collaborates = response.data.collaborates;
-        this.collaborates.forEach((element: any ) => {
-          element['image'] = this.getNewImage();
-        });
-      }
-      });
+    populateProjects() {
+      backendService
+        .get('api/project/byUserId?user_id=' + this.getUser.id)
+        .then((response: API) => {
+          if ('success' in response && response.success === true) {
+            this.possibleImagesIndex = 0
+            this.projects = response.data.owned
+            this.projects.forEach((element: any) => {
+              element['image'] = this.getNewImage()
+            })
+            this.collaborates = response.data.collaborates
+            this.collaborates.forEach((element: any) => {
+              element['image'] = this.getNewImage()
+            })
+          }
+        })
     },
 
     initializeSwiper() {
-      const swiperContainer = document.getElementById('swiperContainer');
+      const swiperContainer = document.getElementById('swiperContainer')
       if (swiperContainer) {
         if (!this.swiper) {
           this.swiper = new Swiper(swiperContainer, {
@@ -121,18 +116,18 @@ export default {
             spaceBetween: 20,
             centeredSlides: true,
             grabCursor: true
-          });
+          })
         } else {
-          this.swiper.update();
+          this.swiper.update()
         }
       }
     },
     goToSettings() {
-      this.$router.push('/settings');
+      this.$router.push('/settings')
     },
 
     onFileChange(event: any) {
-      this.newProjectImage = URL.createObjectURL(event.target.files[0]);
+      this.newProjectImage = URL.createObjectURL(event.target.files[0])
     },
     /*
     		title: string;
@@ -142,45 +137,44 @@ export default {
 		end_date: any
     */
     confirmAddProject() {
-      this.dialog = false;
+      this.dialog = false
       const project = {
         id: 0,
         image: this.newProjectImage || item4,
         description: this.new_project_name
-      };
+      }
 
       const backend_project = {
         owner_id: this.getUser.id,
         title: this.new_project_name,
-        total_budget: this.new_project_budget ,
-        start_date: this.new_project_start_date ,
-        end_date: this.new_project_end_date,
-      };
+        total_budget: this.new_project_budget,
+        start_date: this.new_project_start_date,
+        end_date: this.new_project_end_date
+      }
 
-      backendService.post('api/project/create', backend_project, true).then((response: AxiosResponse) => {
-        if(response.status === HttpStatusCode.Ok)
-        {
-          this.populateProjects();
-          this.$emit('update', 'project');
-        }
-      });
-
+      backendService
+        .post('api/project/create', backend_project, true)
+        .then((response: AxiosResponse) => {
+          if (response.status === HttpStatusCode.Ok) {
+            this.populateProjects()
+            this.$emit('update', 'project')
+          }
+        })
     },
     deleteProject(pid: string) {
-      backendService.post(`api/project/delete`, {id: pid} ,true).then((response: AxiosResponse) => {
-        if(response.status === HttpStatusCode.Created)
-          this.populateProjects();
-          this.$emit('update', 'project');
-
-      });
-      
+      backendService
+        .post(`api/project/delete`, { id: pid }, true)
+        .then((response: AxiosResponse) => {
+          if (response.status === HttpStatusCode.Created) this.populateProjects()
+          this.$emit('update', 'project')
+        })
     },
     scrollRight() {
-      const container: any = this.$refs.swiperContainer;
-      container.scrollLeft += 100;
+      const container: any = this.$refs.swiperContainer
+      container.scrollLeft += 100
     },
     listImages() {
-      this.possibleImages = [];
+      this.possibleImages = []
       this.possibleImages.push('/src/assets/icons/614.png')
       this.possibleImages.push('/src/assets/icons/15094.png')
       this.possibleImages.push('/src/assets/icons/79761.png')
@@ -203,29 +197,30 @@ export default {
       this.possibleImages.push('/src/assets/icons/1732035.png')
     },
     getNewImage(): String {
-      return this.possibleImages[this.possibleImagesIndex++%this.possibleImages.length];
+      return this.possibleImages[this.possibleImagesIndex++ % this.possibleImages.length]
     },
-    async selectProject(id: string)
-    {
-      let obj = this.projects.find((val) => val._id === id);
-      if(obj == null)
-        obj = this.collaborates.find((val) => val._id === id);
-      await this.store.dispatch("project/SelectProject", obj);
-    },
-
+    async selectProject(id: string) {
+      let obj = this.projects.find((val) => val._id === id)
+      if (obj == null) obj = this.collaborates.find((val) => val._id === id)
+      await this.store.dispatch('project/SelectProject', obj)
+    }
   }
-};
+}
 </script>
 
 <template>
-  
   <div>
     <div class="welcome-card">
-      <img src="../assets/user.png" alt="Profile image">
-      <i class="fas fa-edit" style="position: absolute; top: 5px; right: 25px; cursor: pointer;"
-        @click="goToSettings"></i>
+      <img src="../assets/user.png" alt="Profile image" />
+      <i
+        class="fas fa-edit"
+        style="position: absolute; top: 5px; right: 25px; cursor: pointer"
+        @click="goToSettings"
+      ></i>
       <div class="welcome-text">
-        <h1><b> Welcome to Budget-Buddy {{ getUser.name }}!</b></h1>
+        <h1>
+          <b> Welcome to Budget-Buddy {{ getUser.name }}!</b>
+        </h1>
         <p>Start counting more</p>
       </div>
     </div>
@@ -233,101 +228,128 @@ export default {
 
   <div class="title-button-container">
     <h3><b>Your Projects</b></h3>
-    <v-dialog
-      v-model="dialog"
-       :fullscreen="true"
-    >
+    <v-dialog v-model="dialog" :fullscreen="true">
       <template v-slot:activator="{ props }">
-          <v-btn
-          variant="outlined"
-          icon="mdi-plus"
-            v-bind="props"
-          >
-  
-          </v-btn>
+        <v-btn variant="outlined" icon="mdi-plus" v-bind="props"> </v-btn>
       </template>
-  
-      <v-card  style="max-width: 100%; overflow-x: hidden">
+
+      <v-card style="max-width: 100%; overflow-x: hidden">
         <v-card-title>
-        <v-btn icon class="dialog-close-button" @click="dialog = false" style="float:right;">
-          <v-icon>mdi-close</v-icon>
-        </v-btn>
+          <v-btn icon class="dialog-close-button" @click="dialog = false" style="float: right">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
         </v-card-title>
         <v-card-text>
-          <v-text-field
-          v-model="new_project_name"
-        label="Project name"
-      ></v-text-field>
-  
-      <!--<v-file-input
+          <v-text-field v-model="new_project_name" label="Project name"></v-text-field>
+
+          <!--<v-file-input
     accept="image/png, image/jpeg, image/bmp"
     prepend-icon="mdi-camera"
     label="Project image"
     ></v-file-input>-->
-    
-    <label for="project-tag">Tags</label>
-        <div style="display:inline-block">
-          <span class="tag" v-for="(tag, index) in tags" :key="index" :style="{ backgroundColor: tag.color}"
-            :class="{ active: tag.color }" @click="selectTag(tag)">
-            {{ tag.title }}
-            <div class="tag-card">
-              <h3>{{ tag.title }}</h3>
-  
-            </div>
-          </span>
-        </div>
-  
-        <v-text-field
-          label="Budget"
-          v-model="new_project_budget"
-          prefix="€"
-          type="number"
-        ></v-text-field>
+
+          <label for="project-tag">Tags</label>
+          <div style="display: inline-block">
+            <span
+              class="tag"
+              v-for="(tag, index) in tags"
+              :key="index"
+              :style="{ backgroundColor: tag.color }"
+              :class="{ active: tag.color }"
+              @click="selectTag(tag)"
+            >
+              {{ tag.title }}
+              <div class="tag-card">
+                <h3>{{ tag.title }}</h3>
+              </div>
+            </span>
+          </div>
+
+          <v-text-field
+            label="Budget"
+            v-model="new_project_budget"
+            prefix="€"
+            type="number"
+          ></v-text-field>
           <h4>Start date</h4>
-        <VueDatePicker v-model="new_project_start_date" :enable-time-picker="false" />
-        <br>
-        <h4>End date</h4>
-        <VueDatePicker v-model="new_project_end_date" :enable-time-picker="false" />
-  
+          <VueDatePicker v-model="new_project_start_date" :enable-time-picker="false" />
+          <br />
+          <h4>End date</h4>
+          <VueDatePicker v-model="new_project_end_date" :enable-time-picker="false" />
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="confirmAddProject" color="primary" variant="tonal" block>Add Project</v-btn>
+          <v-btn @click="confirmAddProject" color="primary" variant="tonal" block
+            >Add Project</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
-    
   </div>
 
   <div class="titles">
     <div class="home-container" ref="swiperContainer">
-      <a v-for="project in projects" :key="project._id" :href="'/project/' + project._id" @click="selectProject(project._id)">
-        <div class="item" @mouseenter="hoverItem = project._id" @mouseleave="hoverItem = null" :class="{ 'hover': hoverItem === project._id }">
+      <a
+        v-for="project in projects"
+        :key="project._id"
+        :href="'/project/' + project._id"
+        @click="selectProject(project._id)"
+      >
+        <div
+          class="item"
+          @mouseenter="hoverItem = project._id"
+          @mouseleave="hoverItem = null"
+          :class="{ hover: hoverItem === project._id }"
+        >
           <!-- Trash icon -->
-          <i class="fas fa-trash-alt" v-if="hoverItem === project._id" @click="deleteProject(project._id)" style="position: absolute; top: 5px; right: 5px;"></i>
+          <i
+            class="fas fa-trash-alt"
+            v-if="hoverItem === project._id"
+            @click="deleteProject(project._id)"
+            style="position: absolute; top: 5px; right: 5px"
+          ></i>
           <!-- Edit icon -->
           <!-- <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i> -->
-          <img :src="project.image" alt="item image">
-          <p><b>{{ project.title }}</b></p>
+          <img :src="project.image" alt="item image" />
+          <p>
+            <b>{{ project.title }}</b>
+          </p>
         </div>
       </a>
       <div class="scroll-indicator" v-if="projects.length > 3" @click="scrollRight"></div>
     </div>
   </div>
 
-  <div style="height:1cm"></div>
+  <div style="height: 1cm"></div>
 
   <h3><b>Other Projects</b></h3>
 
   <div class="titles">
     <div class="home-container" ref="swiperContainer2">
-      <a v-for="project in collaborates" :key="project._id" :href="'/project/' + project._id" @click="selectProject(project._id)">
-        <div class="item" @mouseenter="hoverItem2 = project._id" @mouseleave="hoverItem2 = null" :class="{ 'hover': hoverItem2 === project._id }">
+      <a
+        v-for="project in collaborates"
+        :key="project._id"
+        :href="'/project/' + project._id"
+        @click="selectProject(project._id)"
+      >
+        <div
+          class="item"
+          @mouseenter="hoverItem2 = project._id"
+          @mouseleave="hoverItem2 = null"
+          :class="{ hover: hoverItem2 === project._id }"
+        >
           <!-- Trash icon -->
-          <i class="fas fa-trash-alt" v-if="hoverItem2 === project._id" @click="deleteProject(project._id)" style="position: absolute; top: 5px; right: 5px;"></i>
+          <i
+            class="fas fa-trash-alt"
+            v-if="hoverItem2 === project._id"
+            @click="deleteProject(project._id)"
+            style="position: absolute; top: 5px; right: 5px"
+          ></i>
           <!-- Edit icon -->
           <!-- <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i> -->
-          <img :src="project.image" alt="item image">
-          <p><b>{{ project.title }}</b></p>
+          <img :src="project.image" alt="item image" />
+          <p>
+            <b>{{ project.title }}</b>
+          </p>
         </div>
       </a>
     </div>
@@ -341,7 +363,7 @@ export default {
     width: 100%;
     height: 200px;
     margin-right: 5px;
-    min-height:fit-content;
+    min-height: fit-content;
   }
 
   .welcome-card img {
@@ -399,7 +421,6 @@ export default {
     padding: 5% 0;
   }
 
-
   .home-container {
     position: relative;
     -ms-overflow-style: none;
@@ -437,9 +458,7 @@ export default {
     width: 60%;
     max-width: 300px;
   }
-
 }
-
 
 .welcome-card {
   background-color: rgba(255, 204, 0, 0.5);
@@ -474,7 +493,7 @@ export default {
 .titles {
   display: flex;
 
-  margin-left:10px !important;
+  margin-left: 10px !important;
   margin-right: 50px;
 }
 
@@ -494,7 +513,6 @@ export default {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   color: #666;
 }
-
 
 .item img {
   max-width: 50%;
@@ -528,7 +546,6 @@ export default {
   border-left: 10px solid black;
   cursor: pointer;
 }
-
 
 .containerDetails {
   position: relative;
@@ -625,9 +642,8 @@ export default {
   padding: 5px;
 }
 
-
-.input-container input[type="text"],
-.input-container input[type="file"] {
+.input-container input[type='text'],
+.input-container input[type='file'] {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 8px 10px;
@@ -688,8 +704,7 @@ export default {
   padding: 10px;
 }
 
-.right-button
-{
-  display:inline-block;
+.right-button {
+  display: inline-block;
 }
 </style>

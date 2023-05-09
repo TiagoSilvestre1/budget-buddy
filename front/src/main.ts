@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/store'
-import Vuex from "vuex";
+import Vuex from 'vuex'
 
 import './assets/base.css'
 
@@ -18,7 +18,7 @@ import { aliases, mdi } from 'vuetify/lib/iconsets/mdi'
 import '@mdi/font/css/materialdesignicons.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 
-import VueDatePicker from '@vuepic/vue-datepicker';
+import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
 import { setupCalendar, Calendar, DatePicker } from 'v-calendar'
@@ -31,8 +31,7 @@ app.use(setupCalendar, {})
 
 app.component('VCalendar', Calendar)
 app.component('VDatePicker', DatePicker)
-app.component('VueDatePicker', VueDatePicker);
-
+app.component('VueDatePicker', VueDatePicker)
 
 //let ctheme: string = theme.global.current.value.dark ? 'dark' : 'light'
 

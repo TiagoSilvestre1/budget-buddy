@@ -1,9 +1,7 @@
 <script lang="ts">
-export default {
-
-}
+export default {}
 </script>
 
 <template>
-    <RouterView></RouterView>
+  <RouterView></RouterView>
 </template>

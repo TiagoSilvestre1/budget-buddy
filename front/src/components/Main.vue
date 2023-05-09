@@ -23,13 +23,13 @@
             </template>
 
             <v-list-item
-            v-for="project in projects"
-            :key="project.id"
-            :title="project.title"
-            router-link
-            :to="'/project/' + project._id"
-            @click="selectProject(project._id)"
-          ></v-list-item>
+              v-for="project in projects"
+              :key="project.id"
+              :title="project.title"
+              router-link
+              :to="'/project/' + project._id"
+              @click="selectProject(project._id)"
+            ></v-list-item>
           </v-list-group>
 
           <v-list-item
@@ -52,17 +52,9 @@
             @click="toggleTheme"
           >
           </v-list-item>
-          <v-list-item
-            prepend-icon="mdi-logout-variant"
-            title="logout"
-            @click="logout"
-          />
-          
-          <v-list-item
-            prepend-icon=""
-            title="See user (dev, console print)"
-            @click="seeUser"
-          />
+          <v-list-item prepend-icon="mdi-logout-variant" title="logout" @click="logout" />
+
+          <v-list-item prepend-icon="" title="See user (dev, console print)" @click="seeUser" />
 
           <v-list-item
             prepend-icon=""
@@ -72,17 +64,13 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-main style="min-height: 100vh; margin-bottom: 15.5vh;">
+      <v-main style="min-height: 100vh; margin-bottom: 15.5vh">
+        <v-btn class="left-navbar-button" icon="mdi-menu" @click.stop="drawer = !drawer"> </v-btn>
 
-          <v-btn class="left-navbar-button" icon="mdi-menu" @click.stop="drawer = !drawer"> </v-btn>
-          
-        <div style="height:3vh"></div>
-        
+        <div style="height: 3vh"></div>
+
         <router-view v-if="$route.path !== '/home'" />
-        <Home
-          v-if="$route.path === '/home'"
-          @update="handleChildEvent"
-        />
+        <Home v-if="$route.path === '/home'" @update="handleChildEvent" />
 
         <div class="footer">
           <v-card>
@@ -96,77 +84,73 @@
 
 <script lang="ts">
 import { useTheme } from 'vuetify/lib/framework.mjs'
-import Footer, { FooterViews } from './Footer.vue';
-import { backendService, type API } from '@/services/api-service';
-import { mapGetters, useStore } from 'vuex';
-import Home from '@/components/Home.vue';
+import Footer, { FooterViews } from './Footer.vue'
+import { backendService, type API } from '@/services/api-service'
+import { mapGetters, useStore } from 'vuex'
+import Home from '@/components/Home.vue'
 export default {
-	components: {
-    Footer, Home
-},
-	setup() {
-		const theme = useTheme();
-		return {
-			theme,
-			toggleTheme: () =>
-				(theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark')
-		};
-	},
+  components: {
+    Footer,
+    Home
+  },
+  setup() {
+    const theme = useTheme()
+    return {
+      theme,
+      toggleTheme: () =>
+        (theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark')
+    }
+  },
 
   created() {
-    this.getProjects();
+    this.getProjects()
   },
 
-	data: () => {
-		return {
-			drawer: false,
+  data: () => {
+    return {
+      drawer: false,
       store: useStore(),
-			projects: [
-      ] as Array<any>,
+      projects: [] as Array<any>,
       view: FooterViews.GLOBAL
-		}
-	},
+    }
+  },
   computed: {
     ...mapGetters('auth', ['getUser']),
-    ...mapGetters('project',['getProject'])
+    ...mapGetters('project', ['getProject'])
   },
-	methods: {
-		async logout() {
-			  await this.store.dispatch("auth/LogOut");
-      	this.$router.push("/login");
-		},
-    
+  methods: {
+    async logout() {
+      await this.store.dispatch('auth/LogOut')
+      this.$router.push('/login')
+    },
+
     seeUser() {
-      console.log(this.getUser);
+      console.log(this.getUser)
     },
     seeProject() {
-      console.log(this.getProject);
+      console.log(this.getProject)
     },
 
-    async selectProject(id: string)
-    {
-      const obj = this.projects.find((val) => val._id === id);
-      await this.store.dispatch("project/SelectProject", obj);
+    async selectProject(id: string) {
+      const obj = this.projects.find((val) => val._id === id)
+      await this.store.dispatch('project/SelectProject', obj)
     },
 
-    handleChildEvent(value: string)
-    {
-      
-        if(value === 'project')
-        {
-          this.getProjects();
-        }
-    },
-    getProjects()
-    {
-      backendService.get('api/project/byUserId?user_id=' + this.getUser.id).then((response: API) => {
-      if('success' in response && response.success === true)
-      {
-        this.projects = response.data.owned.concat(response.data.collaborates);
+    handleChildEvent(value: string) {
+      if (value === 'project') {
+        this.getProjects()
       }
-    });
+    },
+    getProjects() {
+      backendService
+        .get('api/project/byUserId?user_id=' + this.getUser.id)
+        .then((response: API) => {
+          if ('success' in response && response.success === true) {
+            this.projects = response.data.owned.concat(response.data.collaborates)
+          }
+        })
     }
-	},
+  }
 }
 </script>
 

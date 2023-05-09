@@ -1,3 +1,3 @@
 export default {
-    project: null
-};
+  project: null
+}
