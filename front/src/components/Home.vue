@@ -31,7 +31,8 @@ export default {
     new_project_budget: number | null,
     new_project_start_date: Date | null,
     new_project_end_date: Date | null,
-    possibleImages: String[]
+    possibleImages: String[],
+    possibleImagesIndex: number
   } {
     return {
       loading: false,
@@ -67,7 +68,8 @@ export default {
       new_project_start_date: null,
       new_project_end_date: null,
       new_project_budget: null,
-      possibleImages: []
+      possibleImages: [],
+      possibleImagesIndex: 0
     };
 
   },
@@ -84,7 +86,7 @@ export default {
   },
   created() {
     this.populateProjects();
-    //this.listImages();
+    this.listImages();
   },
   methods: {
 
@@ -94,6 +96,9 @@ export default {
 
       if ('success' in response && response.success === true) {
         this.projects = response.data.owned.concat(response.data.collaborates);
+        this.projects.forEach((element: any ) => {
+          element['image'] = this.getNewImage();
+        });
       }
       });
     },
@@ -164,27 +169,33 @@ export default {
     scrollRight() {
       const container: any = this.$refs.swiperContainer;
       container.scrollLeft += 100;
+    },
+    listImages() {
+      this.possibleImages = [];
+      this.possibleImages.push('/src/assets/icons/614.png')
+      this.possibleImages.push('/src/assets/icons/15094.png')
+      this.possibleImages.push('/src/assets/icons/79761.png')
+      this.possibleImages.push('/src/assets/icons/148465.png')
+      this.possibleImages.push('/src/assets/icons/167096.png')
+      this.possibleImages.push('/src/assets/icons/497433.png')
+      this.possibleImages.push('/src/assets/icons/544081.png')
+      this.possibleImages.push('/src/assets/icons/694188.png')
+      this.possibleImages.push('/src/assets/icons/838064.png')
+      this.possibleImages.push('/src/assets/icons/950299.png')
+      this.possibleImages.push('/src/assets/icons/1022179.png')
+      this.possibleImages.push('/src/assets/icons/1067555.png')
+      this.possibleImages.push('/src/assets/icons/1148917.png')
+      this.possibleImages.push('/src/assets/icons/1518185.png')
+      this.possibleImages.push('/src/assets/icons/1548088.png')
+      this.possibleImages.push('/src/assets/icons/1663834.png')
+      this.possibleImages.push('/src/assets/icons/1670382.png')
+      this.possibleImages.push('/src/assets/icons/1688506.png')
+      this.possibleImages.push('/src/assets/icons/1716995.png')
+      this.possibleImages.push('/src/assets/icons/1732035.png')
+    },
+    getNewImage(): String {
+      return this.possibleImages[this.possibleImagesIndex++];
     }
-    /*listImages() {
-      const fs = require('fs');
-
-      // Specify the folder path
-      const folderPath = '/src/assets/icons/';
-
-      // Read the contents of the folder
-      fs.readdir(folderPath, (err, files) => {
-        if (err) {
-          console.error(err);
-          return;
-        }
-
-        // Log the names of the files in the folder
-        console.log('Files in folder:');
-        files.forEach(file => {
-          console.log(file);
-        });
-      });
-    }*/
 
   }
 };
@@ -283,7 +294,7 @@ export default {
       <i class="fas fa-trash-alt" v-if="hoverItem === project._id" @click="deleteProject(project._id)" style="position: absolute; top: 5px; right: 5px;"></i>
       <!-- Edit icon -->
       <!-- <i class="fas fa-edit" v-if="hoverItem === item.id" style="position: absolute; top: 5px; right: 25px;"></i> -->
-      <img :src="'src/assets/kitchen.png'" alt="item image">
+      <img :src="project.image" alt="item image">
       <p><b>{{ project.title }}</b></p>
     </div>
   </a>
@@ -301,7 +312,7 @@ export default {
     <div class="home-container" ref="swiperContainer2">
       <div class="itemDetail" v-for="project in collaborates" :key="project._id" @mouseenter="hoverItem = project._id"
         @mouseleave="hoverItem = null" :class="{ 'hover': hoverItem === project._id }">
-        <img :src="'src/assets/kitchen.png'" alt="itemDetail image">
+        <img :src="project.image" alt="itemDetail image">
         <p>{{ project.title }}</p>
       </div>
     </div>

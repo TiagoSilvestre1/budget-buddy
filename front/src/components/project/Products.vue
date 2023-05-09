@@ -151,6 +151,8 @@ export default {
         project: { } as Project,
         product_list: [ ] as Array<any>,
         services_list: [ ] as Array<any>,
+        possibleImages: [] as Array<String>,
+        possibleImagesIndex: 6
     }),
     components: {
         AddProduct,
@@ -160,6 +162,7 @@ export default {
     created() {
         this.project = this.getProject;
         this.listProducts();
+        this.listImages();
     },
     computed: {
         ...mapGetters('auth', ['getUser']),
@@ -188,6 +191,7 @@ export default {
         },
         listProducts() {
             this.project = this.getProject;
+            possibleImagesIndex: 6;
             this.product_list = []
             this.services_list = []
             this.project["products"].forEach((prod_id: any) => {
@@ -195,7 +199,7 @@ export default {
                     const entry: any = {title: response['name'], 
                                     id: response['_id'],
                                     completed: response['completed'],
-                                    src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', 
+                                    src: this.getNewImage(), 
                                     flex: 6}
                     if(response['product'] === true || response['product'] === null || !response.hasOwnProperty('product'))
                         this.product_list.push(entry)
@@ -203,6 +207,32 @@ export default {
                         this.services_list.push(entry)
                 })
             });
+        },
+        listImages() {
+            this.possibleImages = [];
+            this.possibleImages.push('/src/assets/icons/614.png')
+            this.possibleImages.push('/src/assets/icons/15094.png')
+            this.possibleImages.push('/src/assets/icons/79761.png')
+            this.possibleImages.push('/src/assets/icons/148465.png')
+            this.possibleImages.push('/src/assets/icons/167096.png')
+            this.possibleImages.push('/src/assets/icons/497433.png')
+            this.possibleImages.push('/src/assets/icons/544081.png')
+            this.possibleImages.push('/src/assets/icons/694188.png')
+            this.possibleImages.push('/src/assets/icons/838064.png')
+            this.possibleImages.push('/src/assets/icons/950299.png')
+            this.possibleImages.push('/src/assets/icons/1022179.png')
+            this.possibleImages.push('/src/assets/icons/1067555.png')
+            this.possibleImages.push('/src/assets/icons/1148917.png')
+            this.possibleImages.push('/src/assets/icons/1518185.png')
+            this.possibleImages.push('/src/assets/icons/1548088.png')
+            this.possibleImages.push('/src/assets/icons/1663834.png')
+            this.possibleImages.push('/src/assets/icons/1670382.png')
+            this.possibleImages.push('/src/assets/icons/1688506.png')
+            this.possibleImages.push('/src/assets/icons/1716995.png')
+            this.possibleImages.push('/src/assets/icons/1732035.png')
+        },
+        getNewImage(): String {
+            return this.possibleImages[this.possibleImagesIndex++];
         }
 	},
 }
