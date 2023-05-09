@@ -56,7 +56,9 @@ export default {
           if(project.start_date && project.finish_date)
           {
             dates = { start: project.start_date, end: project.finish_date};
-            popover.label = 'Project ' + project.title + " interval";
+            popover.label = 'Project ' + project.title;
+            
+
           }
 
           if(project.start_date && !project.finish_date)
