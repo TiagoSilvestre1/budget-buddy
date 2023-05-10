@@ -36,21 +36,21 @@
 
   .container-chart h1 {
     font-size: 22px !important;
+    margin-top: 400px !important;
   }
 
   .card-chart {
     width: 100% !important;
     height: 60% !important;
-    margin-top: 5px !important;
     padding: 5px !important;
   }
 
   #SECOND.card-chart {
-    height: 400px !important;
+    height: 200px !important;
   }
 
   .container-chart {
-    margin: 0px !important;
+    margin-top: 400px !important;
   }
 
   .button {
@@ -72,7 +72,6 @@
   width: 50%;
   height: 250px;
   background-color: rgba(248, 189, 38, 0.8);
-  margin-bottom: 10px;
   border-radius: 10px;
 }
 
@@ -98,8 +97,7 @@
   align-items: center;
   width: 100%;
   min-height: 100vh;
-  margin-bottom: 0px;
-  margin-top: 0px;
+  margin-top: -300px !important;
 }
 .container-banner {
   display: flex;
@@ -109,6 +107,7 @@
 }
 
 h1 {
+  margin-top: 0px;
   margin-bottom: 20px;
   font-size: 44px;
   font-weight: bold;
@@ -122,8 +121,6 @@ h1 {
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  margin-top: 5px;
-  margin-bottom: 5px;
 }
 </style>
 
