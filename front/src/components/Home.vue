@@ -210,7 +210,7 @@ export default {
 
 <template>
   <div>
-    <div class="welcome-card">
+    <div class="welcome-card" style="position:relative">
       <img src="../assets/user.png" alt="Profile image" />
       <i
         class="fas fa-edit"
@@ -368,12 +368,11 @@ export default {
 </template>
 
 <style>
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 750px) {
   .welcome-card {
     width: 100%;
-    height: 200px;
+    min-height:fit-content;
     margin-right: 5px;
-    min-height: fit-content;
   }
 
   .welcome-card img {

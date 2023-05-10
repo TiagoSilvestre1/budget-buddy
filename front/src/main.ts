@@ -21,10 +21,11 @@ import '@fortawesome/fontawesome-free/css/all.css'
 import VueDatePicker from '@vuepic/vue-datepicker'
 import '@vuepic/vue-datepicker/dist/main.css'
 
-import { setupCalendar, Calendar, DatePicker } from 'v-calendar'
-import 'v-calendar/style.css'
-
 const app = createApp(App)
+
+import { setupCalendar, Calendar, DatePicker } from 'v-calendar';
+import 'v-calendar/style.css';
+
 
 app.use(router)
 app.use(setupCalendar, {})
