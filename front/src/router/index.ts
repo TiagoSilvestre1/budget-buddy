@@ -27,63 +27,72 @@ const router = createRouter({
           path: 'settings',
           component: Settings,
           meta: {
-            view: FooterViews.GLOBAL
+            view: FooterViews.GLOBAL,
+            name: 'settings'
           }
         },
         {
           path: 'calendar',
           component: Calendar,
           meta: {
-            view: FooterViews.GLOBAL
+            view: FooterViews.GLOBAL,
+            name: 'calendar'
           }
         },
         {
           path: '/home',
           component: Home,
           meta: {
-            view: FooterViews.GLOBAL
+            view: FooterViews.GLOBAL,
+            name: 'home'
           }
         },
         {
           path: '/project/:projectId',
           component: Project,
           meta: {
-            view: FooterViews.PROJECT
+            view: FooterViews.PROJECT,
+
           },
           children: [
             {
               path: '',
               component: Products,
               meta: {
-                view: FooterViews.PROJECT
+                view: FooterViews.PROJECT,
+                name: 'project'
               }
             },
             {
               path: 'collaborators',
               component: Collaborators,
               meta: {
-                view: FooterViews.PROJECT
+                view: FooterViews.PROJECT,
+                name: 'collaborators'
               }
             },
             {
               path: 'calendar',
               component: ProjectCalendar,
               meta: {
-                view: FooterViews.PROJECT
+                view: FooterViews.PROJECT,
+                name: 'calendar'
               }
             },
             {
               path: 'settings',
               component: ProjectSettings,
               meta: {
-                view: FooterViews.PROJECT
+                view: FooterViews.PROJECT,
+                name: 'settings'
               }
             },
             {
               path: 'budget',
               component: ProjectBudget,
               meta: {
-                view: FooterViews.PROJECT
+                view: FooterViews.PROJECT,
+                name: 'budget'
               }
             }
           ]

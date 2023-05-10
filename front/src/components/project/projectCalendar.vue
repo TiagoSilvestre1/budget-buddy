@@ -157,7 +157,10 @@ export default {
 }
 </script>
 <template>
-  <h1 class="main-title">Personal calendar</h1>
+  <h1 class="main-title">{{ getProject.title }}</h1>
+  <v-toolbar>
+  <v-toolbar-title>Calendar <v-icon color="primary">mdi-calendar</v-icon></v-toolbar-title>
+</v-toolbar>
 
   <div style="height: 15vh"></div>
 

@@ -17,8 +17,10 @@ enum Redirects {
 
 export default {
   created() {
+    this.getCurrentPage();
     if ('view' in this.$route.meta) {
-      this.view = this.$route.meta.view === 'GLOBAL' ? FooterViews.GLOBAL : FooterViews.PROJECT
+      this.view = this.$route.meta.view === 'GLOBAL' ? FooterViews.GLOBAL : FooterViews.PROJECT;
+
     } else {
       this.view = FooterViews.GLOBAL
     }
@@ -26,16 +28,35 @@ export default {
   data: () => {
     return {
       Redirects: Redirects,
-      view: FooterViews.GLOBAL
+      view: FooterViews.GLOBAL,
+      current_page: "1"
     }
   },
   watch: {
     $route(to, from) {
-      this.view = to.meta.view === 'GLOBAL' ? FooterViews.GLOBAL : FooterViews.PROJECT
+      this.view = to.meta.view === 'GLOBAL' ? FooterViews.GLOBAL : FooterViews.PROJECT;
+      this.getCurrentPage();
     }
   },
   methods: {
+
+    getCurrentPage()
+    {
+      let name: any = this.$route.meta.name;
+      this.current_page = name;
+    },
+    getVariant(v1: string, v2: string)
+    {
+      if (v1 === v2)
+      {
+        return 'tonal';
+      }
+      else{
+        return 'elevated';
+      }
+    },
     goto(location: Redirects): void {
+      this.current_page = location;
       switch (location) {
         case 'HOME':
           this.$router.push('../home')
@@ -71,25 +92,26 @@ export default {
   <div class="_container">
     <div class="block-list" v-if="view === 'GLOBAL'">
       <div class="block">
-        <v-btn class="left-navbar-button" icon="mdi-home" @click="goto(Redirects.HOME)"> </v-btn>
+        <v-btn class="left-navbar-button" icon="mdi-home" @click="goto(Redirects.HOME)" elevated :variant="getVariant('home',current_page)"> </v-btn>
       </div>
       <div class="block">
         <v-btn
           class="left-navbar-button"
           icon="mdi-calendar-month"
           @click="goto(Redirects.CALENDAR)"
+          :variant="getVariant('calendar',current_page)"
         >
         </v-btn>
       </div>
       <div class="block">
-        <v-btn class="left-navbar-button" icon="mdi-cogs" @click="goto(Redirects.SETTINGS)">
+        <v-btn :variant="getVariant('settings',current_page)" class="left-navbar-button" icon="mdi-cogs" @click="goto(Redirects.SETTINGS)">
         </v-btn>
       </div>
     </div>
 
     <div class="block-list" v-if="view === 'PROJECT'">
       <div class="block">
-        <v-btn class="left-navbar-button" icon="mdi-shopping" @click="goto(Redirects.PROJECTHOME)">
+        <v-btn class="left-navbar-button" icon="mdi-shopping" @click="goto(Redirects.PROJECTHOME)" :variant="getVariant('project',current_page)">
         </v-btn>
       </div>
       <div class="block">
@@ -97,6 +119,7 @@ export default {
           class="left-navbar-button"
           icon="mdi-account-group-outline"
           @click="goto(Redirects.COLLABORATORS)"
+          :variant="getVariant('collaborators',current_page)"
         >
         </v-btn>
       </div>
@@ -105,6 +128,7 @@ export default {
           class="left-navbar-button"
           icon="mdi-calendar-month"
           @click="goto(Redirects.PROJECTCALENDAR)"
+          :variant="getVariant('calendar',current_page)"
         >
         </v-btn>
       </div>
@@ -113,11 +137,12 @@ export default {
           class="left-navbar-button"
           icon="mdi-currency-eur"
           @click="goto(Redirects.PROJECTBUDGET)"
+          :variant="getVariant('budget',current_page)"
         >
         </v-btn>
       </div>
       <div class="block">
-        <v-btn class="left-navbar-button" icon="mdi-cogs" @click="goto(Redirects.PROJECTSETTINGS)">
+        <v-btn class="left-navbar-button" icon="mdi-cogs" @click="goto(Redirects.PROJECTSETTINGS)" :variant="getVariant('settings',current_page)">
         </v-btn>
       </div>
     </div>

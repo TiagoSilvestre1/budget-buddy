@@ -69,7 +69,9 @@
       </v-row>
     </v-container>
   </v-card>
-  <v-card class="mx-auto" max-width="800">
+
+
+  <v-card class="mx-auto" max-width="800" style="margin-top: 25px">
     <v-card-title>
       <h2 class="font-weight-light d-flex justify-content-between">
         <v-icon size=" big" icon="mdi-account-hard-hat"></v-icon>
