@@ -286,7 +286,7 @@ export default {
     </v-dialog>
   </div>
 
-  <div class="titles">
+  <div class="titles" v-if="projects.length > 0">
     <div class="home-container" ref="swiperContainer">
       <a
         v-for="project in projects"
@@ -318,12 +318,17 @@ export default {
       <div class="scroll-indicator" v-if="projects.length > 3" @click="scrollRight"></div>
     </div>
   </div>
+  <v-row v-else>
+    <v-col cols="12">
+      <h4 style="padding-left: 30px;">You haven't created any project</h4>
+    </v-col>
+  </v-row>
 
   <div style="height: 1cm"></div>
 
-  <h3><b>Other Projects</b></h3>
+  <h3 style="padding-left: 10px;"><b>Other Projects</b></h3>
 
-  <div class="titles">
+  <div class="titles" v-if="collaborates.length > 0">
     <div class="home-container" ref="swiperContainer2">
       <a
         v-for="project in collaborates"
@@ -355,6 +360,11 @@ export default {
     </div>
     <div class="scroll-indicator" v-if="projects.length > 3" @click="scrollRight"></div>
   </div>
+  <v-row v-else>
+    <v-col cols="12">
+      <h4 style="padding-left: 30px;padding-top: 20px;">You aren't collaborating in any project</h4>
+    </v-col>
+  </v-row>
 </template>
 
 <style>
