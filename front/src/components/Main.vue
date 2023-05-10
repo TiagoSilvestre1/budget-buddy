@@ -54,13 +54,13 @@
           </v-list-item>
           <v-list-item prepend-icon="mdi-logout-variant" title="logout" @click="logout" />
 
-          <v-list-item prepend-icon="" title="See user (dev, console print)" @click="seeUser" />
+          <!--<v-list-item prepend-icon="" title="See user (dev, console print)" @click="seeUser" />
 
           <v-list-item
             prepend-icon=""
             title="See project (dev, console print)"
             @click="seeProject"
-          />
+          />-->
         </v-list>
       </v-navigation-drawer>
 

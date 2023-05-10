@@ -50,12 +50,12 @@
                       <v-expansion-panel-text>
                         <v-row>
                           <v-col cols="12" v-if="type">
-                            <p><strong>URL:</strong> {{ quote.url }}</p>
+                            <p v-if="quote.url != null"><strong>URL:</strong> {{ quote.url }}</p>
                             <p><strong>Price:</strong> {{ quote.price }}</p>
                             <p><strong>Arrival Date:</strong> {{ formatDate(quote.available) }}</p>
                           </v-col>
                           <v-col cols="12" v-else>
-                            <p><strong>URL:</strong> {{ quote.url }}</p>
+                            <p v-if="quote.url != null"><strong>URL:</strong> {{ quote.url }}</p>
                             <p><strong>Price:</strong> {{ quote.price }}</p>
                             <p><strong>Start Date:</strong> {{ formatDate(quote.available) }}</p>
                             <p><strong>Finish Date:</strong> {{ formatDate(quote.available_2) }}</p>

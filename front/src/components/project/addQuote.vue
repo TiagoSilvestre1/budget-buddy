@@ -13,6 +13,9 @@
           <v-container>
             <v-row>
               <v-col cols="12" sm="12" md="12">
+                <v-switch color="orange-darken-3" label="Enable Tracking" v-model="trackingSwitch"></v-switch>
+              </v-col>
+              <v-col cols="12" sm="12" md="12" v-if="trackingSwitch">
                 <v-text-field v-model="quoteUrl" label="Website URL"></v-text-field>
               </v-col>
               <v-col cols="12" sm="12" md="12">
@@ -22,12 +25,12 @@
                   required
                 ></v-text-field>
               </v-col>
-              <v-col cols="12" sm="12" md="12">
-                <v-text-field v-model="quotePrice" label="Price"></v-text-field>
+              <v-col cols="12" sm="12" md="12" v-if="!trackingSwitch">
+                <v-text-field v-model="quotePrice" label="Price*"></v-text-field>
               </v-col>
-              <v-col cols="12" sm="12" md="12">
-                <h4 class="text-center" v-if="type">Arrival Date</h4>
-                <h4 class="text-center" v-else>Start Date</h4>
+              <v-col cols="12" sm="12" md="12" v-if="!trackingSwitch">
+                <h4 class="text-center" v-if="type">Arrival Date*</h4>
+                <h4 class="text-center" v-else>Start Date*</h4>
                 <VueDatePicker
                   v-model="quoteDate"
                   :enable-time-picker="true"
@@ -35,8 +38,8 @@
                   required
                 />
               </v-col>
-              <v-col cols="12" sm="12" md="12" v-if="!type">
-                <h4 class="text-center">End Date</h4>
+              <v-col cols="12" sm="12" md="12" v-if="!type && !trackingSwitch">
+                <h4 class="text-center">End Date*</h4>
                 <VueDatePicker
                   v-model="quoteDate_2"
                   :enable-time-picker="true"
@@ -64,6 +67,7 @@ import { mapGetters, useStore } from 'vuex'
 import type { Project } from '../../interfaces/project'
 import type { Product } from '../../interfaces/product'
 import type { Quote } from '../../interfaces/quote'
+import { start } from '@popperjs/core'
 
 export default {
   data: () => ({
@@ -75,7 +79,8 @@ export default {
     quoteDescription: null,
     quotePrice: null,
     quoteDate: new Date(),
-    quoteDate_2: new Date()
+    quoteDate_2: new Date(),
+    trackingSwitch: false,
   }),
   created() {
     this.project = this.getProject
@@ -97,19 +102,34 @@ export default {
   },
   methods: {
     addQuote() {
+      console.log(this.trackingSwitch);
       this.project = this.getProject
       let endDate
       if (this.type) endDate = null
       else endDate = this.quoteDate_2.toISOString()
 
-      const payload = {
-        product_id: this.productId,
-        quote: {
-          description: this.quoteDescription,
-          url: this.quoteUrl,
-          price: this.quotePrice,
-          available: this.quoteDate.toISOString(),
-          available_2: endDate
+      let payload: any;
+      if(this.trackingSwitch){
+        payload = {
+          product_id: this.productId,
+          quote: {
+            description: this.quoteDescription,
+            url: this.quoteUrl,
+            price: this.getRandomInt(50,500),
+            available: this.addDays(new Date(), 2),
+            available_2: this.addDays(new Date(), 4)
+          }
+        }
+      }else{
+        payload = {
+          product_id: this.productId,
+          quote: {
+            description: this.quoteDescription,
+            url: null,
+            price: this.quotePrice,
+            available: this.quoteDate.toISOString(),
+            available_2: endDate
+          }
         }
       }
 
@@ -125,6 +145,15 @@ export default {
             })
           })
       })
+    },
+    getRandomInt(min: number, max: number) : number{
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min + 1)) + min; 
+    },
+    addDays(date: Date, days : number): Date{
+      date.setDate(date.getDate() + days);
+      return date;
     }
   }
 }
