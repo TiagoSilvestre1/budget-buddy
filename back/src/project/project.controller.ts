@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpException, HttpStatus, InternalServerErrorException, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, InternalServerErrorException, Param, Post, Query, Res } from '@nestjs/common';
 import { API } from 'src/api/api';
 import { ProjectService } from './project.service';
 import { User } from 'src/schemas/user.schema';
 import mongoose from 'mongoose';
+import { Response } from 'express';
 
 
 @Controller('api/project')
@@ -16,10 +17,12 @@ export class ProjectController {
 		total_budget: number | undefined,
 		start_date: any,
 		end_date: any
-	}): Promise<API>
+	}, @Res({ passthrough: true }) res: Response)
 	{
 		try{
-			return {data : await this.projectService.create(project.title, project.owner_id, project.total_budget, project.start_date, project.end_date), success: true};
+			const data = await this.projectService.create(project.title, project.owner_id, project.total_budget, project.start_date, project.end_date);
+			res.status(200);
+			return data;
 		}
 		catch(error)
 		{
@@ -93,6 +96,22 @@ export class ProjectController {
 		}
 	}
 
+	@Post('addService')
+	async addService(@Body() info: {
+		name: string
+		project_id: mongoose.Types.ObjectId
+	})
+	{
+		try{
+			await this.projectService.addService(info);
+			return {success: true};
+		}
+		catch(error)
+		{
+			throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@Get('removeProductById')
 	async removeProductById(@Query('product_id') product_id: mongoose.Types.ObjectId)
 	{
@@ -102,6 +121,35 @@ export class ProjectController {
 		catch(error)
 		{    
 			throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@Post('removePersonById')
+	async removePersonById(@Body() info: {
+		person_id: mongoose.Types.ObjectId
+		project_id: mongoose.Types.ObjectId
+	})
+	{
+		try{
+			return await this.projectService.removeCollaboratorById(info.person_id, info.project_id);
+		}
+		catch(error)
+		{    
+			throw new HttpException(error.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@Post('delete')
+	async deleteProject(@Body('id') id: mongoose.Types.ObjectId)
+	{
+		console.log(id)
+		try{
+			await this.projectService.removeProjectById(id);
+			return;
+		}
+		catch(error)
+		{
+
 		}
 	}
 }

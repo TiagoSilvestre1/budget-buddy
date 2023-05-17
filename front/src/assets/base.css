@@ -1,12 +1,8 @@
 /* color palette from <https://github.com/vuejs/theme> */
-:root {
 
-}
 
 /* semantic color variables for this project */
-:root {
 
-}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -27,9 +23,9 @@
 *::after {
   box-sizing: border-box;
   margin: 0;
-  position: relative;
   font-weight: normal;
 }
+
 
 body {
   min-height: 100vh;

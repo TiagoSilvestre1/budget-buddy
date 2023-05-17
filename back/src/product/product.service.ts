@@ -37,7 +37,7 @@ export class ProductService {
     return obj;
     }
 
-    async addQuote(product_id: mongoose.Types.ObjectId , url: string | null, description: string | null, price: number | null, available: Date | null)
+    async addQuote(product_id: mongoose.Types.ObjectId , url: string | null, description: string | null, price: number | null, available: Date | null, available_2: Date | null)
     {
         const obj = await this.productModel.findById(product_id);
 
@@ -47,6 +47,7 @@ export class ProductService {
         quote.description = description;
         quote.price = price;
         quote.available = available;
+        quote.available_2 = available_2;
 
         await quote.save();
         
@@ -55,20 +56,37 @@ export class ProductService {
         await obj.save();
     }
 
-    async modifyQuote(quote_id: mongoose.Types.ObjectId,  url: string | null, description: string | null, price: number | null, available: Date | null)
+    async modifyQuote(quote_id: mongoose.Types.ObjectId,  url: string | null, description: string | null, price: number | null, available: Date | null, available_2: Date | null)
     {
         const obj = await this.quoteModel.findById(quote_id);
         obj.url = url;
         obj.description = description;
         obj.price = price;
         obj.available = available
+        obj.available_2 = available_2;
         await obj.save();
     }
 
     async destroyQuote(quote_id: mongoose.Types.ObjectId)
     {
-        const obj = await this.quoteModel.findByIdAndDelete(quote_id);
-        await obj.save();
+        this.quoteModel.findByIdAndDelete(quote_id).exec();
+        
+        // There is not gonna exist more than one product with the same quote_id
+        const product_obj = await this.productModel.findOne({ quotes: { $in: [quote_id] } }).exec();
+
+        if(!product_obj)
+            throw Error('Quote not associated with Product or does not exist');
+        
+        const index = product_obj.quotes.indexOf(quote_id);
+
+        if(index == -1)
+            throw Error('Quote is not associated with a Product');
+
+            product_obj.quotes.splice(index, 1);
+
+        // Save the updated `product_obj` document
+        await product_obj.save();
+
     }
 
     async getAll()

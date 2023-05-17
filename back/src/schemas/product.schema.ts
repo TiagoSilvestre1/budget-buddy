@@ -13,6 +13,10 @@ export class Product {
     @Prop({type: Boolean})
     completed: boolean;
 
+    // true for product, false for service
+    @Prop({required: false, type: Boolean})
+    product: boolean;
+
     @Prop({required: true, type: [{
          type: mongoose.Types.ObjectId, ref: 'Quote'
     }]})

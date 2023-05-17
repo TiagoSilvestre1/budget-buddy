@@ -15,6 +15,28 @@ export class ProjectService {
         const obj = new this.productModel({
             name: info.name,
             completed: false,
+            product: true,
+            quotes: []
+            });
+
+      await obj.save();
+
+      const project = await this.projectModel.findById(info.project_id).exec();
+
+      project.products.push(obj.id);
+
+      await project.save();
+    }
+
+    async addService(info: {
+        name: string
+        project_id: mongoose.Types.ObjectId
+      }) {
+
+        const obj = new this.productModel({
+            name: info.name,
+            completed: false,
+            product: false,
             quotes: []
             });
 
@@ -39,11 +61,17 @@ export class ProjectService {
         });
         
         await obj.save();
+        return obj;
     }
 
     async getAll()
     {
         return await this.projectModel.find();
+    }
+
+    async removeProjectById(id: mongoose.Types.ObjectId)
+    {
+        const obj = await this.projectModel.findByIdAndRemove(id);
     }
     
     
@@ -98,6 +126,24 @@ export class ProjectService {
             throw Error('Product is not associated with a project');
 
         project_obj.products.splice(index, 1);
+
+        // Save the updated `project_obj` document
+        await project_obj.save();
+    }
+
+    async removeCollaboratorById(person_id: mongoose.Types.ObjectId, project_id: mongoose.Types.ObjectId) {
+        // There is not gonna exist more than one project with the same product_id
+        const project_obj = await this.projectModel.findById(project_id);
+
+        if(!project_obj)
+            throw Error('Project does not exist');
+        
+        const index = project_obj.collaborators.indexOf(person_id);
+
+        if(index == -1)
+            throw Error('Collaborator is not associated with the project');
+
+        project_obj.collaborators.splice(index, 1);
 
         // Save the updated `project_obj` document
         await project_obj.save();

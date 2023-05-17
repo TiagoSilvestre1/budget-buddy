@@ -18,6 +18,10 @@ export class Quote {
 
     @Prop({required: false, type: Date})
     available: Date;
+
+    // Value used for end_date in services
+    @Prop({required: false, type: Date})
+    available_2: Date;
 }
 
 export const QuoteShema = SchemaFactory.createForClass(Quote);
