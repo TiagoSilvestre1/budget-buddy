@@ -1,0 +1,66 @@
+tasks:
+1.
+Completed:y
+Correctly:y
+Max observed time:1min
+Number of errors:0
+was lost:0
+Asked for help:0
+Observed eassiness:5
+
+2.
+Completed:y
+Correctly:y
+Max observed time:1min
+Number of errors:0
+was lost:n
+Asked for help:n
+Observed eassiness:5
+Butão para a home page
+
+3.
+Completed:y
+Correctly:y
+Max observed time:15s
+Number of errors:0
+was lost:0
+Asked for help:0
+Observed eassiness:5
+
+4.
+Completed:y
+Correctly:y
+Max observed time:30s
+Number of errors:y
+was lost:n
+Asked for help:n
+Observed eassiness:4
+Note: alterar icone das quotes
+
+5.
+Completed:y
+Correctly:y
+Max observed time:20s
+Number of errors:0
+was lost:n
+Asked for help:n
+Observed eassiness: 5
+meter aviso quer mesmo apagar
+
+6.
+Completed:
+Correctly:
+Max observed time:
+Number of errors:
+was lost:
+Asked for help:
+Observed eassiness:
+
+7.
+Completed:
+Correctly:
+Max observed time:
+Number of errors:
+was lost:
+Asked for help:
+Observed eassiness:

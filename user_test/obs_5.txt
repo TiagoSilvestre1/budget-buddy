@@ -1,0 +1,64 @@
+tasks:
+1.
+Completed:
+Correctly:
+Max observed time:
+Number of errors:
+was lost:
+Asked for help:
+Observed eassiness:
+
+2.
+Completed:y
+Correctly:y
+Max observed time:
+Number of errors:0
+was lost: nao
+Asked for help: nao
+Observed eassiness: 
+Na criaçao poder adicionar diretamente os colaboradores
+
+3.
+Completed: y
+Correctly: y
+Max observed time: 33 
+Number of errors: 3
+was lost: um pouco
+Asked for help: nao
+Observed eassiness: 
+
+4.
+Completed: y
+Correctly: y
+Max observed time: 1 min
+Number of errors:
+was lost:
+Asked for help:
+Observed eassiness: Quando faço o close posso perder o budget que defini?
+
+5.
+Completed: Y
+Correctly: Y
+Max observed time: 20
+Number of errors:
+was lost:
+Asked for help:
+Observed eassiness: Os icones nao sao muito intuitivos
+
+6.
+Completed: Y
+Correctly: y
+Max observed time: 20s
+Number of errors:
+was lost:
+Asked for help:
+Observed eassiness: list view e calendario => Lista é preferivel ao calendario
+
+7.
+Completed:  Y
+Correctly: Y
+Max observed time: 30s
+Number of errors:
+was lost:
+Asked for help:
+Observed eassiness:
