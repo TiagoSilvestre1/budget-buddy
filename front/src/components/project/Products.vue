@@ -17,7 +17,7 @@
             <v-img
               :src="products.src"
               class="align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              gradient="to bottom, rgba(255,255,255,.1), rgba(0,0,0,.5)"
               height="200px"
               cover
               style="opacity: 0.5; cursor: not-allowed"
@@ -46,7 +46,16 @@
                     :productId="products.id"
                   />
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="2" v-if="!products.completed">
+                  <v-btn
+                    size="small"
+                    color="surface-variant"
+                    variant="text"
+                    icon="mdi-check"
+                    @click="markAsCompleted(products.id)"
+                  ></v-btn>
+                </v-col>
+                <v-col cols="2" v-else>
                   <EditProduct
                     @productAdded="listProducts"
                     v-model="editDialogVisible"
@@ -117,7 +126,16 @@
                     :productId="service.id"
                   />
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="2" v-if="!service.completed">
+                  <v-btn
+                    size="small"
+                    color="surface-variant"
+                    variant="text"
+                    icon="mdi-check"
+                    @click="markAsCompleted(service.id)"
+                  ></v-btn>
+                </v-col>
+                <v-col cols="2" v-else>
                   <EditProduct
                     @productAdded="listProducts"
                     v-model="editDialogVisible"
@@ -255,6 +273,25 @@ export default {
     },
     getNewImage(): String {
       return this.possibleImages[this.possibleImagesIndex++ % this.possibleImages.length]
+    },
+    markAsCompleted(productId: number) {
+      backendService
+        .post(
+          '/api/product/setQuoteCompletedStatus',
+          { id: productId, completed: true },
+          false
+        )
+        .then(() => {
+          // Update local store to reflect changes
+          backendService
+            .get('/api/project/getProjectById?project_id=' + this.project['_id'])
+            .then((response) => {
+              this.project = response
+              this.store.dispatch('project/SelectProject', this.project).then(() => {
+                this.listProducts()
+              })
+            })
+        })
     }
   }
 }
