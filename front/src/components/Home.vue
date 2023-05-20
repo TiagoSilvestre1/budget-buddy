@@ -32,6 +32,7 @@ export default {
     possibleImages: String[]
     possibleImagesIndex: number
     store: any
+    showScrollButton: boolean
   } {
     return {
       loading: false,
@@ -70,12 +71,18 @@ export default {
       new_project_budget: null,
       possibleImages: [],
       possibleImagesIndex: 0,
-      store: useStore()
+      store: useStore(),
+      showScrollButton: true
     }
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
 
   mounted() {
     this.initializeSwiper()
+    window.addEventListener('scroll', this.handleScroll);
   },
   updated() {
     this.initializeSwiper()
@@ -89,6 +96,17 @@ export default {
     this.listImages()
   },
   methods: {
+    handleScroll()
+    {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+      this.showScrollButton = scrollTop < 50;
+    },
+    scrollPage() {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth'
+      })
+    },
     populateProjects() {
       backendService
         .get('api/project/byUserId?user_id=' + this.getUser.id)
@@ -365,9 +383,36 @@ export default {
       <h4 style="padding-left: 30px;padding-top: 20px;">You aren't collaborating in any project</h4>
     </v-col>
   </v-row>
+
+    <Transition>
+      <div class="scroll-button" v-if="showScrollButton" @click="scrollPage">
+        <v-btn variant="tonal" icon="mdi-arrow-down"> </v-btn>
+      </div>
+    </Transition>
+
+
+
 </template>
 
 <style>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
+.scroll-button {
+  position: fixed;
+  bottom: 15.5vh;
+  right: 20px;
+  z-index: 999;
+}
+
+
 @media only screen and (max-width: 750px) {
   .welcome-card {
     width: 100%;
