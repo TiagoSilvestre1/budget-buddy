@@ -9,6 +9,10 @@ import { mapGetters } from 'vuex'
 import { HttpStatusCode, type Axios, type AxiosResponse } from 'axios'
 
 export default {
+  async created() {
+    this.preSelected = this.getProject.title;
+    await this.on_mounted()
+  },
   computed: {
     ...mapGetters('auth', ['getUser']),
     ...mapGetters('project', ['getProject'])
@@ -17,14 +21,21 @@ export default {
     return {
       projects: [] as Array<any>,
       original_attribs: [] as Array<any>,
-      attributes: [] as Array<any>
+      attributes: [] as Array<any>,
+      preSelected:  'All'
     }
   },
-  async mounted() {
-    let arr = await this.generate_original_attribs()
-    this.filter_selection(arr)
+  watch: {
+    preSelected: function (newValue) {
+      this.on_mounted()
+    }
   },
+
   methods: {
+    async on_mounted() {
+      const res = await this.generate_original_attribs()
+      this.filter_selection(res)
+    },
     async generate_original_attribs() {
       let arr: any[] = []
       const response: API = await backendService.get(
@@ -146,10 +157,10 @@ export default {
     },
     filter_selection(arr: any[]) {
       this.attributes = []
-      if (this.getProject.title === 'All') this.attributes = arr
+      if (this.preSelected === 'All') this.attributes = arr
       else {
         this.attributes = arr.filter((el: any) => {
-          return el.title === this.getProject.title
+          return el.title === this.preSelected
         })
       }
     }
@@ -157,16 +168,22 @@ export default {
 }
 </script>
 <template>
-  <h1 class="main-title">{{ getProject.title }}</h1>
-  <v-toolbar>
-  <v-toolbar-title>Calendar <v-icon color="primary">mdi-calendar</v-icon></v-toolbar-title>
-</v-toolbar>
+  <h1 class="main-title">Calendar</h1>
 
   <div style="height: 15vh"></div>
 
   <div class="centered">
     <div style="width: 16cm">
-      <VCalendar expanded :attributes="attributes" />
+      <div class="centered">
+        <v-select
+          style="max-width: 8cm"
+          :active="true"
+          label="Select project"
+          :items="['All', ...projects]"
+          v-model="preSelected"
+        ></v-select>
+      </div>
+      <VCalendar expanded :attributes="attributes" borderless />
     </div>
   </div>
 </template>

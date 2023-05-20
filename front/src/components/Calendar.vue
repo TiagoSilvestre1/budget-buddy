@@ -167,7 +167,7 @@ export default {
 }
 </script>
 <template>
-  <h1 class="main-title">Personal calendar</h1>
+  <h1 class="main-title">Calendar</h1>
 
   <div style="height: 15vh"></div>
 
