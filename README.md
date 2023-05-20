@@ -54,8 +54,30 @@ In production mode, the application will not be in watch mode and any changes to
 
 ## IP addresses
 
+### Check the Frontend:
+* local:
 ```
-front: http://172.16.238.10:8080
-back: http://172.16.238.11:3000
+http://172.16.238.10:8080
+```
+* public
+```
+http://localhost:8080
+```
+### Check the Backend:
+* local:
+```
+http://172.16.238.11:3000
+```
+* public
+```
+http://localhost:3000
+```
+### Check the Mongo Database:
+* local:
+```
 mongo: 172.16.238.12:27017
+```
+* public
+```
+http://localhost:27017
 ```
