@@ -57,27 +57,27 @@ In production mode, the application will not be in watch mode and any changes to
 ### Check the Frontend:
 * local:
 ```
-http://172.16.238.10:8080
+http://localhost:8080
 ```
 * public
 ```
-http://localhost:8080
+http://172.16.238.10:8080
 ```
 ### Check the Backend:
 * local:
 ```
-http://172.16.238.11:3000
+http://localhost:3000
 ```
 * public
 ```
-http://localhost:3000
+http://172.16.238.11:3000
 ```
 ### Check the Mongo Database:
 * local:
 ```
-mongo: 172.16.238.12:27017
+http://localhost:27017
 ```
 * public
 ```
-http://localhost:27017
+http://172.16.238.12:27017
 ```
