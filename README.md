@@ -5,7 +5,7 @@ Budget Buddy is a concept application developed for personal project management.
 ## Work conducted by:
 * Gonçalo Silva, 103244
 * Tiago Silvestre, 103554
-* Catarina Barroqueira, 103295
+* Catarina Barroqueiro, 103295
 
 ## Technologies used
 
@@ -13,7 +13,7 @@ Budget Buddy is a concept application developed for personal project management.
 2. vuetify (https://vuetifyjs.com/en/)
 3. nestjs (https://nestjs.com/)
 4. typeorm (https://orkhan.gitbook.io/typeorm)
-5. mongodb (https://www.mongodb.com/)
+5. mongoose (https:/mongoosejs.com)
 
 ## Prerequisites
 
@@ -35,54 +35,23 @@ sudo docker compose up
 
 The application will start in watch mode, allowing you to make changes to the code and see the updates in real time.
 
-### Local mode
-
-Build and run the project in local mode:
-
-```
-sudo docker compose -f docker-compose-local.yml build
-sudo docker compose -f docker-compose-local.yml up
-```
-
-The difference between local and development modes is that the ip adresses will be local instead of lan
-
-### Production mode
-
-Build and run the project in production mode:
-
-```
-sudo docker compose -f docker-compose.yml -f docker-compose-prod.yml build
-sudo docker compose -f docker-compose.yml -f docker-compose-prod.yml up
-```
-
-In production mode, the application will not be in watch mode and any changes to the code will require rebuilding and redeploying the containers.
-
 ## IP addresses
 
 ### Check the Frontend:
-* local:
+
 ```
-http://localhost:8080
+http://localhost:8080/home
 ```
-* public
-```
-http://172.16.238.10:8080
-```
+
 ### Check the Backend:
-* local:
+
 ```
 http://localhost:3000
 ```
-* public
-```
-http://172.16.238.11:3000
-```
+
 ### Check the Mongo Database:
-* local:
+
 ```
 http://localhost:27017
 ```
-* public
-```
-http://172.16.238.12:27017
-```
+
