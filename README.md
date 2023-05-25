@@ -3,9 +3,9 @@
 Budget Buddy is a concept application developed for personal project management.
 
 ## Work conducted by:
-* Gonçalo Silva, 103244
-* Tiago Silvestre, 103554
-* Catarina Barroqueiro, 103295
+* Gonçalo Silva, 103244 - Contribuição: 33%
+* Tiago Silvestre, 103554 - Contribuição: 33%
+* Catarina Barroqueiro, 103295 - Contribuição: 33%
 
 ## Technologies used
 
